@@ -1,0 +1,193 @@
+/* ===========================
+   全体
+=========================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+
+body {
+  background: #f4f8fc;
+  color: #333;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+}
+
+/* ===========================
+   タイトル
+=========================== */
+
+h1 {
+  text-align: center;
+  color: #1976d2;
+  margin-bottom: 24px;
+  font-size: 28px;
+}
+
+h2 {
+  font-size: 18px;
+  color: #1976d2;
+  margin-bottom: 15px;
+}
+
+/* ===========================
+   カード
+=========================== */
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+/* ===========================
+   プルダウン
+=========================== */
+
+select {
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fff;
+}
+
+/* ===========================
+   修理内容
+=========================== */
+
+.repair-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.repair-item:last-child {
+  border-bottom: none;
+}
+
+.repair-item input {
+  width: 22px;
+  height: 22px;
+  margin-right: 12px;
+}
+
+.repair-item label {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* ===========================
+   見積もり
+=========================== */
+
+#estimate {
+  margin-bottom: 20px;
+}
+
+.empty {
+  color: #888;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.estimate-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.total span:first-child {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#totalPrice {
+  color: #e53935;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+/* ===========================
+   ボタン
+=========================== */
+
+#reserveButton {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  background: #06c755;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 18px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+#reserveButton:hover {
+  opacity: .9;
+}
+
+#reserveButton:active {
+  transform: scale(.98);
+}
+
+/* ===========================
+   矢印
+=========================== */
+
+.arrow {
+  text-align: center;
+  font-size: 24px;
+  margin-top: 8px;
+  color: #1976d2;
+}
+
+/* ===========================
+   スマホ対応
+=========================== */
+
+@media (max-width: 600px) {
+
+  body {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 16px;
+  }
+
+  #reserveButton {
+    font-size: 17px;
+    padding: 16px;
+  }
+
+  #totalPrice {
+    font-size: 24px;
+  }
+
+}
