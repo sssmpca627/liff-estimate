@@ -60,7 +60,7 @@ ${repairList.map(item => "・" + item).join("\n")}
             return;
 
         }
-
+　　　　　alert("ボタンが押されました");
         await liff.sendMessages([
             {
                 type: "text",
