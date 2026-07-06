@@ -166,7 +166,9 @@ reserveButton.addEventListener("click", () => {
         total += prices[model][item.value];
 
     });
-
+    
+　　　alert("ボタンが押されました");
+    
     // liff.jsで定義する関数を呼び出す
     sendEstimate(model, repairs, total);
 
