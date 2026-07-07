@@ -890,16 +890,10 @@ background:#f8fafc;
 
 }
 
-.price-grid{
-
-display:grid;
-
-grid-template-columns:repeat(2,1fr);
-
-gap:35px;
-
-margin-top:60px;
-
+.price-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 30px;
 }
 
 .price-card{
