@@ -932,7 +932,13 @@ flex-direction:column;
 
 .plan-card .btn-main{
 
-margin-top:auto;
+display:block;
+
+text-align:center;
+
+width:100%;
+
+margin-top:40px;
 
 }
 
