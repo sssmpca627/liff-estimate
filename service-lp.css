@@ -82,3 +82,197 @@ max-width:700px;
 margin:auto;
 
 }
+
+/* ===========================
+CTAボタン
+=========================== */
+
+button{
+
+background:#06C755;
+
+color:#fff;
+
+border:none;
+
+padding:18px 45px;
+
+font-size:18px;
+
+font-weight:bold;
+
+border-radius:50px;
+
+cursor:pointer;
+
+margin-top:35px;
+
+transition:.3s;
+
+box-shadow:
+0 8px 20px rgba(6,199,85,.35);
+
+}
+
+button:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+0 15px 35px rgba(6,199,85,.45);
+
+}
+
+
+
+/* ===========================
+カード
+=========================== */
+
+.card{
+
+background:#fff;
+
+border-radius:24px;
+
+padding:40px;
+
+margin-bottom:35px;
+
+box-shadow:
+0 15px 35px rgba(0,0,0,.08);
+
+}
+
+
+
+/* ===========================
+見出し
+=========================== */
+
+.card h2{
+
+font-size:34px;
+
+margin-bottom:25px;
+
+color:#222;
+
+}
+
+
+
+.card h3{
+
+font-size:24px;
+
+margin-top:20px;
+
+margin-bottom:10px;
+
+color:#06C755;
+
+}
+
+
+
+.card p{
+
+font-size:18px;
+
+margin-bottom:18px;
+
+line-height:1.9;
+
+}
+
+
+
+/* ===========================
+区切り線
+=========================== */
+
+hr{
+
+border:none;
+
+height:1px;
+
+background:#eee;
+
+margin:30px 0;
+
+}
+
+/* ===========================
+セクション装飾
+=========================== */
+
+section{
+
+margin:80px 0;
+
+}
+
+.hero + .card{
+
+margin-top:-20px;
+
+}
+
+.card:nth-child(even){
+
+background:#ffffff;
+
+}
+
+.card:nth-child(odd){
+
+background:#fdfdfd;
+
+}
+
+
+/* ===========================
+料金表示
+=========================== */
+
+.price{
+
+font-size:36px;
+
+font-weight:bold;
+
+color:#06C755;
+
+margin-top:20px;
+
+}
+
+
+/* ===========================
+リンク
+=========================== */
+
+a{
+
+text-decoration:none;
+
+}
+
+a:hover{
+
+opacity:.85;
+
+}
+
+
+/* ===========================
+余白
+=========================== */
+
+.card:last-child{
+
+margin-bottom:80px;
+
+}
