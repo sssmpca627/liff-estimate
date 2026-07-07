@@ -43,7 +43,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 async function sendEstimate(model, repairList, total) {
 
     const message =
-`【修理予約】
+`【お見積もり金額】
 
 📱機種
 ${model}
