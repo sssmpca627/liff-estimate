@@ -910,7 +910,7 @@ grid-template-columns: repeat(2, 1fr);
 gap: 30px;
 }
 
-.price-card{
+.plan-card{
 
 background:#fff;
 
@@ -923,6 +923,16 @@ box-shadow:0 15px 35px rgba(0,0,0,.08);
 text-align:center;
 
 transition:.35s;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.plan-card .btn-main{
+
+margin-top:auto;
 
 }
 
