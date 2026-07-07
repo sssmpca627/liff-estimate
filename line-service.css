@@ -999,3 +999,57 @@ grid-template-columns:1fr;
 }
 
 }
+
+/* ===================================
+FAQ
+=================================== */
+
+#faq{
+
+padding:120px 0;
+
+background:#ffffff;
+
+}
+
+.faq-list{
+
+max-width:900px;
+
+margin:60px auto 0;
+
+}
+
+.faq-item{
+
+background:#fff;
+
+padding:30px;
+
+border-radius:18px;
+
+margin-bottom:20px;
+
+box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.faq-item h3{
+
+font-size:22px;
+
+color:#06C755;
+
+margin-bottom:15px;
+
+}
+
+.faq-item p{
+
+font-size:17px;
+
+line-height:1.9;
+
+color:#555;
+
+}
