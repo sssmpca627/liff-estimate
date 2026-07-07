@@ -924,14 +924,6 @@ text-align:center;
 
 transition:.35s;
 
-display:flex;
-
-flex-direction:column;
-
-}
-
-.plan-card{
-
 min-height:420px;
 
 display:flex;
