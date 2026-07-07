@@ -20,11 +20,10 @@ window.addEventListener("DOMContentLoaded", async () => {
         await liff.init({
             liffId: LIFF_ID
         });
-
         if (!liff.isLoggedIn()) {
-            liff.login();
-            return;
-        }
+    console.log("LINE未ログイン");
+    return;
+}
 
         console.log("LIFF 初期化完了");
 
