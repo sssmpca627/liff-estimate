@@ -944,15 +944,18 @@ box-shadow:0 25px 45px rgba(0,0,0,.12);
 
 }
 
-.price-card h3{
+.plan-card h3{
 
-font-size:28px;
+font-size:24px;
 
 margin-bottom:20px;
 
+line-height:1.5;
+
 }
 
-.price-from{
+
+.price{
 
 font-size:42px;
 
@@ -960,7 +963,7 @@ font-weight:bold;
 
 color:#06C755;
 
-margin-bottom:30px;
+margin-bottom:25px;
 
 }
 
