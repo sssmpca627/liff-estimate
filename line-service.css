@@ -238,6 +238,20 @@ box-shadow:0 15px 35px rgba(0,0,0,.15);
 
 }
 
+/* ここに追加 */
+
+.plan-card .btn-main{
+
+display:block;
+
+text-align:center;
+
+width:100%;
+
+margin-top:25px;
+
+}
+
 .btn-main:hover{
 
 transform:translateY(-5px);
