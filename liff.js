@@ -52,15 +52,16 @@ ${model}
 ${repairList.map(item => "・" + item).join("\n")}
 
 💰合計金額
-¥${total.toLocaleString()}（税込）`;
+¥${total.toLocaleString()}（税込）
 
-    ────────
+────────
 
 ▼ 修理をご希望の場合は、
 下記よりご予約ください。
 
 🔗 ご予約はこちら
-https://liff.line.me/2010529454-guL25Ayb?liff_id=2010529454-guL25Ayb&is=xQufJ7L4Ay
+https://liff.line.me/2010529454-guL25Ayb?liff_id=2010529454-guL25Ayb&is=xQufJ7L4Ay`;
+
 
     try {
 
