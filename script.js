@@ -13,7 +13,7 @@ const reserveButton = document.getElementById("reserveButton");
 // 機種一覧表示
 // ===============================
 
-Object.keys(prices).forEach(model => {
+models.forEach(model => {
 
     const option = document.createElement("option");
     option.value = model;
