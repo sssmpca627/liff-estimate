@@ -930,6 +930,16 @@ flex-direction:column;
 
 }
 
+.plan-card{
+
+min-height:420px;
+
+display:flex;
+
+flex-direction:column;
+
+}
+
 .plan-card .btn-main{
 
 display:block;
