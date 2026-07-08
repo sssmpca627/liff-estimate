@@ -1,0 +1,85 @@
+/* =========================
+   LINEカラーへ変更
+========================= */
+
+/* ページ背景 */
+body {
+  background: #f5fff8;
+}
+
+
+/* ヘッダー・メインカラー */
+header,
+.header,
+.hero,
+.faq-header {
+  background: #06C755 !important;
+}
+
+
+/* 見出しカラー */
+h1,
+h2,
+h3,
+.section-title,
+.faq-title {
+  color: #00B900 !important;
+}
+
+
+/* ボタン */
+button,
+.btn,
+.btn-main,
+.cta-button,
+a.button {
+  background: #06C755 !important;
+  border-color: #06C755 !important;
+  color: #fff !important;
+}
+
+
+/* ボタン hover */
+button:hover,
+.btn:hover,
+.btn-main:hover,
+.cta-button:hover {
+  background: #00B900 !important;
+}
+
+
+/* FAQカード */
+.faq-item,
+.faq-card,
+.card {
+  background: #ffffff;
+  border: 1px solid #d8f3df !important;
+}
+
+
+/* FAQ質問部分 */
+.question,
+.faq-question {
+  color: #06C755 !important;
+}
+
+
+/* アイコン背景 */
+.icon,
+.faq-icon {
+  background: #06C755 !important;
+}
+
+
+/* 線・アクセント */
+.border,
+.divider {
+  border-color: #06C755 !important;
+}
+
+
+/* 強調文字 */
+.highlight,
+strong {
+  color: #00B900;
+}
