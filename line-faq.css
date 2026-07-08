@@ -1,28 +1,39 @@
-/* line-faq.css */
-/* 色だけ変更 */
+/* ==========================
+   LINE FAQ 緑カラー変更
+   デザインはstyle.cssを使用
+========================== */
 
-.faq-title,
-.section-title,
-h2 {
-  color:#06C755;
+
+/* 見出し */
+h1,
+h2,
+h3 {
+    color: #06C755;
 }
 
+
+/* FAQタイトル */
+.faq-title {
+    color: #06C755;
+}
+
+
+/* 質問部分 */
 .faq-question {
-  color:#06C755;
+    color: #06C755;
 }
 
-.btn,
-.btn-main,
-.cta-button {
-  background:#06C755;
+
+/* メインボタン */
+a,
+button {
+    /* サイズ・余白は変更しない */
+    background-color: #06C755;
 }
 
-.btn:hover,
-.btn-main:hover,
-.cta-button:hover {
-  background:#00B900;
-}
 
-.faq-item {
-  border-color:#d8f3df;
+/* hover */
+a:hover,
+button:hover {
+    background-color: #00B900;
 }
