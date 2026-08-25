@@ -38,7 +38,6 @@
   <script>
     // =========================================
     // LIFF ID
-    // LINE DevelopersのLIFF ID
     // =========================================
 
     const LIFF_ID = "2010574933-aX35Dagg";
@@ -61,21 +60,26 @@
         if (!liff.isLoggedIn()) {
 
           document.getElementById("status").textContent =
-            "LINEログインが必要です。";
+            "LINEログインを開始します…";
+
+          liff.login({
+            redirectUri: window.location.href
+          });
 
           return;
         }
 
 
-        // LIFF起動成功
+        // =========================================
+        // LINEログイン済み
+        // =========================================
+
         document.getElementById("status").textContent =
           "LIFFの起動に成功しました。";
 
 
         console.log("LIFF起動成功");
-
         console.log("LIFF ID:", LIFF_ID);
-
         console.log("LINEログイン済み");
 
 
