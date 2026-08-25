@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>サロン予約メニュー</title>
+
+  <!-- LINE LIFF SDK -->
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 24px 16px 40px;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+                   "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      background: #f8f8f8;
+      color: #333;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin: 10px 0 30px;
+    }
+
+    #status {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #666;
+    }
+
+    .menu-card {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+    }
+
+    .menu-title {
+      font-size: 21px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    .menu-description {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 18px;
+    }
+
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      background: #333;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>サロン予約メニュー</h1>
+
+  <div id="status">
+    LINEログインを確認しています…
+  </div>
+
+  <!-- ログイン後に表示 -->
+  <div id="menuArea" class="hidden">
+
+    <!-- 全身脱毛 -->
+    <div class="menu-card">
+      <div class="menu-title">全身脱毛</div>
+      <div class="menu-description">
+        全身脱毛のメニューを選択
+      </div>
+
+      <button onclick="selectMenu('全身脱毛')">
+        全身脱毛を選択
+      </button>
+    </div>
+
+    <!-- セレクト脱毛 -->
+    <div class="menu-card">
+      <div class="menu-title">セレクト脱毛</div>
+      <div class="menu-description">
+        気になる部位を自由に組み合わせ
+      </div>
+
+      <button onclick="selectMenu('セレクト脱毛')">
+        セレクト脱毛を選択
+      </button>
+    </div>
+
+    <!-- フェイシャル -->
+    <div class="menu-card">
+      <div class="menu-title">フェイシャル</div>
+      <div class="menu-description">
+        フェイシャルコースを選択
+      </div>
+
+      <button onclick="selectMenu('フェイシャル')">
+        フェイシャルを選択
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+  // ==========================================
+  // サロン用 LIFF ID
+  // ==========================================
+
+  const LIFF_ID = "2011037691-j7UfaGxQ";
+
+
+  // ==========================================
+  // LIFF初期化
+  // ==========================================
+
+  window.addEventListener("DOMContentLoaded", async () => {
+
+    try {
+
+      await liff.init({
+        liffId: LIFF_ID
+      });
+
+      console.log("LIFF初期化成功");
+
+      // LINEログインしていない場合
+      if (!liff.isLoggedIn()) {
+
+        document.getElementById("status").textContent =
+          "LINEログインが必要です。";
+
+        liff.login({
+          redirectUri: window.location.href
+        });
+
+        return;
+      }
+
+      // LINEログイン済み
+      document.getElementById("status").textContent =
+        "メニューを選択してください。";
+
+      document.getElementById("menuArea")
+        .classList.remove("hidden");
+
+      console.log("LINEログイン済み");
+
+    } catch (error) {
+
+      console.error("LIFF初期化エラー:", error);
+
+      document.getElementById("status").textContent =
+        "予約メニューの起動に失敗しました。";
+
+    }
+
+  });
+
+
+  // ==========================================
+  // メニュー選択
+  // ==========================================
+
+  function selectMenu(menuName) {
+
+    alert(menuName + "を選択しました");
+
+    console.log("選択メニュー:", menuName);
+
+  }
+
+</script>
+
+</body>
+</html>
