@@ -295,12 +295,23 @@ function confirmFullBody() {
     return;
   }
 
-    liff.sendMessages([
+try {
+  await liff.sendMessages([
     {
       type: "text",
       text: "全身脱毛：" + selected.value
     }
   ]);
+
+  document.getElementById("status").textContent =
+    "LINEへ送信しました。";
+
+} catch (error) {
+  console.error(error);
+
+  document.getElementById("status").textContent =
+    "送信に失敗しました：" + error.message;
+}
 
 }
 
