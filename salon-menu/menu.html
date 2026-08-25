@@ -1,117 +1,142 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>サロン予約メニュー</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- LINE LIFF SDK -->
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<title>サロン予約メニュー</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-    body {
-      margin: 0;
-      padding: 24px 16px 40px;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-                   "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      background: #f8f8f8;
-      color: #333;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-    }
+body {
+  margin: 0;
+  background: #f7f7f7;
+  color: #333;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+               "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
 
-    h1 {
-      text-align: center;
-      font-size: 28px;
-      margin: 10px 0 30px;
-    }
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 28px 16px 50px;
+}
 
-    #status {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #666;
-    }
+h1 {
+  text-align: center;
+  font-size: 32px;
+  margin: 10px 0 12px;
+  font-weight: 700;
+}
 
-    .menu-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 22px;
-      margin-bottom: 16px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-    }
+.description {
+  text-align: center;
+  color: #777;
+  font-size: 17px;
+  margin-bottom: 30px;
+}
 
-    .menu-title {
-      font-size: 21px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px 22px;
+  margin-bottom: 24px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
 
-    .menu-description {
-      font-size: 14px;
-      color: #777;
-      margin-bottom: 18px;
-    }
+.card h2 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
 
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 15px;
-      font-size: 16px;
-      font-weight: bold;
-      background: #333;
-      color: #fff;
-      cursor: pointer;
-    }
+.card p {
+  margin: 0 0 22px;
+  color: #777;
+  font-size: 16px;
+}
 
-    button:active {
-      opacity: 0.8;
-    }
+button {
+  width: 100%;
+  border: none;
+  border-radius: 16px;
+  padding: 18px 15px;
+  font-size: 18px;
+  font-weight: 700;
+  background: #333;
+  color: #fff;
+  cursor: pointer;
+}
 
-    .hidden {
-      display: none;
-    }
-  </style>
+button:active {
+  opacity: 0.8;
+}
+
+.hidden {
+  display: none;
+}
+
+.back-button {
+  background: #eee;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px 5px;
+  border-bottom: 1px solid #eee;
+}
+
+.menu-item:last-child {
+  border-bottom: none;
+}
+
+.menu-item input {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.menu-name {
+  font-size: 18px;
+}
+</style>
 </head>
 
 <body>
 
 <div class="container">
 
-  <h1>サロン予約メニュー</h1>
+  <!-- メインメニュー -->
+  <section id="mainMenu">
 
-  <div id="status">
-    LINEログインを確認しています…
-  </div>
+    <h1>サロン予約メニュー</h1>
 
-  <!-- ログイン後に表示 -->
-  <div id="menuArea" class="hidden">
+    <div class="description">
+      メニューを選択してください。
+    </div>
 
     <!-- 全身脱毛 -->
-    <div class="menu-card">
-      <div class="menu-title">全身脱毛</div>
-      <div class="menu-description">
-        全身脱毛のメニューを選択
-      </div>
+    <div class="card">
+      <h2>全身脱毛</h2>
+      <p>全身脱毛のメニューを選択</p>
 
-      <button onclick="selectMenu('全身脱毛')">
+      <button onclick="showFullBody()">
         全身脱毛を選択
       </button>
     </div>
 
     <!-- セレクト脱毛 -->
-    <div class="menu-card">
-      <div class="menu-title">セレクト脱毛</div>
-      <div class="menu-description">
-        気になる部位を自由に組み合わせ
-      </div>
+    <div class="card">
+      <h2>セレクト脱毛</h2>
+      <p>気になる部位を自由に組み合わせ</p>
 
       <button onclick="selectMenu('セレクト脱毛')">
         セレクト脱毛を選択
@@ -119,90 +144,177 @@
     </div>
 
     <!-- フェイシャル -->
-    <div class="menu-card">
-      <div class="menu-title">フェイシャル</div>
-      <div class="menu-description">
-        フェイシャルコースを選択
-      </div>
+    <div class="card">
+      <h2>フェイシャル</h2>
+      <p>フェイシャルコースを選択</p>
 
       <button onclick="selectMenu('フェイシャル')">
         フェイシャルを選択
       </button>
     </div>
 
-  </div>
+  </section>
+
+
+  <!-- 全身脱毛メニュー -->
+  <section id="fullBodyMenu" class="hidden">
+
+    <h1>全身脱毛</h1>
+
+    <div class="description">
+      ご希望のメニューをお選びください。
+    </div>
+
+    <button class="back-button" onclick="showMain()">
+      ← メニュー一覧に戻る
+    </button>
+
+    <div class="card">
+
+      <label class="menu-item">
+        <input type="radio" name="fullbody" value="顔・VIOなし">
+        <span class="menu-name">顔・VIOなし</span>
+      </label>
+
+      <label class="menu-item">
+        <input type="radio" name="fullbody" value="顔 or VIO">
+        <span class="menu-name">顔 or VIO</span>
+      </label>
+
+      <label class="menu-item">
+        <input type="radio" name="fullbody" value="顔・VIO">
+        <span class="menu-name">顔・VIO</span>
+      </label>
+
+    </div>
+
+    <button onclick="confirmFullBody()">
+      このメニューを選択
+    </button>
+
+  </section>
+
+
+  <!-- ステータス -->
+  <div id="status" style="text-align:center; margin-top:20px; color:#777;"></div>
 
 </div>
 
 
 <script>
 
-  // ==========================================
-  // サロン用 LIFF ID
-  // ==========================================
-
-  const LIFF_ID = "2011037691-j7UfaGxQ";
+const LIFF_ID = "2011037691-j7UfaGxQ";
 
 
-  // ==========================================
-  // LIFF初期化
-  // ==========================================
+/* =========================
+   LIFF初期化
+========================= */
 
-  window.addEventListener("DOMContentLoaded", async () => {
+window.addEventListener("DOMContentLoaded", async () => {
 
-    try {
+  try {
 
-      await liff.init({
-        liffId: LIFF_ID
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+    console.log("LIFF初期化成功");
+
+    // LINEログインしていない場合
+    if (!liff.isLoggedIn()) {
+
+      document.getElementById("status").textContent =
+        "LINEログインが必要です。";
+
+      liff.login({
+        redirectUri: window.location.href
       });
 
-      console.log("LIFF初期化成功");
-
-      // LINEログインしていない場合
-      if (!liff.isLoggedIn()) {
-
-        document.getElementById("status").textContent =
-          "LINEログインが必要です。";
-
-        liff.login({
-          redirectUri: window.location.href
-        });
-
-        return;
-      }
-
-      // LINEログイン済み
-      document.getElementById("status").textContent =
-        "メニューを選択してください。";
-
-      document.getElementById("menuArea")
-        .classList.remove("hidden");
-
-      console.log("LINEログイン済み");
-
-    } catch (error) {
-
-      console.error("LIFF初期化エラー:", error);
-
-      document.getElementById("status").textContent =
-        "予約メニューの起動に失敗しました。";
-
+      return;
     }
 
-  });
+    console.log("LINEログイン済み");
 
+    document.getElementById("status").textContent = "";
 
-  // ==========================================
-  // メニュー選択
-  // ==========================================
+  } catch (error) {
 
-  function selectMenu(menuName) {
+    console.error(error);
 
-    alert(menuName + "を選択しました");
-
-    console.log("選択メニュー:", menuName);
+    document.getElementById("status").textContent =
+      "LIFFの初期化に失敗しました。";
 
   }
+
+});
+
+
+/* =========================
+   メインメニュー表示
+========================= */
+
+function showMain() {
+
+  document.getElementById("mainMenu")
+    .classList.remove("hidden");
+
+  document.getElementById("fullBodyMenu")
+    .classList.add("hidden");
+
+}
+
+
+/* =========================
+   全身脱毛メニュー表示
+========================= */
+
+function showFullBody() {
+
+  document.getElementById("mainMenu")
+    .classList.add("hidden");
+
+  document.getElementById("fullBodyMenu")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   全身脱毛選択
+========================= */
+
+function confirmFullBody() {
+
+  const selected =
+    document.querySelector(
+      'input[name="fullbody"]:checked'
+    );
+
+  if (!selected) {
+
+    alert("メニューを選択してください。");
+
+    return;
+  }
+
+  alert(
+    "全身脱毛「" +
+    selected.value +
+    "」を選択しました"
+  );
+
+}
+
+
+/* =========================
+   その他メニュー
+========================= */
+
+function selectMenu(menuName) {
+
+  alert(menuName + "を選択しました");
+
+}
 
 </script>
 
