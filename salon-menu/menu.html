@@ -218,11 +218,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       liffId: LIFF_ID
     });
 
-const permission = await liff.permission.query("chat_message.write");
-console.log("chat_message.write:", permission.state);
 
-if (permission.state === "prompt") {
-  await liff.permission.requestAll();
 }
 
 console.log("LIFF初期化成功");
