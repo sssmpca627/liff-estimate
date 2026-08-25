@@ -281,7 +281,7 @@ function showFullBody() {
    全身脱毛選択
 ========================= */
 
-function confirmFullBody() {
+async function confirmFullBody() {
 
   const selected =
     document.querySelector(
@@ -290,7 +290,7 @@ function confirmFullBody() {
 
   if (!selected) {
 
-    alert("メニューを選択してください。");
+    
 
     return;
   }
