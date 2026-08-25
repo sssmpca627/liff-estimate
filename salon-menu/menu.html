@@ -226,9 +226,7 @@ window.addEventListener("DOMContentLoaded", async () => {
       document.getElementById("status").textContent =
         "LINEログインが必要です。";
 
-      liff.login({
-        redirectUri: window.location.href
-      });
+      liff.login();
 
       return;
     }
