@@ -221,7 +221,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     console.log("LIFF初期化成功");
 
     // LINEログインしていない場合
-    if (!liff.isLoggedIn()) {
+    if (!liff.isInClient() && !liff.isLoggedIn()) {
 
       document.getElementById("status").textContent =
         "LINEログインが必要です。";
