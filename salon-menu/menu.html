@@ -295,7 +295,12 @@ function confirmFullBody() {
     return;
   }
 
-  
+    liff.sendMessages([
+    {
+      type: "text",
+      text: "全身脱毛：" + selected.value
+    }
+  ]);
 
 }
 
