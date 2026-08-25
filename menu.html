@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>予約メニュー</title>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 24px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+
+    #status {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>予約メニュー</h1>
+
+  <p id="status">読み込み中...</p>
+
+  <script>
+    const LIFF_ID = "2011037691-dvQym5BH";
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      try {
+        await liff.init({
+          liffId: LIFF_ID
+        });
+
+        document.getElementById("status").textContent =
+          "LIFFの起動に成功しました。";
+
+      } catch (error) {
+        console.error(error);
+
+        document.getElementById("status").textContent =
+          "LIFFの起動に失敗しました。";
+      }
+    });
+  </script>
+
+</body>
+</html>
