@@ -218,6 +218,11 @@ window.addEventListener("DOMContentLoaded", async () => {
       liffId: LIFF_ID
     });
 
+const permission = await liff.permission.query("chat_message.write");
+console.log("chat_message.write:", permission.state);
+
+console.log("LIFF初期化成功");
+    
     console.log("LIFF初期化成功");
 
     // LINEログインしていない場合
