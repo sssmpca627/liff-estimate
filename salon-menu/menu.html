@@ -402,10 +402,14 @@ try {
 ========================= */
 
 function selectMenu(menuName) {
-
   alert(menuName + "を選択しました");
-
 }
+
+
+/* =========================
+   顔・首まわりメニュー表示
+========================= */
+
 function showFaceMenu() {
 
   document.getElementById("selectMenu")
@@ -415,7 +419,13 @@ function showFaceMenu() {
     .classList.remove("hidden");
 
 }
-  function selectFaceMenu(menuName) {
+
+
+/* =========================
+   顔・首まわりメニュー選択
+========================= */
+
+function selectFaceMenu(menuName) {
 
   // すでに選択されている場合は選択解除
   if (selectedFaceMenus.includes(menuName)) {
@@ -436,7 +446,8 @@ function showFaceMenu() {
 
   if (selectedFaceMenus.length === 0) {
 
-    status.innerText = "まだメニューが選択されていません。";
+    status.innerText =
+      "まだメニューが選択されていません。";
 
   } else {
 
@@ -446,38 +457,13 @@ function showFaceMenu() {
 
   }
 
-  // 確認用
-  console.log("選択中のメニュー：", selectedFaceMenus);
+  console.log(
+    "選択中のメニュー：",
+    selectedFaceMenus
+  );
 }
-  }
 
-  // 選択中メニューを表示
-  const status = document.getElementById("status");
-
-  if (selectedFaceMenus.length === 0) {
-
-    status.innerText = "まだメニューが選択されていません";
-
-  } else {
-
-    status.innerText =
-      "選択中：\n" + selectedFaceMenus.join("・");
-
-  }
-
-  console.log("選択中のメニュー：", selectedFaceMenus);
-}
-  } else {
-
-    selectedFaceMenus.push(menuName);
-
-    alert(menuName + "を選択しました");
-
-  }
-
-  console.log("選択中のメニュー：", selectedFaceMenus);
-
-}
+</script>
 
 </script>
 
