@@ -138,7 +138,7 @@ button:active {
       <h2>セレクト脱毛</h2>
       <p>気になる部位を自由に組み合わせ</p>
 
-      <button onclick="selectMenu('セレクト脱毛')">
+      <button onclick="showSelectMenu(セレクト脱毛を選択)">
         セレクト脱毛を選択
       </button>
     </div>
@@ -256,12 +256,24 @@ console.log("LIFF初期化成功");
 
 function showMain() {
 
-  document.getElementById("mainMenu")
-    .classList.remove("hidden");
+    document.getElementById("mainMenu")
+        .classList.remove("hidden");
 
-  document.getElementById("fullBodyMenu")
-    .classList.add("hidden");
+    document.getElementById("fullBodyMenu")
+        .classList.add("hidden");
 
+    document.getElementById("selectMenu")
+        .classList.add("hidden");
+}
+
+
+function showSelectMenu() {
+
+    document.getElementById("mainMenu")
+        .classList.add("hidden");
+
+    document.getElementById("selectMenu")
+        .classList.remove("hidden");
 }
 
 
