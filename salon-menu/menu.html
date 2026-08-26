@@ -405,7 +405,15 @@ function selectMenu(menuName) {
   alert(menuName + "を選択しました");
 
 }
+function showFaceMenu() {
 
+  document.getElementById("selectMenu")
+    .classList.add("hidden");
+
+  document.getElementById("faceMenu")
+    .classList.remove("hidden");
+
+}
   function selectFaceMenu(menuName) {
 
   alert(menuName + "を選択しました");
