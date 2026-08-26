@@ -176,7 +176,7 @@ button:active {
   </button>
 
   <div class="card">
-<button onclick="showFaceMenu()">
+<button id="faceCategoryButton" onclick="showFaceMenu()">
   顔・首まわり
 </button>
 
@@ -442,6 +442,7 @@ function showFaceMenu() {
 
   document.getElementById("faceMenu")
     .classList.remove("hidden");
+  
 
 }
 
@@ -484,6 +485,18 @@ function selectFaceMenu(menuName, button) {
     "選択中のメニュー：",
     selectedFaceMenus
   );
+    const faceButton =
+    document.getElementById("faceCategoryButton");
+
+  if (selectedFaceMenus.length > 0) {
+    faceButton.innerText =
+      "✓ 顔・首まわり（" +
+      selectedFaceMenus.length +
+      "）";
+  } else {
+    faceButton.innerText =
+      "顔・首まわり";
+  }
 }
 
 
