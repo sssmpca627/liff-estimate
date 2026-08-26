@@ -76,6 +76,14 @@ button:active {
   opacity: 0.8;
 }
 
+  .menu-select-button.selected {
+  background: #666;
+}
+
+.menu-select-button.selected::before {
+  content: "✓ ";
+}
+
 .hidden {
   display: none;
 }
@@ -208,14 +216,14 @@ button:active {
 
   <div class="card">
 
-    <button onclick="selectFaceMenu('顔全体')">顔全体</button>
-    <button onclick="selectFaceMenu('上顔面')">上顔面</button>
-    <button onclick="selectFaceMenu('下顔面')">下顔面</button>
-    <button onclick="selectFaceMenu('額')">額</button>
-    <button onclick="selectFaceMenu('頬')">頬</button>
-    <button onclick="selectFaceMenu('鼻')">鼻</button>
-    <button onclick="selectFaceMenu('口まわり')">口まわり</button>
-    <button onclick="selectFaceMenu('首まわり')">首まわり</button>
+<button class="menu-select-button" onclick="selectFaceMenu('顔全体', this)">顔全体</button>
+<button class="menu-select-button" onclick="selectFaceMenu('上顔面', this)">上顔面</button>
+<button class="menu-select-button" onclick="selectFaceMenu('下顔面', this)">下顔面</button>
+<button class="menu-select-button" onclick="selectFaceMenu('額', this)">額</button>
+<button class="menu-select-button" onclick="selectFaceMenu('頬', this)">頬</button>
+<button class="menu-select-button" onclick="selectFaceMenu('鼻', this)">鼻</button>
+<button class="menu-select-button" onclick="selectFaceMenu('口まわり', this)">口まわり</button>
+<button class="menu-select-button" onclick="selectFaceMenu('首まわり', this)">首まわり</button>
 
   </div>
 
@@ -437,11 +445,7 @@ function showFaceMenu() {
 
 }
 
-/* =========================
-   顔・首まわりメニュー選択
-========================= */
-
-function selectFaceMenu(menuName) {
+function selectFaceMenu(menuName, button) {
 
   // すでに選択されている場合は選択解除
   if (selectedFaceMenus.includes(menuName)) {
@@ -450,11 +454,14 @@ function selectFaceMenu(menuName) {
       item => item !== menuName
     );
 
+    button.classList.remove("selected");
+
   } else {
 
     // 選択されていなければ追加
     selectedFaceMenus.push(menuName);
 
+    button.classList.add("selected");
   }
 
   // 選択中メニューを表示
@@ -471,7 +478,6 @@ function selectFaceMenu(menuName) {
     selectedArea.innerText =
       "選択中：\n" +
       selectedFaceMenus.join("・");
-
   }
 
   console.log(
