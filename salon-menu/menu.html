@@ -203,7 +203,37 @@ button:active {
 </section>
   <!-- 顔・首まわりメニュー -->
 <section id="faceMenu" class="hidden">
+<!-- 上半身メニュー -->
+<section id="upperBodyMenu" class="hidden">
 
+  <h1>上半身</h1>
+
+  <div class="description">
+    ご希望の部位をお選びください。
+  </div>
+
+  <button class="back-button" onclick="showSelectMenu()">
+    ← セレクト脱毛に戻る
+  </button>
+
+  <div class="card">
+
+    <button class="menu-select-button"
+  onclick="selectUpperBodyMenu('乳輪周り', this)">
+  乳輪周り
+</button>
+
+  </div>
+
+  <div id="upperBodySelected"
+       style="margin:20px 0; text-align:center; font-size:17px;">
+  </div>
+
+  <button onclick="confirmUpperBodyMenu()">
+    選択完了
+  </button>
+
+</section>
   <h1>顔・首まわり</h1>
 
   <div class="description">
@@ -287,6 +317,7 @@ button:active {
 const LIFF_ID = "2011037691-j7UfaGxQ";
   
 let selectedFaceMenus = [];
+let selectedUpperBodyMenus = [];
 
 /* =========================
    LIFF初期化
@@ -346,6 +377,13 @@ function showMain() {
 
     document.getElementById("selectMenu")
         .classList.add("hidden");
+
+    document.getElementById("faceMenu")
+    .classList.add("hidden");
+
+  document.getElementById("upperBodyMenu")
+  .classList.add("hidden");
+  
 }
 
 
@@ -414,7 +452,24 @@ function selectMenu(menuName) {
   alert(menuName + "を選択しました");
 }
 
+function showUpperBodyMenu() {
 
+  document.getElementById("mainMenu")
+    .classList.add("hidden");
+
+  document.getElementById("fullBodyMenu")
+    .classList.add("hidden");
+
+  document.getElementById("selectMenu")
+    .classList.add("hidden");
+
+  document.getElementById("faceMenu")
+    .classList.add("hidden");
+
+  document.getElementById("upperBodyMenu")
+  .classList.remove("hidden");
+
+}
 /* =========================
    顔・首まわりメニュー表示
 ========================= */
@@ -430,6 +485,9 @@ function showSelectMenu() {
   document.getElementById("faceMenu")
     .classList.add("hidden");
 
+  document.getElementById("upperBodyMenu")
+  .classList.add("hidden");
+  
   document.getElementById("selectMenu")
     .classList.remove("hidden");
 
