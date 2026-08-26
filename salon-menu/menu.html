@@ -208,16 +208,24 @@ button:active {
 
   <div class="card">
 
-<button onclick="selectFaceMenu('顔全体')">顔全体</button>
-<button onclick="selectFaceMenu('上顔面')">上顔面</button>
-<button onclick="selectFaceMenu('下顔面')">下顔面</button>
-<button onclick="selectFaceMenu('額')">額</button>
-<button onclick="selectFaceMenu('頬')">頬</button>
-<button onclick="selectFaceMenu('鼻')">鼻</button>
-<button onclick="selectFaceMenu('口まわり')">口まわり</button>
-<button onclick="selectFaceMenu('首まわり')">首まわり</button>
+    <button onclick="selectFaceMenu('顔全体')">顔全体</button>
+    <button onclick="selectFaceMenu('上顔面')">上顔面</button>
+    <button onclick="selectFaceMenu('下顔面')">下顔面</button>
+    <button onclick="selectFaceMenu('額')">額</button>
+    <button onclick="selectFaceMenu('頬')">頬</button>
+    <button onclick="selectFaceMenu('鼻')">鼻</button>
+    <button onclick="selectFaceMenu('口まわり')">口まわり</button>
+    <button onclick="selectFaceMenu('首まわり')">首まわり</button>
 
   </div>
+
+  <div id="faceSelected"
+       style="margin:20px 0; text-align:center; font-size:17px;">
+  </div>
+
+  <button onclick="confirmFaceMenu()">
+    選択完了
+  </button>
 
 </section>
 
@@ -333,14 +341,7 @@ function showMain() {
 }
 
 
-function showSelectMenu() {
 
-    document.getElementById("mainMenu")
-        .classList.add("hidden");
-
-    document.getElementById("selectMenu")
-        .classList.remove("hidden");
-}
 
 
 /* =========================
@@ -457,16 +458,17 @@ function selectFaceMenu(menuName) {
   }
 
   // 選択中メニューを表示
-  const status = document.getElementById("status");
+  const selectedArea =
+    document.getElementById("faceSelected");
 
   if (selectedFaceMenus.length === 0) {
 
-    status.innerText =
+    selectedArea.innerText =
       "まだメニューが選択されていません。";
 
   } else {
 
-    status.innerText =
+    selectedArea.innerText =
       "選択中：\n" +
       selectedFaceMenus.join("・");
 
@@ -476,6 +478,45 @@ function selectFaceMenu(menuName) {
     "選択中のメニュー：",
     selectedFaceMenus
   );
+}
+
+
+/* =========================
+   顔・首まわり選択完了
+========================= */
+
+async function confirmFaceMenu() {
+
+  if (selectedFaceMenus.length === 0) {
+
+    document.getElementById("faceSelected").innerText =
+      "メニューを1つ以上選択してください。";
+
+    return;
+  }
+
+  try {
+
+    await liff.sendMessages([
+      {
+        type: "text",
+        text:
+          "セレクト脱毛（顔・首まわり）：" +
+          selectedFaceMenus.join("・")
+      }
+    ]);
+
+    document.getElementById("faceSelected").innerText =
+      "LINEへ送信しました。";
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById("faceSelected").innerText =
+      "送信に失敗しました：" + error.message;
+
+  }
 }
 
 </script>
