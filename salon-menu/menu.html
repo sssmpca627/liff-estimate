@@ -221,10 +221,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 document.getElementById("status").textContent =
   "権限状態：" + permission.state;
-const permission = await liff.permission.query("chat_message.write");
 
-document.getElementById("status").textContent =
-  "権限状態：" + permission.state;
 
 }
 
