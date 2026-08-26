@@ -427,6 +427,8 @@ function showFaceMenu() {
 
 function selectFaceMenu(menuName) {
 
+  function selectFaceMenu(menuName) {
+
   // すでに選択されている場合は選択解除
   if (selectedFaceMenus.includes(menuName)) {
 
@@ -440,6 +442,25 @@ function selectFaceMenu(menuName) {
     selectedFaceMenus.push(menuName);
 
   }
+
+  // 選択中メニューを表示
+  const status = document.getElementById("status");
+
+  if (selectedFaceMenus.length === 0) {
+
+    status.innerText = "まだメニューが選択されていません。";
+
+  } else {
+
+    status.innerText =
+      "選択中：\n" +
+      selectedFaceMenus.join("・");
+
+  }
+
+  console.log("選択中のメニュー：", selectedFaceMenus);
+
+}  }
 
   // 選択中メニューを表示
   const status = document.getElementById("status");
