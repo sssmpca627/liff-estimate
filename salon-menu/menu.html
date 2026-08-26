@@ -269,7 +269,8 @@ button:active {
 <script>
 
 const LIFF_ID = "2011037691-j7UfaGxQ";
-
+  
+let selectedFaceMenus = [];
 
 /* =========================
    LIFF初期化
@@ -416,7 +417,22 @@ function showFaceMenu() {
 }
   function selectFaceMenu(menuName) {
 
-  alert(menuName + "を選択しました");
+  if (selectedFaceMenus.includes(menuName)) {
+
+    selectedFaceMenus =
+      selectedFaceMenus.filter(item => item !== menuName);
+
+    alert(menuName + "を選択解除しました");
+
+  } else {
+
+    selectedFaceMenus.push(menuName);
+
+    alert(menuName + "を選択しました");
+
+  }
+
+  console.log("選択中のメニュー：", selectedFaceMenus);
 
 }
 
