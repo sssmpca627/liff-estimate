@@ -179,7 +179,7 @@ button:active {
 <button id="faceCategoryButton" onclick="showFaceMenu()">
   顔・首まわり
 </button>
-
+    
     <br><br>
 
 <button onclick="showUpperBodyMenu()">
@@ -223,6 +223,16 @@ button:active {
   乳輪周り
 </button>
 
+    <button class="menu-select-button"
+  onclick="selectUpperBodyMenu('お腹全体', this)">
+  お腹全体
+</button>
+
+    <button class="menu-select-button"
+  onclick="selectUpperBodyMenu('背中全体', this)">
+  背中全体
+</button>
+    
   </div>
 
   <div id="upperBodySelected"
@@ -234,6 +244,7 @@ button:active {
   </button>
 
 </section>
+  
   <h1>顔・首まわり</h1>
 
   <div class="description">
@@ -318,6 +329,7 @@ const LIFF_ID = "2011037691-j7UfaGxQ";
   
 let selectedFaceMenus = [];
 let selectedUpperBodyMenus = [];
+let selectedLowerBodyMenus = [];
 
 /* =========================
    LIFF初期化
