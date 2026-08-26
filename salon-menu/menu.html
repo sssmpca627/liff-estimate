@@ -417,13 +417,56 @@ function showFaceMenu() {
 }
   function selectFaceMenu(menuName) {
 
+  // すでに選択されている場合は選択解除
   if (selectedFaceMenus.includes(menuName)) {
 
-    selectedFaceMenus =
-      selectedFaceMenus.filter(item => item !== menuName);
+    selectedFaceMenus = selectedFaceMenus.filter(
+      item => item !== menuName
+    );
 
-    alert(menuName + "を選択解除しました");
+  } else {
 
+    // 選択されていなければ追加
+    selectedFaceMenus.push(menuName);
+
+  }
+
+  // 選択中メニューを表示
+  const status = document.getElementById("status");
+
+  if (selectedFaceMenus.length === 0) {
+
+    status.innerText = "まだメニューが選択されていません。";
+
+  } else {
+
+    status.innerText =
+      "選択中：\n" +
+      selectedFaceMenus.join("・");
+
+  }
+
+  // 確認用
+  console.log("選択中のメニュー：", selectedFaceMenus);
+}
+  }
+
+  // 選択中メニューを表示
+  const status = document.getElementById("status");
+
+  if (selectedFaceMenus.length === 0) {
+
+    status.innerText = "まだメニューが選択されていません";
+
+  } else {
+
+    status.innerText =
+      "選択中：\n" + selectedFaceMenus.join("・");
+
+  }
+
+  console.log("選択中のメニュー：", selectedFaceMenus);
+}
   } else {
 
     selectedFaceMenus.push(menuName);
