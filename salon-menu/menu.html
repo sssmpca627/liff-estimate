@@ -410,15 +410,18 @@ function selectMenu(menuName) {
    顔・首まわりメニュー表示
 ========================= */
 
-function showFaceMenu() {
+function showSelectMenu() {
 
-  document.getElementById("selectMenu")
-    .classList.add("hidden");
+    document.getElementById("mainMenu")
+        .classList.add("hidden");
 
-  document.getElementById("faceMenu")
-    .classList.remove("hidden");
+    document.getElementById("faceMenu")
+        .classList.add("hidden");
 
+    document.getElementById("selectMenu")
+        .classList.remove("hidden");
 }
+
 
 
 /* =========================
