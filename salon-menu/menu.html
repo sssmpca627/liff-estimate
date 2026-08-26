@@ -201,9 +201,10 @@ button:active {
   </div>
 
 </section>
-  <!-- 顔・首まわりメニュー -->
-<section id="faceMenu" class="hidden">
-<!-- 上半身メニュー -->
+
+
+
+  <!-- 上半身メニュー -->
 <section id="upperBodyMenu" class="hidden">
 
   <h1>上半身</h1>
@@ -244,7 +245,52 @@ button:active {
   </button>
 
 </section>
+
+  <!-- 下半身メニュー -->
+<section id="lowerBodyMenu" class="hidden">
+
+  <h1>下半身</h1>
+
+  <div class="description">
+    ご希望の部位をお選びください。
+  </div>
+
+  <button class="back-button" onclick="showSelectMenu()">
+    ← セレクト脱毛に戻る
+  </button>
+
+  <div class="card">
+
+    <button class="menu-select-button"
+  onclick="selectLowerBodyMenu('乳輪周り', this)"
+  乳輪周り
+</button>
+
+    <button class="menu-select-button"
+  selectLowerBodyMenu('お腹全体', this)
+  お腹全体
+</button>
+
+    <button class="menu-select-button"
+  selectLowerBodyMenu('背中全体', this)
+  背中全体
+</button>
+    
+  </div>
+
+  <div id="lowerBodySelected"
+       style="margin:20px 0; text-align:center; font-size:17px;">
+  </div>
+
+  <button onclick="confirmLowerBodyMenu()">
+    選択完了
+  </button>
+
+</section>
   
+  <!-- 顔・首まわりメニュー -->
+  <section id="faceMenu" class="hidden">
+    
   <h1>顔・首まわり</h1>
 
   <div class="description">
