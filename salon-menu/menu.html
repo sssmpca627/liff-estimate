@@ -407,7 +407,7 @@ let selectedUpperBodyMenus = [];
 let selectedLowerBodyMenus = [];
 
 // URLからメニューを受け取る
-function receiveMenuFromURL() {
+async function receiveMenuFromURL() {
 
   const params = new URLSearchParams(window.location.search);
 const menuCode = params.get("menu");
@@ -478,7 +478,7 @@ console.log("LIFF初期化成功");
 
     console.log("LINEログイン済み");
 
-    receiveMenuFromURL();
+    await receiveMenuFromURL();
 
     document.getElementById("status").textContent = "";
 
