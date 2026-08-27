@@ -442,10 +442,10 @@ document.getElementById("status").textContent =
   console.log("カートに追加：", menu);
   console.log("現在のカート：", cart);
 
-  // LIFFを閉じてLステップへ戻る
-// if (liff.isInClient()) {
-//   liff.closeWindow();
-// }
+// LIFFを閉じてLステップへ戻る
+if (liff.isInClient()) {
+  liff.closeWindow();
+}
 }
 
 /* =========================
