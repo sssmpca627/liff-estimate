@@ -372,10 +372,36 @@ button:active {
 <script>
 
 const LIFF_ID = "2011037691-j7UfaGxQ";
-  
+
+// カート
+let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+
 let selectedFaceMenus = [];
 let selectedUpperBodyMenus = [];
 let selectedLowerBodyMenus = [];
+
+// URLからメニューを受け取る
+function receiveMenuFromURL() {
+
+  const params = new URLSearchParams(window.location.search);
+  const menu = params.get("menu");
+
+  if (!menu) return;
+
+  // すでに入っているメニューは重複追加しない
+  if (!cart.includes(menu)) {
+    cart.push(menu);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  console.log("カートに追加：", menu);
+  console.log("現在のカート：", cart);
+
+  // LIFFを閉じてLステップへ戻る
+  if (liff.isInClient()) {
+    liff.closeWindow();
+  }
+}
 
 /* =========================
    LIFF初期化
@@ -406,6 +432,8 @@ console.log("LIFF初期化成功");
     }
 
     console.log("LINEログイン済み");
+
+    receiveMenuFromURL();
 
     document.getElementById("status").textContent = "";
 
