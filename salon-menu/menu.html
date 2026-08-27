@@ -436,15 +436,25 @@ if (!menu) return;
   }
 ]);
   
-document.getElementById("status").textContent =
-  "カートに追加しました：" + menu +
-  "\n現在のカート：" + cart.join("・");
+document.getElementById("mainMenu").classList.add("hidden");
+
+const status = document.getElementById("status");
+
+status.textContent = "✓ カートに追加しました";
+
+status.style.display = "block";
+status.style.fontSize = "28px";
+status.style.fontWeight = "700";
+status.style.marginTop = "200px";
+status.style.textAlign = "center";
   console.log("カートに追加：", menu);
   console.log("現在のカート：", cart);
 
 // LIFFを閉じてLステップへ戻る
 if (liff.isInClient()) {
-  liff.closeWindow();
+  setTimeout(() => {
+    liff.closeWindow();
+  }, 1000);
 }
 }
 
