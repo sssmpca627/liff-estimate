@@ -451,11 +451,9 @@ status.style.textAlign = "center";
   console.log("現在のカート：", cart);
 
 // LIFFを閉じてLステップへ戻る
-if (liff.isInClient()) {
-  setTimeout(() => {
-    liff.closeWindow();
-  }, 1000);
-}
+setTimeout(() => {
+  liff.closeWindow();
+}, 1500);
 }
 
 /* =========================
