@@ -384,9 +384,17 @@ let selectedLowerBodyMenus = [];
 function receiveMenuFromURL() {
 
   const params = new URLSearchParams(window.location.search);
-  const menu = params.get("menu");
+const menuCode = params.get("menu");
 
-  if (!menu) return;
+if (!menuCode) return;
+
+const menuMap = {
+  face_all: "顔全体"
+};
+
+const menu = menuMap[menuCode];
+
+if (!menu) return;
 
   // すでに入っているメニューは重複追加しない
   if (!cart.includes(menu)) {
