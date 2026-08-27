@@ -446,6 +446,12 @@ status.style.textAlign = "center";
 // LIFFを閉じてLステップへ戻る
 console.log("閉じる処理まで来ました");
   
+  setTimeout(() => {
+  if (liff.isInClient()) {
+    liff.closeWindow();
+  }
+}, 1000);
+  
 await liff.sendMessages([
   {
     type: "text",
