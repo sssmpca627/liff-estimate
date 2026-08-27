@@ -446,6 +446,13 @@ status.style.textAlign = "center";
 // LIFFを閉じてLステップへ戻る
 console.log("閉じる処理まで来ました");
   
+await liff.sendMessages([
+  {
+    type: "text",
+    text: "【カートに追加しました】"
+  }
+]);
+  
 }
 
 /* =========================
