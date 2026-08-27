@@ -401,7 +401,9 @@ if (!menu) return;
     cart.push(menu);
     localStorage.setItem("cart", JSON.stringify(cart));
   }
-
+document.getElementById("status").textContent =
+  "カートに追加しました：" + menu +
+  "\n現在のカート：" + cart.join("・");
   console.log("カートに追加：", menu);
   console.log("現在のカート：", cart);
 
