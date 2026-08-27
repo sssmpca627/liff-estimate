@@ -429,7 +429,12 @@ if (!menu) return;
     localStorage.setItem("cart", JSON.stringify(cart));
   }
   
-  alert("カートに追加しました：" + menu);
+  await liff.sendMessages([
+  {
+    type: "text",
+    text: "【カートに追加しました】"
+  }
+]);
   
 document.getElementById("status").textContent =
   "カートに追加しました：" + menu +
