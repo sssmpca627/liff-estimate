@@ -362,7 +362,28 @@ button:active {
 
   </section>
 
+<!-- カート一覧 -->
+<section id="cartMenu" class="hidden">
 
+  <h1>選択したメニュー</h1>
+
+  <div class="description">
+    現在カートに入っているメニューです。
+  </div>
+
+  <div class="card">
+
+    <div id="cartList"
+         style="font-size:18px; line-height:2;">
+    </div>
+
+  </div>
+
+  <button onclick="sendCartToLINE()">
+    この内容で送信
+  </button>
+
+</section>
   <!-- ステータス -->
   <div id="status" style="text-align:center; margin-top:20px; color:#777;"></div>
 
@@ -389,7 +410,8 @@ const menuCode = params.get("menu");
 if (!menuCode) return;
 
 const menuMap = {
-  face_all: "顔全体"
+  face_all: "顔全体",
+  upper_face: "上顔面"
 };
 
 const menu = menuMap[menuCode];
