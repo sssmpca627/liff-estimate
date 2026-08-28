@@ -9,6 +9,7 @@
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -17,8 +18,13 @@ body {
   margin: 0;
   background: #f7f7f7;
   color: #333;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
-               "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
 }
 
 .container {
@@ -29,54 +35,47 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 32px;
+  font-size: 30px;
   margin: 10px 0 12px;
-  font-weight: 700;
 }
 
 .description {
   text-align: center;
   color: #777;
   font-size: 17px;
-  margin-bottom: 30px;
+  margin-bottom: 28px;
 }
 
 .card {
   background: #fff;
-  border-radius: 24px;
-  padding: 28px 22px;
-  margin-bottom: 24px;
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 20px;
   box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-}
-
-.card h2 {
-  margin: 0 0 8px;
-  font-size: 28px;
-}
-
-.card p {
-  margin: 0 0 22px;
-  color: #777;
-  font-size: 16px;
 }
 
 button {
   width: 100%;
   border: none;
-  border-radius: 16px;
-  padding: 18px 15px;
+  border-radius: 15px;
+  padding: 17px 15px;
+  margin-bottom: 12px;
   font-size: 18px;
   font-weight: 700;
   background: #333;
   color: #fff;
-  cursor: pointer;
 }
 
 button:active {
   opacity: 0.8;
 }
 
-  .menu-select-button.selected {
+.back-button {
+  background: #eee;
+  color: #333;
+}
+
+.menu-select-button.selected {
   background: #666;
 }
 
@@ -85,43 +84,24 @@ button:active {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-  .added-message {
+.selected-area {
   text-align: center;
-  font-size: 24px;
-  font-weight: 700;
-  margin: 20px 0;
+  font-size: 17px;
+  line-height: 1.8;
+  margin: 18px 0;
+  white-space: pre-line;
 }
 
-.back-button {
-  background: #eee;
-  color: #333;
-  margin-bottom: 20px;
+.status {
+  text-align: center;
+  color: #777;
+  margin-top: 20px;
+  white-space: pre-line;
 }
 
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 17px 5px;
-  border-bottom: 1px solid #eee;
-}
-
-.menu-item:last-child {
-  border-bottom: none;
-}
-
-.menu-item input {
-  width: 22px;
-  height: 22px;
-  flex-shrink: 0;
-}
-
-.menu-name {
-  font-size: 18px;
-}
 </style>
 </head>
 
@@ -129,47 +109,90 @@ button:active {
 
 <div class="container">
 
-  <!-- メインメニュー -->
-  <section id="mainMenu">
+<!-- =========================
+     メインメニュー
+========================= -->
 
-    <h1>サロン予約メニュー</h1>
+<section id="mainMenu">
 
-    <div class="description">
-      メニューを選択してください。
-    </div>
+  <h1>サロン予約メニュー</h1>
 
-    <!-- 全身脱毛 -->
-    <div class="card">
-      <h2>全身脱毛</h2>
-      <p>全身脱毛のメニューを選択</p>
+  <div class="description">
+    メニューを選択してください。
+  </div>
 
-      <button onclick="showFullBody()">
-        全身脱毛を選択
-      </button>
-    </div>
+  <div class="card">
 
-    <!-- セレクト脱毛 -->
-    <div class="card">
-      <h2>セレクト脱毛</h2>
-      <p>気になる部位を自由に組み合わせ</p>
+    <button onclick="showFullBody()">
+      全身脱毛
+    </button>
 
-      <button onclick="showSelectMenu()">
-        セレクト脱毛を選択
-      </button>
-    </div>
+    <button onclick="showSelectMenu()">
+      セレクト脱毛
+    </button>
 
-    <!-- フェイシャル -->
-    <div class="card">
-      <h2>フェイシャル</h2>
-      <p>フェイシャルコースを選択</p>
+    <button onclick="selectFacial()">
+      フェイシャル
+    </button>
 
-      <button onclick="selectMenu('フェイシャル')">
-        フェイシャルを選択
-      </button>
-    </div>
+  </div>
 
-  </section>
-<!-- セレクト脱毛メニュー -->
+</section>
+
+
+<!-- =========================
+     全身脱毛
+========================= -->
+
+<section id="fullBodyMenu" class="hidden">
+
+  <h1>全身脱毛</h1>
+
+  <div class="description">
+    ご希望のメニューをお選びください。
+  </div>
+
+  <button class="back-button" onclick="showMain()">
+    ← メニュー一覧に戻る
+  </button>
+
+  <div class="card">
+
+    <button
+      class="menu-select-button"
+      onclick="selectFullBody('顔・VIOなし', this)">
+      顔・VIOなし
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFullBody('顔 or VIO', this)">
+      顔 or VIO
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFullBody('顔・VIO', this)">
+      顔・VIO
+    </button>
+
+  </div>
+
+  <div id="fullBodySelected"
+       class="selected-area">
+  </div>
+
+  <button onclick="confirmFullBody()">
+    選択完了
+  </button>
+
+</section>
+
+
+<!-- =========================
+     セレクト脱毛
+========================= -->
+
 <section id="selectMenu" class="hidden">
 
   <h1>セレクト脱毛</h1>
@@ -183,35 +206,113 @@ button:active {
   </button>
 
   <div class="card">
-<button id="faceCategoryButton" onclick="showFaceMenu()">
-  顔・首まわり
-</button>
-    
-    <br><br>
 
-<button onclick="showUpperBodyMenu()">
-    上半身
-</button>
+    <button id="faceCategoryButton"
+            onclick="showFaceMenu()">
+      顔・首まわり
+    </button>
 
-    <br><br>
+    <button onclick="showUpperBodyMenu()">
+      上半身
+    </button>
 
-<button onclick="showLowerBodyMenu()">
-    下半身
-</button>
-
-    <br><br>
+    <button onclick="showLowerBodyMenu()">
+      下半身
+    </button>
 
     <button onclick="showVioMenu()">
-    VIO
-</button>
+      VIO
+    </button>
 
   </div>
 
 </section>
 
 
+<!-- =========================
+     顔・首まわり
+========================= -->
 
-  <!-- 上半身メニュー -->
+<section id="faceMenu" class="hidden">
+
+  <h1>顔・首まわり</h1>
+
+  <div class="description">
+    ご希望の部位をお選びください。
+  </div>
+
+  <button class="back-button" onclick="showSelectMenu()">
+    ← セレクト脱毛に戻る
+  </button>
+
+  <div class="card">
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('顔全体', this)">
+      顔全体
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('上顔面', this)">
+      上顔面
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('下顔面', this)">
+      下顔面
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('額', this)">
+      額
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('頬', this)">
+      頬
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('鼻', this)">
+      鼻
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('口まわり', this)">
+      口まわり
+    </button>
+
+    <button
+      class="menu-select-button"
+      onclick="selectFaceMenu('首まわり', this)">
+      首まわり
+    </button>
+
+  </div>
+
+  <div id="faceSelected"
+       class="selected-area">
+    まだメニューが選択されていません。
+  </div>
+
+  <button onclick="confirmFaceMenu()">
+    選択完了
+  </button>
+
+</section>
+
+
+<!-- =========================
+     上半身
+========================= -->
+
 <section id="upperBodyMenu" class="hidden">
 
   <h1>上半身</h1>
@@ -226,25 +327,29 @@ button:active {
 
   <div class="card">
 
-    <button class="menu-select-button"
-  onclick="selectUpperBodyMenu('乳輪周り', this)">
-  乳輪周り
-</button>
+    <button
+      class="menu-select-button"
+      onclick="selectUpperBodyMenu('乳輪周り', this)">
+      乳輪周り
+    </button>
 
-    <button class="menu-select-button"
-  onclick="selectUpperBodyMenu('お腹全体', this)">
-  お腹全体
-</button>
+    <button
+      class="menu-select-button"
+      onclick="selectUpperBodyMenu('お腹全体', this)">
+      お腹全体
+    </button>
 
-    <button class="menu-select-button"
-  onclick="selectUpperBodyMenu('背中全体', this)">
-  背中全体
-</button>
-    
+    <button
+      class="menu-select-button"
+      onclick="selectUpperBodyMenu('背中全体', this)">
+      背中全体
+    </button>
+
   </div>
 
   <div id="upperBodySelected"
-       style="margin:20px 0; text-align:center; font-size:17px;">
+       class="selected-area">
+    まだメニューが選択されていません。
   </div>
 
   <button onclick="confirmUpperBodyMenu()">
@@ -253,7 +358,11 @@ button:active {
 
 </section>
 
-  <!-- 下半身メニュー -->
+
+<!-- =========================
+     下半身
+========================= -->
+
 <section id="lowerBodyMenu" class="hidden">
 
   <h1>下半身</h1>
@@ -268,25 +377,29 @@ button:active {
 
   <div class="card">
 
-<button class="menu-select-button"
-  onclick="selectLowerBodyMenu('乳輪周り', this)">
-  乳輪周り
-</button>
+    <button
+      class="menu-select-button"
+      onclick="selectLowerBodyMenu('下半身メニュー①', this)">
+      下半身メニュー①
+    </button>
 
-<button class="menu-select-button"
-  onclick="selectLowerBodyMenu('お腹全体', this)">
-  お腹全体
-</button>
+    <button
+      class="menu-select-button"
+      onclick="selectLowerBodyMenu('下半身メニュー②', this)">
+      下半身メニュー②
+    </button>
 
-<button class="menu-select-button"
-  onclick="selectLowerBodyMenu('背中全体', this)">
-  背中全体
-</button>
-    
+    <button
+      class="menu-select-button"
+      onclick="selectLowerBodyMenu('下半身メニュー③', this)">
+      下半身メニュー③
+    </button>
+
   </div>
 
   <div id="lowerBodySelected"
-       style="margin:20px 0; text-align:center; font-size:17px;">
+       class="selected-area">
+    まだメニューが選択されていません。
   </div>
 
   <button onclick="confirmLowerBodyMenu()">
@@ -294,11 +407,15 @@ button:active {
   </button>
 
 </section>
-  
-  <!-- 顔・首まわりメニュー -->
-  <section id="faceMenu" class="hidden">
-    
-  <h1>顔・首まわり</h1>
+
+
+<!-- =========================
+     VIO
+========================= -->
+
+<section id="vioMenu" class="hidden">
+
+  <h1>VIO</h1>
 
   <div class="description">
     ご希望の部位をお選びください。
@@ -310,449 +427,594 @@ button:active {
 
   <div class="card">
 
-<button class="menu-select-button" onclick="selectFaceMenu('顔全体', this)">顔全体</button>
-<button class="menu-select-button" onclick="selectFaceMenu('上顔面', this)">上顔面</button>
-<button class="menu-select-button" onclick="selectFaceMenu('下顔面', this)">下顔面</button>
-<button class="menu-select-button" onclick="selectFaceMenu('額', this)">額</button>
-<button class="menu-select-button" onclick="selectFaceMenu('頬', this)">頬</button>
-<button class="menu-select-button" onclick="selectFaceMenu('鼻', this)">鼻</button>
-<button class="menu-select-button" onclick="selectFaceMenu('口まわり', this)">口まわり</button>
-<button class="menu-select-button" onclick="selectFaceMenu('首まわり', this)">首まわり</button>
+    <button
+      class="menu-select-button"
+      onclick="selectVioMenu('VIO', this)">
+      VIO
+    </button>
 
   </div>
 
-  <div id="faceSelected"
-       style="margin:20px 0; text-align:center; font-size:17px;">
+  <div id="vioSelected"
+       class="selected-area">
+    まだメニューが選択されていません。
   </div>
 
-  <button onclick="confirmFaceMenu()">
+  <button onclick="confirmVioMenu()">
     選択完了
   </button>
 
 </section>
 
-  <!-- 全身脱毛メニュー -->
-  <section id="fullBodyMenu" class="hidden">
 
-    <h1>全身脱毛</h1>
+<!-- =========================
+     ステータス
+========================= -->
 
-    <div class="description">
-      ご希望のメニューをお選びください。
-    </div>
-
-    <button class="back-button" onclick="showMain()">
-      ← メニュー一覧に戻る
-    </button>
-
-    <div class="card">
-
-      <label class="menu-item">
-        <input type="radio" name="fullbody" value="顔・VIOなし">
-        <span class="menu-name">顔・VIOなし</span>
-      </label>
-
-      <label class="menu-item">
-        <input type="radio" name="fullbody" value="顔 or VIO">
-        <span class="menu-name">顔 or VIO</span>
-      </label>
-
-      <label class="menu-item">
-        <input type="radio" name="fullbody" value="顔・VIO">
-        <span class="menu-name">顔・VIO</span>
-      </label>
-
-    </div>
-
-    <button onclick="confirmFullBody()">
-      このメニューを選択
-    </button>
-
-  </section>
-
- 
-  
-<!-- カート一覧 -->
-<section id="cartMenu" class="hidden">
-
-  <h1>選択したメニュー</h1>
-
-  <div class="description">
-    現在カートに入っているメニューです。
-  </div>
-
-  <div class="card">
-
-    <div id="cartList"
-         style="font-size:18px; line-height:2;">
-    </div>
-
-  </div>
-
-  <button onclick="sendCartToLINE()">
-    この内容で送信
-  </button>
-
-</section>
-  <!-- ステータス -->
-  <div id="status" style="text-align:center; margin-top:20px; color:#777;"></div>
+<div id="status" class="status"></div>
 
 </div>
 
 
 <script>
 
+/* =========================
+   LIFF設定
+========================= */
+
 const LIFF_ID = "2011037691-j7UfaGxQ";
 
-// カート
-let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+let liffReady = false;
+
+
+/* =========================
+   選択データ
+========================= */
+
+let selectedFullBody = "";
 
 let selectedFaceMenus = [];
 let selectedUpperBodyMenus = [];
 let selectedLowerBodyMenus = [];
+let selectedVioMenus = [];
 
-// URLからメニューを受け取る
-async function receiveMenuFromURL() {
 
-  const currentURL = window.location.href;
-  const currentSearch = window.location.search;
-
-  document.getElementById("status").textContent =
-    "URL確認中...\n" +
-    currentURL + "\n\n" +
-    "search：" + currentSearch;
-
-  console.log("現在のURL：", currentURL);
-  console.log("現在のsearch：", currentSearch);
-
-  const params = new URLSearchParams(window.location.search);
-  const menuCode = params.get("menu");
-
-  console.log("menuCode：", menuCode);
-
-  if (!menuCode) {
-    document.getElementById("status").textContent =
-      "menuが取得できません。\n\n" +
-      currentURL;
-    return;
-  }
-}
-  
 /* =========================
    LIFF初期化
 ========================= */
 
 window.addEventListener("DOMContentLoaded", async () => {
 
+  const status =
+    document.getElementById("status");
+
   try {
 
+    status.textContent =
+      "LIFFを初期化しています…";
+
     await liff.init({
-      liffId: LIFF_ID
+      liffId: LIFF_ID,
+      withLoginOnExternalBrowser: true
     });
-document.getElementById("status").textContent =
-  "isInClient：" + liff.isInClient() +
-  "\ncloseWindow：" + typeof liff.closeWindow;
 
-console.log("LIFF初期化成功");
-    
+    liffReady = true;
+
     console.log("LIFF初期化成功");
+    console.log("isInClient:", liff.isInClient());
+    console.log("isLoggedIn:", liff.isLoggedIn());
 
-    // LINEログインしていない場合
-    if (!liff.isInClient() && !liff.isLoggedIn()) {
+    status.textContent = "";
 
-      document.getElementById("status").textContent =
-        "LINEログインが必要です。";
+  } catch (error) {
 
-      liff.login();
+    console.error(error);
 
-      return;
+    status.textContent =
+      "LIFF初期化エラー\n" +
+      error.message;
+
+  }
+
+});
+
+
+/* =========================
+   画面切り替え
+========================= */
+
+function hideAllMenus() {
+
+  const ids = [
+    "mainMenu",
+    "fullBodyMenu",
+    "selectMenu",
+    "faceMenu",
+    "upperBodyMenu",
+    "lowerBodyMenu",
+    "vioMenu"
+  ];
+
+  ids.forEach(id => {
+
+    document
+      .getElementById(id)
+      .classList.add("hidden");
+
+  });
+
+}
+
+
+function showMain() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("mainMenu")
+    .classList.remove("hidden");
+
+}
+
+
+function showFullBody() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("fullBodyMenu")
+    .classList.remove("hidden");
+
+}
+
+
+function showSelectMenu() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("selectMenu")
+    .classList.remove("hidden");
+
+}
+
+
+function showFaceMenu() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("faceMenu")
+    .classList.remove("hidden");
+
+}
+
+
+function showUpperBodyMenu() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("upperBodyMenu")
+    .classList.remove("hidden");
+
+}
+
+
+function showLowerBodyMenu() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("lowerBodyMenu")
+    .classList.remove("hidden");
+
+}
+
+
+function showVioMenu() {
+
+  hideAllMenus();
+
+  document
+    .getElementById("vioMenu")
+    .classList.remove("hidden");
+
+}
+
+
+/* =========================
+   全身脱毛
+========================= */
+
+function selectFullBody(menuName, button) {
+
+  selectedFullBody = menuName;
+
+  document
+    .querySelectorAll(
+      '#fullBodyMenu .menu-select-button'
+    )
+    .forEach(btn => {
+
+      btn.classList.remove("selected");
+
+    });
+
+  button.classList.add("selected");
+
+  document
+    .getElementById("fullBodySelected")
+    .innerText =
+      "選択中：\n" + selectedFullBody;
+}
+
+
+async function confirmFullBody() {
+
+  if (!selectedFullBody) {
+
+    document
+      .getElementById("fullBodySelected")
+      .innerText =
+        "メニューを1つ選択してください。";
+
+    return;
+  }
+
+  await sendToLINE(
+    "全身脱毛：" + selectedFullBody
+  );
+
+}
+
+
+/* =========================
+   顔・首まわり
+========================= */
+
+function selectFaceMenu(menuName, button) {
+
+  if (
+    selectedFaceMenus.includes(menuName)
+  ) {
+
+    selectedFaceMenus =
+      selectedFaceMenus.filter(
+        item => item !== menuName
+      );
+
+    button.classList.remove("selected");
+
+  } else {
+
+    selectedFaceMenus.push(menuName);
+
+    button.classList.add("selected");
+
+  }
+
+
+  const area =
+    document.getElementById("faceSelected");
+
+  if (selectedFaceMenus.length === 0) {
+
+    area.innerText =
+      "まだメニューが選択されていません。";
+
+  } else {
+
+    area.innerText =
+      "選択中：\n" +
+      selectedFaceMenus.join("・");
+
+  }
+
+
+  const categoryButton =
+    document.getElementById(
+      "faceCategoryButton"
+    );
+
+  if (selectedFaceMenus.length > 0) {
+
+    categoryButton.innerText =
+      "✓ 顔・首まわり（" +
+      selectedFaceMenus.length +
+      "）";
+
+  } else {
+
+    categoryButton.innerText =
+      "顔・首まわり";
+
+  }
+
+}
+
+
+async function confirmFaceMenu() {
+
+  if (selectedFaceMenus.length === 0) {
+
+    document
+      .getElementById("faceSelected")
+      .innerText =
+        "メニューを1つ以上選択してください。";
+
+    return;
+
+  }
+
+  const text =
+    "セレクト脱毛（顔・首まわり）：" +
+    selectedFaceMenus.join("・");
+
+  await sendToLINE(text);
+
+}
+
+
+/* =========================
+   上半身
+========================= */
+
+function selectUpperBodyMenu(menuName, button) {
+
+  if (
+    selectedUpperBodyMenus.includes(menuName)
+  ) {
+
+    selectedUpperBodyMenus =
+      selectedUpperBodyMenus.filter(
+        item => item !== menuName
+      );
+
+    button.classList.remove("selected");
+
+  } else {
+
+    selectedUpperBodyMenus.push(menuName);
+
+    button.classList.add("selected");
+
+  }
+
+  document
+    .getElementById("upperBodySelected")
+    .innerText =
+      selectedUpperBodyMenus.length > 0
+        ? "選択中：\n" +
+          selectedUpperBodyMenus.join("・")
+        : "まだメニューが選択されていません。";
+
+}
+
+
+async function confirmUpperBodyMenu() {
+
+  if (
+    selectedUpperBodyMenus.length === 0
+  ) {
+
+    document
+      .getElementById("upperBodySelected")
+      .innerText =
+        "メニューを1つ以上選択してください。";
+
+    return;
+
+  }
+
+  await sendToLINE(
+    "セレクト脱毛（上半身）：" +
+    selectedUpperBodyMenus.join("・")
+  );
+
+}
+
+
+/* =========================
+   下半身
+========================= */
+
+function selectLowerBodyMenu(menuName, button) {
+
+  if (
+    selectedLowerBodyMenus.includes(menuName)
+  ) {
+
+    selectedLowerBodyMenus =
+      selectedLowerBodyMenus.filter(
+        item => item !== menuName
+      );
+
+    button.classList.remove("selected");
+
+  } else {
+
+    selectedLowerBodyMenus.push(menuName);
+
+    button.classList.add("selected");
+
+  }
+
+  document
+    .getElementById("lowerBodySelected")
+    .innerText =
+      selectedLowerBodyMenus.length > 0
+        ? "選択中：\n" +
+          selectedLowerBodyMenus.join("・")
+        : "まだメニューが選択されていません。";
+
+}
+
+
+async function confirmLowerBodyMenu() {
+
+  if (
+    selectedLowerBodyMenus.length === 0
+  ) {
+
+    document
+      .getElementById("lowerBodySelected")
+      .innerText =
+        "メニューを1つ以上選択してください。";
+
+    return;
+
+  }
+
+  await sendToLINE(
+    "セレクト脱毛（下半身）：" +
+    selectedLowerBodyMenus.join("・")
+  );
+
+}
+
+
+/* =========================
+   VIO
+========================= */
+
+function selectVioMenu(menuName, button) {
+
+  if (
+    selectedVioMenus.includes(menuName)
+  ) {
+
+    selectedVioMenus =
+      selectedVioMenus.filter(
+        item => item !== menuName
+      );
+
+    button.classList.remove("selected");
+
+  } else {
+
+    selectedVioMenus.push(menuName);
+
+    button.classList.add("selected");
+
+  }
+
+  document
+    .getElementById("vioSelected")
+    .innerText =
+      selectedVioMenus.length > 0
+        ? "選択中：\n" +
+          selectedVioMenus.join("・")
+        : "まだメニューが選択されていません。";
+
+}
+
+
+async function confirmVioMenu() {
+
+  if (
+    selectedVioMenus.length === 0
+  ) {
+
+    document
+      .getElementById("vioSelected")
+      .innerText =
+        "メニューを1つ以上選択してください。";
+
+    return;
+
+  }
+
+  await sendToLINE(
+    "セレクト脱毛（VIO）：" +
+    selectedVioMenus.join("・")
+  );
+
+}
+
+
+/* =========================
+   フェイシャル
+========================= */
+
+async function selectFacial() {
+
+  await sendToLINE(
+    "フェイシャル"
+  );
+
+}
+
+
+/* =========================
+   LINE送信
+========================= */
+
+async function sendToLINE(text) {
+
+  const status =
+    document.getElementById("status");
+
+  try {
+
+    if (!liffReady) {
+
+      throw new Error(
+        "LIFFの初期化が完了していません。"
+      );
+
     }
 
-    console.log("LINEログイン済み");
 
-    await receiveMenuFromURL();
+    if (!liff.isInClient()) {
 
+      status.textContent =
+        "現在はLINEのLIFF画面ではありません。\n" +
+        "LINEアプリから開いてください。";
+
+      return;
+
+    }
+
+
+    status.textContent =
+      "LINEへ送信しています…";
+
+
+    await liff.sendMessages([
+      {
+        type: "text",
+        text: text
+      }
+    ]);
+
+
+    status.textContent =
+      "送信しました。";
+
+
+    /*
+      送信完了後にLIFFを閉じる
+    */
+
+    setTimeout(() => {
+
+      liff.closeWindow();
+
+    }, 500);
 
 
   } catch (error) {
 
     console.error(error);
 
-document.getElementById("status").textContent =
-  "LIFFの初期化に失敗しました。\n" + error.message;
+    status.textContent =
+      "送信に失敗しました。\n" +
+      error.message;
 
   }
 
-});
-
-/* =========================
-   カート表示
-========================= */
-
-function showCart() {
-
-  document.getElementById("mainMenu")
-    .classList.add("hidden");
-
-  document.getElementById("fullBodyMenu")
-    .classList.add("hidden");
-
-  document.getElementById("selectMenu")
-    .classList.add("hidden");
-
-  document.getElementById("faceMenu")
-    .classList.add("hidden");
-
-  document.getElementById("upperBodyMenu")
-    .classList.add("hidden");
-
-  document.getElementById("cartMenu")
-    .classList.remove("hidden");
-
-  document.getElementById("cartList").innerText =
-    cart.length > 0
-      ? cart.join("\n")
-      : "カートは空です。";
 }
-
-/* =========================
-   メインメニュー表示
-========================= */
-
-function showMain() {
-
-    document.getElementById("mainMenu")
-        .classList.remove("hidden");
-
-    document.getElementById("fullBodyMenu")
-        .classList.add("hidden");
-
-    document.getElementById("selectMenu")
-        .classList.add("hidden");
-
-    document.getElementById("faceMenu")
-    .classList.add("hidden");
-
-  document.getElementById("upperBodyMenu")
-  .classList.add("hidden");
-  
-}
-
-
-
-
-
-/* =========================
-   全身脱毛メニュー表示
-========================= */
-
-function showFullBody() {
-
-  document.getElementById("mainMenu")
-    .classList.add("hidden");
-
-  document.getElementById("fullBodyMenu")
-    .classList.remove("hidden");
-
-}
-
-
-/* =========================
-   全身脱毛選択
-========================= */
-
-async function confirmFullBody() {
-
-  const selected =
-    document.querySelector(
-      'input[name="fullbody"]:checked'
-    );
-
-  if (!selected) {
-
-    
-
-    return;
-  }
-
-try {
-  await liff.sendMessages([
-    {
-      type: "text",
-      text: "全身脱毛：" + selected.value
-    }
-  ]);
-
-  document.getElementById("status").textContent =
-    "LINEへ送信しました。";
-
-} catch (error) {
-  console.error(error);
-
-  document.getElementById("status").textContent =
-    "送信に失敗しました：" + error.message;
-}
-
-}
-
-
-/* =========================
-   その他メニュー
-========================= */
-
-function selectMenu(menuName) {
-  alert(menuName + "を選択しました");
-}
-
-function showUpperBodyMenu() {
-
-  document.getElementById("mainMenu")
-    .classList.add("hidden");
-
-  document.getElementById("fullBodyMenu")
-    .classList.add("hidden");
-
-  document.getElementById("selectMenu")
-    .classList.add("hidden");
-
-  document.getElementById("faceMenu")
-    .classList.add("hidden");
-
-  document.getElementById("upperBodyMenu")
-  .classList.remove("hidden");
-
-}
-/* =========================
-   顔・首まわりメニュー表示
-========================= */
-
-function showSelectMenu() {
-
-  document.getElementById("mainMenu")
-    .classList.add("hidden");
-
-  document.getElementById("fullBodyMenu")
-    .classList.add("hidden");
-
-  document.getElementById("faceMenu")
-    .classList.add("hidden");
-
-  document.getElementById("upperBodyMenu")
-  .classList.add("hidden");
-  
-  document.getElementById("selectMenu")
-    .classList.remove("hidden");
-
-}
-
-function showFaceMenu() {
-
-  document.getElementById("selectMenu")
-    .classList.add("hidden");
-
-  document.getElementById("faceMenu")
-    .classList.remove("hidden");
-  
-
-}
-
-function selectFaceMenu(menuName, button) {
-
-  // すでに選択されている場合は選択解除
-  if (selectedFaceMenus.includes(menuName)) {
-
-    selectedFaceMenus = selectedFaceMenus.filter(
-      item => item !== menuName
-    );
-
-    button.classList.remove("selected");
-
-  } else {
-
-    // 選択されていなければ追加
-    selectedFaceMenus.push(menuName);
-
-    button.classList.add("selected");
-  }
-
-  // 選択中メニューを表示
-  const selectedArea =
-    document.getElementById("faceSelected");
-
-  if (selectedFaceMenus.length === 0) {
-
-    selectedArea.innerText =
-      "まだメニューが選択されていません。";
-
-  } else {
-
-    selectedArea.innerText =
-      "選択中：\n" +
-      selectedFaceMenus.join("・");
-  }
-
-  console.log(
-    "選択中のメニュー：",
-    selectedFaceMenus
-  );
-    const faceButton =
-    document.getElementById("faceCategoryButton");
-
-  if (selectedFaceMenus.length > 0) {
-    faceButton.innerText =
-      "✓ 顔・首まわり（" +
-      selectedFaceMenus.length +
-      "）";
-  } else {
-    faceButton.innerText =
-      "顔・首まわり";
-  }
-}
-
-
-/* =========================
-   顔・首まわり選択完了
-========================= */
-
-async function confirmFaceMenu() {
-
-  if (selectedFaceMenus.length === 0) {
-
-    document.getElementById("faceSelected").innerText =
-      "メニューを1つ以上選択してください。";
-
-    return;
-  }
-
- try {
-
-  console.log("isInClient:", liff.isInClient());
-  console.log("closeWindow:", typeof liff.closeWindow);
-
-  await liff.sendMessages([
-    {
-      type: "text",
-      text:
-        "セレクト脱毛（顔・首まわり）：" +
-        selectedFaceMenus.join("・")
-    }
-  ]);
-
-  document.getElementById("faceSelected").innerText =
-    "LINEへ送信しました。";
-
-  if (liff.isInClient()) {
-    liff.closeWindow();
-  }
-
-} catch (error) {
-
-  console.error(error);
-
-  document.getElementById("faceSelected").innerText =
-    "送信に失敗しました：" + error.message;
-
-}
-  }
 
 </script>
 
