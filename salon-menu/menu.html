@@ -413,10 +413,87 @@ let selectedLowerBodyMenus = [];
 // URLからメニューを受け取る
 async function receiveMenuFromURL() {
 
-  const params = new URLSearchParams(window.location.search);
-const menuCode = params.get("menu");
+  const currentURL = window.location.href;
+  const currentSearch = window.location.search;
 
-if (!menuCode) return;
+  document.getElementById("status").textContent =
+    "URL確認中...\n" +
+    currentURL + "\n\n" +
+    "search：" + currentSearch;
+
+  console.log("現在のURL：", currentURL);
+  console.log("現在のsearch：", currentSearch);
+
+  const params = new URLSearchParams(window.location.search);
+  const menuCode = params.get("menu");
+
+  console.log("menuCode：", menuCode);
+
+  if (!menuCode) {
+    document.getElementById("status").textContent =
+      "menuが取得できません。\n\n" +
+      currentURL;
+    return;
+  }
+
+  const menuMap = {
+    face_all: "顔全体",
+    upper_face: "上顔面"
+  };
+
+  const menu = menuMap[menuCode];
+
+  if (!menu) {
+    document.getElementById("status").textContent =
+      "不明なmenuです：" + menuCode;
+    return;
+  }
+
+  if (!cart.includes(menu)) {
+    cart.push(menu);
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }
+
+  document.getElementById("mainMenu").style.display = "none";
+
+  const status = document.getElementById("status");
+
+  status.textContent = "✓ 追加しました";
+
+  status.style.display = "block";
+  status.style.fontSize = "28px";
+  status.style.fontWeight = "700";
+  status.style.marginTop = "200px";
+  status.style.textAlign = "center";
+
+  console.log("カートに追加：", menu);
+  console.log("現在のカート：", cart);
+
+  try {
+
+    await liff.sendMessages([
+      {
+        type: "text",
+        text: "【カートに追加しました】"
+      }
+    ]);
+
+  } catch (error) {
+
+    console.error("送信エラー:", error);
+
+  }
+
+  setTimeout(() => {
+
+    console.log("閉じる処理");
+
+    if (liff.isInClient()) {
+      liff.closeWindow();
+    }
+
+  }, 1500);
+}
 
 const menuMap = {
   face_all: "顔全体",
@@ -489,7 +566,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     await liff.init({
       liffId: LIFF_ID
     });
-
+document.getElementById("status").textContent =
+  "isInClient：" + liff.isInClient();
 
 console.log("LIFF初期化成功");
     
