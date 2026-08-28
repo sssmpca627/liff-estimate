@@ -45,12 +45,6 @@ h1 {
   margin: 0 0 25px;
 }
 
-.menu-name {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 15px;
-}
-
 .message {
   color: #777;
   font-size: 17px;
@@ -73,7 +67,6 @@ h1 {
   <div class="card">
 
     <h1>カートに追加しました</h1>
-
 
     <div class="message">
       このメニューをカートに追加しました。
@@ -131,9 +124,7 @@ function getCart() {
     localStorage.getItem(CART_KEY);
 
   if (!saved) {
-
     return [];
-
   }
 
   try {
@@ -162,7 +153,6 @@ function saveToCart(menu) {
 
   const cart = getCart();
 
-
   /*
    * 同じメニューがあれば
    * 二重追加しない
@@ -173,19 +163,16 @@ function saveToCart(menu) {
       item => item.menu === menu.menu
     );
 
-
   if (!alreadyAdded) {
 
     cart.push(menu);
 
   }
 
-
   localStorage.setItem(
     CART_KEY,
     JSON.stringify(cart)
   );
-
 
   console.log(
     "現在のカート：",
@@ -196,7 +183,7 @@ function saveToCart(menu) {
 
 
 /* =========================
-   LINE送信
+   LINEへ送信
 ========================= */
 
 async function sendCartAddedMessage() {
@@ -219,11 +206,21 @@ function closeLIFF() {
 
   if (liff.isInClient()) {
 
+    console.log(
+      "LIFFを閉じます"
+    );
+
     setTimeout(function() {
 
       liff.closeWindow();
 
     }, 500);
+
+  } else {
+
+    console.log(
+      "LIFFブラウザではありません"
+    );
 
   }
 
@@ -236,26 +233,47 @@ function closeLIFF() {
 
 async function main() {
 
-  const menu = getMenuFromURL();
+  const menu =
+    getMenuFromURL();
 
   try {
 
-    // LIFF初期化
+    /*
+     * LIFF初期化
+     */
+
     await liff.init({
       liffId: LIFF_ID
     });
 
-    console.log("LIFF初期化成功");
+    console.log(
+      "LIFF初期化成功"
+    );
 
-    // カートへ保存
+
+    /*
+     * カートへ保存
+     */
+
     saveToCart(menu);
 
-    // LINEへメッセージ送信
+    console.log(
+      "カート保存成功"
+    );
+
+
+    /*
+     * LINEへ
+     * 「カートに追加しました」
+     */
+
     try {
 
       await sendCartAddedMessage();
 
-      console.log("LINE送信成功");
+      console.log(
+        "LINE送信成功"
+      );
 
     } catch (error) {
 
@@ -266,65 +284,6 @@ async function main() {
 
     }
 
-    // LINE送信の成否に関係なく閉じる
-    // LIFFを閉じる
-if (liff.isInClient()) {
-  liff.closeWindow();
-}
-
-  } catch (error) {
-
-    console.error(error);
-
-    document.getElementById("status")
-      .textContent =
-      "エラー：" +
-      error.message;
-
-  }
-
-}
-  catch (error) {
-
-    console.error(error);
-
-    document.getElementById("status")
-      .textContent =
-      "エラー：" +
-      error.message;
-
-  }
-
-}
-
-    /*
-     * LIFF初期化
-     */
-
-    await liff.init({
-      liffId: LIFF_ID
-    });
-
-
-    console.log(
-      "LIFF初期化成功"
-    );
-
-
-    /*
-     * ★ここでカートへ保存
-     */
-
-    saveToCart(menu);
-
-
-    /*
-     * LINEへ
-     * 「カートに追加しました」
-     */
-
-    await sendCartAddedMessage();
-
 
     /*
      * LIFFを閉じる
@@ -332,10 +291,12 @@ if (liff.isInClient()) {
 
     closeLIFF();
 
-
   } catch (error) {
 
-    console.error(error);
+    console.error(
+      "エラー：",
+      error
+    );
 
     document.getElementById("status")
       .textContent =
@@ -348,7 +309,7 @@ if (liff.isInClient()) {
 
 
 /* =========================
-   起動
+   ページ読み込み時に実行
 ========================= */
 
 window.addEventListener(
