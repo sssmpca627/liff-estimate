@@ -435,7 +435,7 @@ async function receiveMenuFromURL() {
       currentURL;
     return;
   }
-
+}
   
 /* =========================
    LIFF初期化
@@ -732,7 +732,11 @@ async function confirmFaceMenu() {
           selectedFaceMenus.join("・")
       }
     ]);
-
+setTimeout(() => {
+  if (liff.isInClient()) {
+    liff.closeWindow();
+  }
+}, 1500);
     document.getElementById("faceSelected").innerText =
       "LINEへ送信しました。";
 
