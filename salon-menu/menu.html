@@ -449,7 +449,8 @@ window.addEventListener("DOMContentLoaded", async () => {
       liffId: LIFF_ID
     });
 document.getElementById("status").textContent =
-  "isInClient：" + liff.isInClient();
+  "isInClient：" + liff.isInClient() +
+  "\ncloseWindow：" + typeof liff.closeWindow;
 
 console.log("LIFF初期化成功");
     
