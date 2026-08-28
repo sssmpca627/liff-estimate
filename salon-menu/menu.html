@@ -267,19 +267,10 @@ async function main() {
     }
 
     // LINE送信の成否に関係なく閉じる
-    setTimeout(function() {
-
-      console.log(
-        "LIFFを閉じます"
-      );
-
-      if (liff.isInClient()) {
-
-        liff.closeWindow();
-
-      }
-
-    }, 500);
+    // LIFFを閉じる
+if (liff.isInClient()) {
+  liff.closeWindow();
+}
 
   } catch (error) {
 
