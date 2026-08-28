@@ -723,7 +723,8 @@ async function confirmFaceMenu() {
   }
 
   try {
-
+console.log("isInClient:", liff.isInClient());
+console.log("closeWindow:", typeof liff.closeWindow);
     await liff.sendMessages([
       {
         type: "text",
