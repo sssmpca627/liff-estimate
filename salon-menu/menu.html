@@ -369,10 +369,7 @@ button:active {
 
   </section>
 
-  <!-- カートを見る -->
-<div class="added-message">
-  ✓ カートに追加しました
-</div>
+ 
   
 <!-- カート一覧 -->
 <section id="cartMenu" class="hidden">
@@ -457,12 +454,12 @@ await liff.sendMessages([
     text: "【カートに追加しました】"
   }
 ]);
-
 setTimeout(() => {
   if (liff.isInClient()) {
     liff.closeWindow();
   }
-}, 300);
+}, 500);
+
   
 }
 
