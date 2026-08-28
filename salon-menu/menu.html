@@ -723,26 +723,36 @@ async function confirmFaceMenu() {
     return;
   }
 
-  try {
-console.log("isInClient:", liff.isInClient());
-console.log("closeWindow:", typeof liff.closeWindow);
-    await liff.sendMessages([
-      {
-        type: "text",
-        text:
-          "セレクト脱毛（顔・首まわり）：" +
-          selectedFaceMenus.join("・")
-      }
-    ]);
-setTimeout(() => {
+ try {
+
+  console.log("isInClient:", liff.isInClient());
+  console.log("closeWindow:", typeof liff.closeWindow);
+
+  await liff.sendMessages([
+    {
+      type: "text",
+      text:
+        "セレクト脱毛（顔・首まわり）：" +
+        selectedFaceMenus.join("・")
+    }
+  ]);
+
+  document.getElementById("faceSelected").innerText =
+    "LINEへ送信しました。";
+
   if (liff.isInClient()) {
     liff.closeWindow();
   }
-}, 1500);
-    document.getElementById("faceSelected").innerText =
-      "LINEへ送信しました。";
 
-  } catch (error) {
+} catch (error) {
+
+  console.error(error);
+
+  document.getElementById("faceSelected").innerText =
+    "送信に失敗しました：" + error.message;
+
+}
+ catch (error) {
 
     console.error(error);
 
