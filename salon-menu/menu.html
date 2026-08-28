@@ -460,8 +460,13 @@ try {
 }
 
 setTimeout(() => {
-  liff.closeWindow();
-}, 1000);
+  console.log("閉じる処理開始");
+  console.log("isInClient:", liff.isInClient());
+
+  if (liff.isInClient()) {
+    liff.closeWindow();
+  }
+}, 1500);
 
   
 }
