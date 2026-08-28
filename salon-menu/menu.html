@@ -103,19 +103,55 @@ function getMenuFromURL() {
   const params =
     new URLSearchParams(window.location.search);
 
+  const menuId =
+    params.get("menu") || "face_all";
+
+
+  const menuNames = {
+
+    face_all: "顔全体",
+
+    face_upper: "上顔面",
+
+    face_lower: "下顔面"
+
+  };
+
+
+  const menuPrices = {
+
+    face_all: "5000",
+
+    face_upper: "3000",
+
+    face_lower: "3000"
+
+  };
+
+
+  const menuTimes = {
+
+    face_all: "30",
+
+    face_upper: "30",
+
+    face_lower: "30"
+
+  };
+
+
   return {
 
-    menu:
-      params.get("menu") || "face_all",
+    menu: menuId,
 
     name:
-      params.get("name") || "顔全体",
+      menuNames[menuId] || "メニュー",
 
     price:
-      params.get("price") || "5000",
+      menuPrices[menuId] || "0",
 
     time:
-      params.get("time") || "30"
+      menuTimes[menuId] || "0"
 
   };
 
