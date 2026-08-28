@@ -448,12 +448,17 @@ status.style.textAlign = "center";
   console.log("現在のカート：", cart);
 
 // LINEへ送信
-await liff.sendMessages([
-  {
-    type: "text",
-    text: "【カートに追加しました】"
-  }
-]);
+try {
+  await liff.sendMessages([
+    {
+      type: "text",
+      text: "【カートに追加しました】"
+    }
+  ]);
+} catch (error) {
+  console.error("送信エラー:", error);
+}
+
 setTimeout(() => {
   if (liff.isInClient()) {
     liff.closeWindow();
