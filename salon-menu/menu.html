@@ -239,17 +239,56 @@ async function main() {
   const menu =
     getMenuFromURL();
 
-
-  /*
-   * 画面にメニュー名表示
-   */
-
-  document.getElementById("menuName")
-    .textContent =
-    menu.name;
-
-
   try {
+
+    /*
+     * LIFF初期化
+     */
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+
+    console.log(
+      "LIFF初期化成功"
+    );
+
+
+    /*
+     * カートへ保存
+     */
+
+    saveToCart(menu);
+
+
+    /*
+     * LINEへ
+     * 「カートに追加しました」
+     */
+
+    await sendCartAddedMessage();
+
+
+    /*
+     * LIFFを閉じる
+     */
+
+    closeLIFF();
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById("status")
+      .textContent =
+      "エラー：" +
+      error.message;
+
+  }
+
+}
 
     /*
      * LIFF初期化
