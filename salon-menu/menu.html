@@ -450,21 +450,20 @@ status.style.textAlign = "center";
   console.log("カートに追加：", menu);
   console.log("現在のカート：", cart);
 
-// LIFFを閉じてLステップへ戻る
-console.log("閉じる処理まで来ました");
-  
-  setTimeout(() => {
-  if (liff.isInClient()) {
-    liff.closeWindow();
-  }
-}, 300);
-  
+// LINEへ送信
 await liff.sendMessages([
   {
     type: "text",
     text: "【カートに追加しました】"
   }
 ]);
+
+// 送信完了後にLステップへ戻る
+setTimeout(() => {
+  if (liff.isInClient()) {
+    liff.closeWindow();
+  }
+}, 300);
   
 }
 
