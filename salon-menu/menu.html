@@ -222,15 +222,12 @@ function addToCart(menuName) {
    LINEへ自動送信
 ========================= */
 
-async function sendCartAddedMessage(menuName) {
+async function sendCartAddedMessage() {
 
   await liff.sendMessages([
     {
       type: "text",
-
-      text:
-        "【カートに追加しました】\n" +
-        menuName
+      text: "【カートに追加しました】"
     }
   ]);
 
