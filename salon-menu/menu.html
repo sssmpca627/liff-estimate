@@ -751,7 +751,12 @@ async function confirmFaceMenu() {
     "セレクト脱毛（顔・首まわり）：" +
     selectedFaceMenus.join("・");
 
-  await sendToLINE(text);
+  await liff.sendMessages([
+  {
+    type: "text",
+    text: text
+  }
+]);
 
 }
 
