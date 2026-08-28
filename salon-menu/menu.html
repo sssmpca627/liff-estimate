@@ -460,10 +460,8 @@ try {
 }
 
 setTimeout(() => {
-  if (liff.isInClient()) {
-    liff.closeWindow();
-  }
-}, 500);
+  liff.closeWindow();
+}, 1000);
 
   
 }
@@ -500,14 +498,14 @@ console.log("LIFF初期化成功");
 
     await receiveMenuFromURL();
 
-    document.getElementById("status").textContent = "";
+
 
   } catch (error) {
 
     console.error(error);
 
-    document.getElementById("status").textContent =
-      "LIFFの初期化に失敗しました。";
+document.getElementById("status").textContent =
+  "LIFFの初期化に失敗しました。\n" + error.message;
 
   }
 
