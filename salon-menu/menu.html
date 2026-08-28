@@ -40,6 +40,12 @@ body {
   text-align: center;
 }
 
+  .menu-name {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
 h1 {
   font-size: 28px;
   margin: 0 0 25px;
@@ -68,9 +74,11 @@ h1 {
 
     <h1>カートに追加しました</h1>
 
-    <div class="message">
-      このメニューをカートに追加しました。
-    </div>
+<div id="menuName" class="menu-name"></div>
+
+<div class="message">
+  このメニューをカートに追加しました。
+</div>
 
   </div>
 
@@ -233,10 +241,12 @@ function closeLIFF() {
 
 async function main() {
 
-  const menu =
-    getMenuFromURL();
+const menu =
+  getMenuFromURL();
 
-  try {
+document.getElementById("menuName").textContent = menu.name;
+
+try {
 
     /*
      * LIFF初期化
