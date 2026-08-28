@@ -537,19 +537,16 @@ try {
 }
 
 setTimeout(() => {
+    const inClient = liff.isInClient();
 
-  const inClient = liff.isInClient();
+    console.log("閉じる処理開始");
+    console.log("isInClient:", inClient);
 
-  console.log("閉じる処理開始");
-  console.log("isInClient:", inClient);
-
-  if (inClient) {
-    liff.closeWindow();
-  } else {
-    document.getElementById("status").textContent =
-      "LIFFブラウザではありません";
-  }
-
+    if (inClient) {
+        liff.closeWindow();
+    } else {
+        console.log("LIFFブラウザではないため閉じられません");
+    }
 }, 1500);
 
   
