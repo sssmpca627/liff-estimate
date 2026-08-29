@@ -1,4 +1,10 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/salon-menu/cart",
+      "destination": "/salon-menu/cart.html"
+    }
+  ]
 }
