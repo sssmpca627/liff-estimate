@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>選択したメニュー</title>
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>カート</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
 <style>
+
 * {
   box-sizing: border-box;
 }
@@ -17,6 +23,7 @@ body {
   margin: 0;
   background: #f7f7f7;
   color: #333;
+
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -29,108 +36,240 @@ body {
 .container {
   max-width: 700px;
   margin: 0 auto;
-  padding: 30px 16px 50px;
-}
-
-h1 {
-  text-align: center;
-  font-size: 28px;
-  margin: 10px 0 10px;
-}
-
-.description {
-  text-align: center;
-  color: #777;
-  font-size: 16px;
-  margin-bottom: 25px;
+  padding: 50px 20px;
 }
 
 .card {
+
   background: #fff;
-  border-radius: 20px;
-  padding: 25px 20px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+
+  border-radius: 24px;
+
+  padding: 35px 25px;
+
+  box-shadow:
+    0 3px 12px rgba(0,0,0,0.06);
+
+  text-align: center;
 }
 
-.menu {
-  padding: 16px 0;
-  border-bottom: 1px solid #eee;
-}
+h1 {
 
-.menu:last-child {
-  border-bottom: none;
+  font-size: 28px;
+
+  margin:
+    0 0 25px;
+
 }
 
 .menu-name {
-  font-size: 19px;
+
+  font-size: 22px;
+
   font-weight: 700;
+
+  margin-bottom: 15px;
+
 }
 
-.menu-detail {
-  margin-top: 6px;
+.message {
+
   color: #777;
-  font-size: 15px;
-}
 
-.empty {
-  text-align: center;
-  color: #777;
-  padding: 20px 0;
-}
+  font-size: 17px;
 
-button {
-  width: 100%;
-  border: none;
-  border-radius: 16px;
-  padding: 18px;
-  margin-top: 25px;
-  font-size: 18px;
-  font-weight: 700;
-  background: #333;
-  color: #fff;
+  margin-bottom: 30px;
+
 }
 
 #status {
-  text-align: center;
+
   margin-top: 20px;
+
+  text-align: center;
+
   color: #777;
+
   font-size: 14px;
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-  <h1>選択したメニュー</h1>
-
-  <div class="description">
-    現在カートに入っているメニューです。
-  </div>
 
   <div class="card">
 
-    <div id="cartList">
-      読み込み中...
+
+    <h1>
+      カートに追加しました
+    </h1>
+
+
+    <div
+      id="menuName"
+      class="menu-name"
+    ></div>
+
+
+    <div class="message">
+
+      このメニューを
+      カートに追加しました。
+
     </div>
+
 
   </div>
 
-  <button onclick="sendCartToLINE()">
-    この内容をLINEに送信
-  </button>
 
   <div id="status"></div>
+
 
 </div>
 
 
+
 <script>
 
-const LIFF_ID = "2011037691-j7UfaGxQ";
 
-const CART_KEY = "salon_cart";
+/* =========================
+   設定
+========================= */
+
+
+const LIFF_ID =
+  "2011037691-j7UfaGxQ";
+
+
+const CART_KEY =
+  "salon_cart";
+
+
+
+/* =========================
+   メニュー情報
+========================= */
+
+const MENU_DATA = {
+
+  face_all: {
+
+    name: "顔全体",
+
+    price: 5000,
+
+    time: 30
+
+  },
+
+
+  face_upper: {
+
+    name: "上顔面/鼻上",
+
+    price: 3000,
+
+    time: 30
+
+  },
+
+
+  face_lower: {
+
+    name: "下顔面/鼻下",
+
+    price: 3000,
+
+    time: 30
+
+  }
+
+};
+
+
+
+/* =========================
+   URLからメニュー取得
+========================= */
+
+function getMenuFromURL() {
+
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const menuId =
+    params.get("menu");
+
+
+  /*
+   * menu IDから
+   * 正しいメニュー情報を取得
+   */
+
+
+  const menu =
+    MENU_DATA[menuId];
+
+
+  if (menu) {
+
+
+    return {
+
+      menu: menuId,
+
+      name: menu.name,
+
+      price: menu.price,
+
+      time: menu.time
+
+    };
+
+
+  }
+
+
+  /*
+   * 万が一
+   * 未登録のmenu IDだった場合
+   */
+
+
+  return {
+
+    menu:
+      menuId || "unknown",
+
+    name:
+      params.get("name") || "選択したメニュー",
+
+    price:
+      Number(
+        params.get("price") || 0
+      ),
+
+    time:
+      Number(
+        params.get("time") || 0
+      )
+
+  };
+
+}
+
 
 
 /* =========================
@@ -139,12 +278,19 @@ const CART_KEY = "salon_cart";
 
 function getCart() {
 
+
   const saved =
-    localStorage.getItem(CART_KEY);
+    localStorage.getItem(
+      CART_KEY
+    );
+
 
   if (!saved) {
+
     return [];
+
   }
+
 
   try {
 
@@ -164,182 +310,230 @@ function getCart() {
 }
 
 
+
 /* =========================
-   カート表示
+   カート保存
 ========================= */
 
-function displayCart() {
-
-  const cart = getCart();
-
-  const cartList =
-    document.getElementById("cartList");
+function saveToCart(menu) {
 
 
-  if (cart.length === 0) {
+  const cart =
+    getCart();
 
-    cartList.innerHTML =
-      '<div class="empty">カートは空です。</div>';
 
-    return;
+  /*
+   * 同じメニューは
+   * 二重追加しない
+   */
+
+
+  const alreadyAdded =
+    cart.some(
+      item =>
+        item.menu === menu.menu
+    );
+
+
+  if (!alreadyAdded) {
+
+    cart.push(menu);
 
   }
 
 
-  cartList.innerHTML = "";
+  localStorage.setItem(
+
+    CART_KEY,
+
+    JSON.stringify(cart)
+
+  );
 
 
-  cart.forEach(function(item) {
-
-    const menu =
-      document.createElement("div");
-
-    menu.className = "menu";
-
-
-    const name =
-      document.createElement("div");
-
-    name.className = "menu-name";
-
-    name.textContent =
-      "✔ " + item.name;
-
-
-    const detail =
-      document.createElement("div");
-
-    detail.className =
-      "menu-detail";
-
-    detail.textContent =
-      "¥" +
-      Number(item.price).toLocaleString() +
-      " ｜ 約" +
-      item.time +
-      "分";
-
-
-    menu.appendChild(name);
-
-    menu.appendChild(detail);
-
-    cartList.appendChild(menu);
-
-  });
+  console.log(
+    "現在のカート：",
+    cart
+  );
 
 }
 
 
+
 /* =========================
-   LINE送信
+   LINEへ送信
 ========================= */
 
-async function sendCartToLINE() {
-
-  const cart = getCart();
-
-  if (cart.length === 0) {
-
-    document.getElementById("status")
-      .textContent =
-      "カートにメニューがありません。";
-
-    return;
-
-  }
+async function sendCartAddedMessage() {
 
 
-  let message =
-    "【選択したメニュー】\n\n";
+  await liff.sendMessages([
 
+    {
 
-  cart.forEach(function(item) {
+      type: "text",
 
-    message +=
-      "✔ " +
-      item.name +
-      "　¥" +
-      Number(item.price).toLocaleString() +
-      "｜約" +
-      item.time +
-      "分\n";
-
-  });
-
-
-  try {
-
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: message
-      }
-    ]);
-
-
-    document.getElementById("status")
-      .textContent =
-      "LINEへ送信しました。";
-
-
-    if (liff.isInClient()) {
-
-      setTimeout(function() {
-
-        liff.closeWindow();
-
-      }, 500);
+      text:
+        "【カートに追加しました】"
 
     }
 
-
-  } catch (error) {
-
-    console.error(error);
-
-    document.getElementById("status")
-      .textContent =
-      "送信に失敗しました：" +
-      error.message;
-
-  }
+  ]);
 
 }
 
 
+
 /* =========================
-   LIFF初期化
+   LIFFを閉じる
+========================= */
+
+function closeLIFF() {
+
+
+  if (!liff.isInClient()) {
+
+    console.log(
+      "LIFF内ではありません"
+    );
+
+    return;
+
+  }
+
+
+  console.log(
+    "LIFFを閉じます"
+  );
+
+
+  setTimeout(function() {
+
+    liff.closeWindow();
+
+  }, 500);
+
+}
+
+
+
+/* =========================
+   メイン処理
 ========================= */
 
 async function main() {
 
+
   try {
 
+
+    /*
+     * LIFF初期化
+     */
+
     await liff.init({
-      liffId: LIFF_ID
+
+      liffId:
+        LIFF_ID
+
     });
+
 
     console.log(
       "LIFF初期化成功"
     );
 
 
-    displayCart();
+
+    /*
+     * LIFF初期化後に
+     * URLからメニュー取得
+     */
+
+    const menu =
+      getMenuFromURL();
+
+
+
+    /*
+     * メニュー名表示
+     */
+
+    document
+      .getElementById("menuName")
+      .textContent =
+      menu.name;
+
+
+
+    /*
+     * カートへ保存
+     */
+
+    saveToCart(menu);
+
+
+    console.log(
+      "カート保存成功",
+      menu
+    );
+
+
+
+    /*
+     * LINEへ送信
+     */
+
+    try {
+
+
+      await sendCartAddedMessage();
+
+
+      console.log(
+        "LINE送信成功"
+      );
+
+
+    } catch (error) {
+
+
+      console.error(
+        "LINE送信エラー：",
+        error
+      );
+
+
+    }
+
+
+
+    /*
+     * LIFFを閉じる
+     */
+
+    closeLIFF();
 
 
   } catch (error) {
 
-    console.error(error);
 
-    document.getElementById("status")
+    console.error(
+      "エラー：",
+      error
+    );
+
+
+    document
+      .getElementById("status")
       .textContent =
-      "LIFF初期化エラー：" +
+      "エラー：" +
       error.message;
 
   }
 
 }
+
 
 
 /* =========================
@@ -347,11 +541,16 @@ async function main() {
 ========================= */
 
 window.addEventListener(
+
   "DOMContentLoaded",
+
   main
+
 );
 
+
 </script>
+
 
 </body>
 </html>
