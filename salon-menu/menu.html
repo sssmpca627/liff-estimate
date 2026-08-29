@@ -14,11 +14,13 @@
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
+
 <style>
 
 * {
   box-sizing: border-box;
 }
+
 
 body {
 
@@ -109,7 +111,6 @@ h1 {
 
 }
 
-
 </style>
 
 </head>
@@ -189,11 +190,6 @@ function getMenuFromURL() {
     params.get("menu") || "face_all";
 
 
-
-  /*
-   * メニュー名
-   */
-
   const menuNames = {
 
     face_all:
@@ -207,11 +203,6 @@ function getMenuFromURL() {
 
   };
 
-
-
-  /*
-   * 金額
-   */
 
   const menuPrices = {
 
@@ -227,11 +218,6 @@ function getMenuFromURL() {
   };
 
 
-
-  /*
-   * 施術時間
-   */
-
   const menuTimes = {
 
     face_all:
@@ -244,7 +230,6 @@ function getMenuFromURL() {
       30
 
   };
-
 
 
   return {
@@ -289,6 +274,7 @@ function getCart() {
 
   try {
 
+
     const cart =
       JSON.parse(saved);
 
@@ -332,8 +318,8 @@ function saveToCart(menu) {
 
 
   /*
-   * 同じメニューが
-   * すでに入っているか確認
+   * 同じメニューがあれば
+   * 二重追加しない
    */
 
   const alreadyAdded =
@@ -343,20 +329,12 @@ function saveToCart(menu) {
     );
 
 
-  /*
-   * 入っていなければ追加
-   */
-
   if (!alreadyAdded) {
 
     cart.push(menu);
 
   }
 
-
-  /*
-   * 保存
-   */
 
   localStorage.setItem(
 
@@ -377,16 +355,42 @@ function saveToCart(menu) {
 
 
 /* =========================
+   LINEへ送信
+========================= */
+
+async function sendCartAddedMessage() {
+
+
+  await liff.sendMessages([
+
+    {
+
+      type: "text",
+
+      text:
+        "【カートに追加しました】"
+
+    }
+
+  ]);
+
+}
+
+
+
+/* =========================
    LIFFを閉じる
 ========================= */
 
 function closeLIFF() {
 
 
-  if (
-    typeof liff !== "undefined" &&
-    liff.isInClient()
-  ) {
+  if (liff.isInClient()) {
+
+
+    console.log(
+      "LIFFを閉じます"
+    );
 
 
     setTimeout(
@@ -397,7 +401,7 @@ function closeLIFF() {
 
       },
 
-      800
+      500
 
     );
 
@@ -415,7 +419,7 @@ async function main() {
 
 
   /*
-   * URLからメニュー取得
+   * メニュー取得
    */
 
   const menu =
@@ -449,7 +453,6 @@ async function main() {
     });
 
 
-
     console.log(
       "LIFF初期化成功"
     );
@@ -457,11 +460,10 @@ async function main() {
 
 
     /*
-     * カートへ保存
+     * カート保存
      */
 
     saveToCart(menu);
-
 
 
     console.log(
@@ -471,30 +473,37 @@ async function main() {
 
 
     /*
-     * ここでは
-     * LINEメッセージを送信しない
+     * LINEへ
      *
-     * ★重要★
-     *
-     * liff.sendMessages()
-     * はここでは使わない
+     * 「カートに追加しました」
      */
+
+    try {
+
+
+      await sendCartAddedMessage();
+
+
+      console.log(
+        "LINE送信成功"
+      );
+
+
+    } catch (error) {
+
+
+      console.error(
+        "LINE送信エラー：",
+        error
+      );
+
+
+    }
 
 
 
     /*
-     * ステータス
-     */
-
-    document.getElementById(
-      "status"
-    ).textContent =
-      "カートに保存しました。";
-
-
-
-    /*
-     * 少し表示して閉じる
+     * LIFFを閉じる
      */
 
     closeLIFF();
@@ -513,6 +522,7 @@ async function main() {
     document.getElementById(
       "status"
     ).textContent =
+
       "エラー：" +
       error.message;
 
@@ -523,7 +533,7 @@ async function main() {
 
 
 /* =========================
-   ページ読み込み
+   ページ読み込み時に実行
 ========================= */
 
 window.addEventListener(
@@ -533,7 +543,6 @@ window.addEventListener(
   main
 
 );
-
 
 </script>
 
