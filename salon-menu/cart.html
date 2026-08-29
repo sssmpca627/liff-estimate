@@ -27,7 +27,6 @@
    設定
 ========================= */
 
-
 const LIFF_ID =
   "2011037691-j7UfaGxQ";
 
@@ -39,12 +38,20 @@ const CART_KEY =
 /*
  * 予約に進むURL
  *
- * ※ここだけ後で
- * 実際の予約URLに変更
+ * 今は仮URL
+ * 後から変更可能
  */
 
 const RESERVATION_URL =
   "https://liff-estimate.vercel.app/";
+
+
+/*
+ * メニュー追加URL
+ */
+
+const MENU_URL =
+  "https://liff-estimate.vercel.app/salon-menu/menu";
 
 
 
@@ -54,11 +61,8 @@ const RESERVATION_URL =
 
 function getCart() {
 
-
   const saved =
-    localStorage.getItem(
-      CART_KEY
-    );
+    localStorage.getItem(CART_KEY);
 
 
   if (!saved) {
@@ -70,7 +74,18 @@ function getCart() {
 
   try {
 
-    return JSON.parse(saved);
+    const cart =
+      JSON.parse(saved);
+
+
+    if (!Array.isArray(cart)) {
+
+      return [];
+
+    }
+
+
+    return cart;
 
   } catch (error) {
 
@@ -78,6 +93,7 @@ function getCart() {
       "カート読み込みエラー",
       error
     );
+
 
     return [];
 
@@ -93,9 +109,11 @@ function getCart() {
 
 function formatPrice(price) {
 
-  return "¥" +
+  return (
+    "¥" +
     Number(price || 0)
-      .toLocaleString("ja-JP");
+      .toLocaleString("ja-JP")
+  );
 
 }
 
@@ -109,10 +127,12 @@ function getTotalPrice(cart) {
 
   return cart.reduce(
 
-    (total, item) => {
+    function(total, item) {
 
-      return total +
-        Number(item.price || 0);
+      return (
+        total +
+        Number(item.price || 0)
+      );
 
     },
 
@@ -125,17 +145,19 @@ function getTotalPrice(cart) {
 
 
 /* =========================
-   合計時間
+   合計施術時間
 ========================= */
 
 function getTotalTime(cart) {
 
   return cart.reduce(
 
-    (total, item) => {
+    function(total, item) {
 
-      return total +
-        Number(item.time || 0);
+      return (
+        total +
+        Number(item.time || 0)
+      );
 
     },
 
@@ -148,27 +170,15 @@ function getTotalTime(cart) {
 
 
 /* =========================
-   LINE Flex Message作成
+   メニュー表示部分
 ========================= */
 
-function createFlexMessage(cart) {
+function createMenuContents(cart) {
 
 
-  const totalPrice =
-    getTotalPrice(cart);
+  return cart.map(
 
-
-  const totalTime =
-    getTotalTime(cart);
-
-
-
-  /*
-   * メニュー一覧
-   */
-
-  const menuContents =
-    cart.map(function(item) {
+    function(item) {
 
 
       return {
@@ -179,13 +189,14 @@ function createFlexMessage(cart) {
 
         margin: "md",
 
-        paddingAll: "16px",
+        paddingAll: "15px",
 
         cornerRadius: "12px",
 
         borderWidth: "1px",
 
         borderColor: "#dddddd",
+
 
         contents: [
 
@@ -194,7 +205,8 @@ function createFlexMessage(cart) {
             type: "text",
 
             text:
-              item.name || "メニュー",
+              item.name ||
+              "選択したメニュー",
 
             weight: "bold",
 
@@ -214,6 +226,7 @@ function createFlexMessage(cart) {
             layout: "horizontal",
 
             margin: "sm",
+
 
             contents: [
 
@@ -261,13 +274,33 @@ function createFlexMessage(cart) {
       };
 
 
-    });
+    }
+
+  );
+
+}
 
 
 
-  /*
-   * Flex Message本体
-   */
+/* =========================
+   Flex Message作成
+========================= */
+
+function createFlexMessage(cart) {
+
+
+  const totalPrice =
+    getTotalPrice(cart);
+
+
+  const totalTime =
+    getTotalTime(cart);
+
+
+  const menuContents =
+    createMenuContents(cart);
+
+
 
   return {
 
@@ -275,6 +308,7 @@ function createFlexMessage(cart) {
 
     altText:
       "選択したメニューはこちらです",
+
 
     contents: {
 
@@ -372,6 +406,7 @@ function createFlexMessage(cart) {
 
             margin: "xl",
 
+
             contents: [
 
               {
@@ -420,6 +455,7 @@ function createFlexMessage(cart) {
 
             margin: "md",
 
+
             contents: [
 
               {
@@ -464,6 +500,10 @@ function createFlexMessage(cart) {
       },
 
 
+      /* =========================
+         ボタン
+      ========================= */
+
       footer: {
 
         type: "box",
@@ -474,8 +514,8 @@ function createFlexMessage(cart) {
 
         paddingAll: "20px",
 
-        contents: [
 
+        contents: [
 
           {
 
@@ -485,6 +525,7 @@ function createFlexMessage(cart) {
 
             height: "sm",
 
+
             action: {
 
               type: "uri",
@@ -493,7 +534,7 @@ function createFlexMessage(cart) {
                 "メニューを追加",
 
               uri:
-                "https://liff-estimate.vercel.app/salon-menu/menu"
+                MENU_URL
 
             }
 
@@ -507,6 +548,7 @@ function createFlexMessage(cart) {
             style: "primary",
 
             height: "sm",
+
 
             action: {
 
@@ -535,7 +577,7 @@ function createFlexMessage(cart) {
 
 
 /* =========================
-   LINEへ送信
+   カートをLINEへ送信
 ========================= */
 
 async function sendCartMessage() {
@@ -543,6 +585,12 @@ async function sendCartMessage() {
 
   const cart =
     getCart();
+
+
+  console.log(
+    "現在のカート：",
+    cart
+  );
 
 
   /*
@@ -581,6 +629,13 @@ async function sendCartMessage() {
 
 
 
+  console.log(
+    "送信するFlex Message：",
+    flexMessage
+  );
+
+
+
   /*
    * LINEへ送信
    */
@@ -605,6 +660,12 @@ function closeLIFF() {
   if (
     liff.isInClient()
   ) {
+
+
+    console.log(
+      "LIFFを閉じます"
+    );
+
 
     setTimeout(
 
@@ -634,6 +695,11 @@ async function main() {
   try {
 
 
+    console.log(
+      "LIFF初期化開始"
+    );
+
+
     /*
      * LIFF初期化
      */
@@ -657,10 +723,14 @@ async function main() {
      */
 
     if (
-      !liff.isLoggedIn()
+      !liff.isInClient()
     ) {
 
-      liff.login();
+
+      console.log(
+        "LINEアプリ内ではありません"
+      );
+
 
       return;
 
@@ -698,35 +768,6 @@ async function main() {
     );
 
 
-    /*
-     * エラー時は
-     * LINEへテキスト送信
-     */
-
-    try {
-
-      await liff.sendMessages([
-
-        {
-
-          type: "text",
-
-          text:
-            "カート情報の送信に失敗しました。"
-
-        }
-
-      ]);
-
-    } catch (sendError) {
-
-      console.error(
-        "エラーメッセージ送信失敗：",
-        sendError
-      );
-
-    }
-
   }
 
 }
@@ -734,7 +775,7 @@ async function main() {
 
 
 /* =========================
-   起動
+   ページ読み込み
 ========================= */
 
 window.addEventListener(
