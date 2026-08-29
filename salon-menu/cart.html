@@ -412,6 +412,10 @@ h1 {
   <div class="card">
 
 
+    <!-- =========================
+         タイトル
+    ========================== -->
+
     <h1>
       選択したメニュー
     </h1>
@@ -423,9 +427,17 @@ h1 {
 
 
 
+    <!-- =========================
+         カート内容
+    ========================== -->
+
     <div id="cartList"></div>
 
 
+
+    <!-- =========================
+         合計
+    ========================== -->
 
     <div
       id="totalArea"
@@ -468,6 +480,10 @@ h1 {
     </div>
 
 
+
+    <!-- =========================
+         ボタン
+    ========================== -->
 
     <div
       id="buttonArea"
@@ -541,6 +557,54 @@ const MENU_URL =
   "./menu.html";
 
 
+/* =========================
+   LIFF初期化状態
+========================= */
+
+let liffInitialized = false;
+
+let liffInitError = null;
+
+
+/* =========================
+   LIFF初期化
+   ページを開いた時に実行
+========================= */
+
+async function initializeLIFF() {
+
+  try {
+
+    await liff.init({
+
+      liffId: LIFF_ID,
+
+      withLoginOnExternalBrowser: false
+
+    });
+
+
+    liffInitialized = true;
+
+    console.log(
+      "LIFF初期化成功"
+    );
+
+
+  } catch (error) {
+
+    liffInitError = error;
+
+    console.error(
+      "LIFF初期化エラー：",
+      error
+    );
+
+  }
+
+}
+
+
 
 /* =========================
    カート取得
@@ -548,30 +612,43 @@ const MENU_URL =
 
 function getCart() {
 
+
   const saved =
     localStorage.getItem(CART_KEY);
 
+
   if (!saved) {
+
     return [];
+
   }
 
+
   try {
+
 
     const cart =
       JSON.parse(saved);
 
+
     if (!Array.isArray(cart)) {
+
       return [];
+
     }
+
 
     return cart;
 
+
   } catch (error) {
+
 
     console.error(
       "カート読み込みエラー：",
       error
     );
+
 
     return [];
 
@@ -587,9 +664,13 @@ function getCart() {
 
 function saveCart(cart) {
 
+
   localStorage.setItem(
+
     CART_KEY,
+
     JSON.stringify(cart)
+
   );
 
 }
@@ -602,8 +683,10 @@ function saveCart(cart) {
 
 function formatPrice(price) {
 
+
   const number =
     Number(price) || 0;
+
 
   return (
     "¥" +
@@ -620,18 +703,22 @@ function formatPrice(price) {
 
 function renderCart() {
 
+
   const cart =
     getCart();
+
 
   const cartList =
     document.getElementById(
       "cartList"
     );
 
+
   const totalArea =
     document.getElementById(
       "totalArea"
     );
+
 
   const buttonArea =
     document.getElementById(
@@ -639,7 +726,12 @@ function renderCart() {
     );
 
 
+  /*
+   * カートが空の場合
+   */
+
   if (cart.length === 0) {
+
 
     cartList.innerHTML = `
 
@@ -660,11 +752,14 @@ function renderCart() {
 
     `;
 
+
     totalArea.style.display =
       "none";
 
+
     buttonArea.style.display =
       "none";
+
 
     return;
 
@@ -672,13 +767,19 @@ function renderCart() {
 
 
 
+  /*
+   * カート項目を作成
+   */
+
   cartList.innerHTML =
     cart.map(
       (item, index) => `
 
         <div class="cart-item">
 
+
           <div class="item-top">
+
 
             <div class="item-name">
 
@@ -688,21 +789,28 @@ function renderCart() {
 
             </div>
 
+
             <button
+
               class="delete-button"
+
               onclick="
                 removeItem(${index})
               "
+
             >
 
               削除
 
             </button>
 
+
           </div>
 
 
+
           <div class="item-bottom">
+
 
             <div class="item-time">
 
@@ -710,13 +818,16 @@ function renderCart() {
 
             </div>
 
+
             <div class="item-price">
 
               ${formatPrice(item.price)}
 
             </div>
 
+
           </div>
+
 
         </div>
 
@@ -724,6 +835,10 @@ function renderCart() {
     ).join("");
 
 
+
+  /*
+   * 合計計算
+   */
 
   let totalPrice = 0;
 
@@ -744,6 +859,10 @@ function renderCart() {
 
 
 
+  /*
+   * 合計表示
+   */
+
   document.getElementById(
     "totalPrice"
   ).textContent =
@@ -763,6 +882,7 @@ function renderCart() {
   buttonArea.style.display =
     "block";
 
+
 }
 
 
@@ -773,12 +893,16 @@ function renderCart() {
 
 function removeItem(index) {
 
+
   const cart =
     getCart();
 
+
   cart.splice(index, 1);
 
+
   saveCart(cart);
+
 
   renderCart();
 
@@ -792,25 +916,35 @@ function removeItem(index) {
 
 function clearCart() {
 
+
   const cart =
     getCart();
 
+
   if (cart.length === 0) {
+
     return;
+
   }
+
 
   const result =
     confirm(
       "カートを空にしますか？"
     );
 
+
   if (!result) {
+
     return;
+
   }
+
 
   localStorage.removeItem(
     CART_KEY
   );
+
 
   renderCart();
 
@@ -824,6 +958,7 @@ function clearCart() {
 
 function addMenu() {
 
+
   window.location.href =
     MENU_URL;
 
@@ -832,16 +967,20 @@ function addMenu() {
 
 
 /* =========================
-   LINE送信用メッセージ
+   LINE送信用メッセージ作成
 ========================= */
 
 function createLineMessage() {
 
+
   const cart =
     getCart();
 
+
   if (cart.length === 0) {
+
     return "";
+
   }
 
 
@@ -861,11 +1000,14 @@ function createLineMessage() {
   cart.forEach(
     item => {
 
+
       const name =
         item.name || "メニュー";
 
+
       const price =
         Number(item.price) || 0;
+
 
       const time =
         Number(item.time) || 0;
@@ -879,11 +1021,9 @@ function createLineMessage() {
         "\n";
 
 
-      totalPrice +=
-        price;
+      totalPrice += price;
 
-      totalTime +=
-        time;
+      totalTime += time;
 
     }
   );
@@ -912,15 +1052,18 @@ function createLineMessage() {
 
 async function completeSelection() {
 
+
   const cart =
     getCart();
 
 
   if (cart.length === 0) {
 
+
     alert(
       "メニューを選択してください。"
     );
+
 
     return;
 
@@ -938,6 +1081,10 @@ async function completeSelection() {
       "status"
     );
 
+
+  /*
+   * 二重送信防止
+   */
 
   button.disabled =
     true;
@@ -959,27 +1106,28 @@ async function completeSelection() {
   try {
 
 
-    /* =========================
-       LIFF初期化
-    ========================= */
+    /*
+     * ページ読み込み時に
+     * LIFF初期化済みか確認
+     */
 
-    await liff.init({
-
-      liffId: LIFF_ID
-
-    });
+    if (!liffInitialized) {
 
 
-    console.log(
-      "LIFF初期化成功"
-    );
+      throw new Error(
+        "LIFFの初期化に失敗しています。"
+      );
+
+    }
 
 
-    /* =========================
-       LINEアプリ内確認
-    ========================= */
+
+    /*
+     * LINEアプリ内LIFFか確認
+     */
 
     if (!liff.isInClient()) {
+
 
       throw new Error(
         "LINEアプリ内のLIFFから開いてください。"
@@ -988,39 +1136,11 @@ async function completeSelection() {
     }
 
 
-    /* =========================
-       LIFF起動元確認
-    ========================= */
 
-    const context =
-      liff.getContext();
-
-
-    console.log(
-      "LIFF context：",
-      context
-    );
-
-
-    if (
-      !context ||
-      (
-        context.type !== "utou" &&
-        context.type !== "group" &&
-        context.type !== "room"
-      )
-    ) {
-
-      throw new Error(
-        "LINEトークから起動したLIFFではありません。"
-      );
-
-    }
-
-
-    /* =========================
-       sendMessages利用可能確認
-    ========================= */
+    /*
+     * chat_message.write
+     * 利用可能か確認
+     */
 
     if (
       !liff.isApiAvailable(
@@ -1028,30 +1148,27 @@ async function completeSelection() {
       )
     ) {
 
+
       throw new Error(
-        "LINEメッセージ送信機能が利用できません。LIFF設定の「chat_message.write」を確認してください。"
+        "LINEメッセージ送信機能が利用できません。LIFFのchat_message.write設定を確認してください。"
       );
 
     }
 
 
-    /* =========================
-       メッセージ作成
-    ========================= */
+
+    /*
+     * メッセージ作成
+     */
 
     const message =
       createLineMessage();
 
 
-    console.log(
-      "送信メッセージ：",
-      message
-    );
 
-
-    /* =========================
-       LINEへ送信
-    ========================= */
+    /*
+     * LINEトークへ送信
+     */
 
     await liff.sendMessages([
 
@@ -1066,21 +1183,16 @@ async function completeSelection() {
     ]);
 
 
-    console.log(
-      "LINE送信成功"
-    );
 
-
-    /* =========================
-       送信成功
-    ========================= */
+    /*
+     * 送信成功
+     */
 
     status.textContent =
       "送信しました。";
 
 
     /*
-     * 送信成功後だけ
      * カートを空にする
      */
 
@@ -1089,20 +1201,14 @@ async function completeSelection() {
     );
 
 
-    /* =========================
-       LIFFを閉じる
-    ========================= */
+    /*
+     * LIFFを閉じる
+     */
 
     setTimeout(
       () => {
 
-        if (
-          liff.isInClient()
-        ) {
-
-          liff.closeWindow();
-
-        }
+        liff.closeWindow();
 
       },
       300
@@ -1111,23 +1217,16 @@ async function completeSelection() {
 
   } catch (error) {
 
+
     console.error(
       "LINE送信エラー：",
       error
     );
 
 
-    console.error(
-      "error.code：",
-      error.code
-    );
-
-
-    console.error(
-      "error.message：",
-      error.message
-    );
-
+    /*
+     * エラー表示
+     */
 
     button.disabled =
       false;
@@ -1146,21 +1245,9 @@ async function completeSelection() {
       "";
 
 
-    /*
-     * エラー内容を確認できるようにする
-     */
-
-    const errorCode =
-      error.code
-        ? "\nエラーコード：" +
-          error.code
-        : "";
-
-
     alert(
       "LINEへの送信に失敗しました。\n\n" +
-      error.message +
-      errorCode
+      error.message
     );
 
   }
@@ -1174,6 +1261,7 @@ async function completeSelection() {
 ========================= */
 
 function escapeHTML(value) {
+
 
   return String(value)
 
@@ -1214,9 +1302,22 @@ window.addEventListener(
 
   "DOMContentLoaded",
 
-  function() {
+  async function() {
+
+
+    /*
+     * まずカートを表示
+     */
 
     renderCart();
+
+
+    /*
+     * その後LIFF初期化
+     */
+
+    await initializeLIFF();
+
 
   }
 
