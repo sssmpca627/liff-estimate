@@ -12,28 +12,17 @@
 
 <title>選択したメニュー</title>
 
-
-<!-- LINE LIFF SDK -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
-
 <style>
-
-/* =========================
-   基本設定
-========================= */
 
 * {
   box-sizing: border-box;
 }
 
-
 body {
-
   margin: 0;
-
   background: #f7f7f7;
-
   color: #333;
 
   font-family:
@@ -43,166 +32,90 @@ body {
     "Hiragino Kaku Gothic ProN",
     "Yu Gothic",
     sans-serif;
-
 }
-
-
-/* =========================
-   コンテナ
-========================= */
 
 .container {
-
   max-width: 700px;
-
   margin: 0 auto;
-
   padding: 40px 20px 60px;
-
 }
 
-
-/* =========================
-   メインカード
-========================= */
-
 .card {
-
   background: #fff;
-
   border-radius: 24px;
-
   padding: 35px 25px;
 
   box-shadow:
     0 3px 12px rgba(0,0,0,0.06);
-
 }
-
-
-/* =========================
-   タイトル
-========================= */
 
 h1 {
-
   text-align: center;
-
   font-size: 30px;
-
   margin: 0 0 10px;
-
 }
 
-
 .subtitle {
-
   text-align: center;
-
   color: #888;
-
   font-size: 16px;
-
   margin-bottom: 30px;
-
 }
 
 
 /* =========================
-   カート項目
+   メニュー
 ========================= */
 
 .cart-item {
-
   border: 1px solid #e3e3e3;
-
   border-radius: 18px;
-
   padding: 20px;
-
   margin-bottom: 15px;
-
   background: #fff;
-
 }
-
 
 .item-top {
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: flex-start;
-
   gap: 15px;
-
 }
-
 
 .item-name {
-
   font-size: 21px;
-
   font-weight: 700;
-
   line-height: 1.4;
-
 }
-
 
 .delete-button {
-
   border: none;
-
   background: transparent;
-
   color: #aaa;
-
   font-size: 16px;
-
   padding: 2px 0;
-
   cursor: pointer;
-
 }
-
 
 .delete-button:active {
-
   opacity: 0.5;
-
 }
-
 
 .item-bottom {
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   margin-top: 14px;
-
 }
-
 
 .item-time {
-
   color: #888;
-
   font-size: 17px;
-
 }
 
-
 .item-price {
-
   font-size: 20px;
-
   font-weight: 700;
-
 }
 
 
@@ -211,53 +124,31 @@ h1 {
 ========================= */
 
 .total {
-
   border-top: 1px solid #ddd;
-
   margin-top: 25px;
-
   padding-top: 25px;
-
 }
-
 
 .total-row {
-
   display: flex;
-
   justify-content: space-between;
-
   align-items: center;
-
   margin-bottom: 18px;
-
 }
-
 
 .total-label {
-
   font-size: 18px;
-
   color: #666;
-
 }
-
 
 .total-price {
-
   font-size: 32px;
-
   font-weight: 700;
-
 }
 
-
 .total-time {
-
   font-size: 28px;
-
   font-weight: 700;
-
 }
 
 
@@ -266,69 +157,43 @@ h1 {
 ========================= */
 
 .button-area {
-
   margin-top: 30px;
-
 }
-
 
 .button {
-
   width: 100%;
-
   border-radius: 16px;
-
   padding: 18px 20px;
-
   font-size: 19px;
-
   font-weight: 700;
-
   cursor: pointer;
-
 }
-
 
 .add-button {
-
   background: #fff;
-
   border: 1px solid #ccc;
-
   color: #333;
-
   margin-bottom: 15px;
-
 }
 
-
-.reserve-button {
-
+.complete-button {
   background: #333;
-
   border: 1px solid #333;
-
   color: #fff;
-
 }
 
+.complete-button:disabled {
+  opacity: 0.5;
+}
 
 .clear-button {
-
   display: block;
-
   margin: 25px auto 0;
-
   border: none;
-
   background: transparent;
-
   color: #aaa;
-
   font-size: 16px;
-
   cursor: pointer;
-
 }
 
 
@@ -337,33 +202,20 @@ h1 {
 ========================= */
 
 .empty {
-
   text-align: center;
-
   padding: 35px 10px 20px;
-
 }
-
 
 .empty-title {
-
   font-size: 22px;
-
   font-weight: 700;
-
   margin-bottom: 12px;
-
 }
 
-
 .empty-message {
-
   color: #888;
-
   font-size: 16px;
-
   line-height: 1.7;
-
 }
 
 
@@ -372,35 +224,16 @@ h1 {
 ========================= */
 
 #status {
-
   text-align: center;
-
   color: #888;
-
   font-size: 14px;
-
   margin-top: 20px;
-
+  line-height: 1.6;
 }
-
-
-/* =========================
-   送信中
-========================= */
-
-.sending {
-
-  opacity: 0.6;
-
-  pointer-events: none;
-
-}
-
 
 </style>
 
 </head>
-
 
 
 <body>
@@ -412,10 +245,6 @@ h1 {
   <div class="card">
 
 
-    <!-- =========================
-         タイトル
-    ========================== -->
-
     <h1>
       選択したメニュー
     </h1>
@@ -426,13 +255,7 @@ h1 {
     </div>
 
 
-
-    <!-- =========================
-         カート内容
-    ========================== -->
-
     <div id="cartList"></div>
-
 
 
     <!-- =========================
@@ -476,9 +299,7 @@ h1 {
 
       </div>
 
-
     </div>
-
 
 
     <!-- =========================
@@ -491,7 +312,6 @@ h1 {
       style="display:none;"
     >
 
-
       <button
         class="button add-button"
         onclick="addMenu()"
@@ -502,7 +322,7 @@ h1 {
 
       <button
         id="completeButton"
-        class="button reserve-button"
+        class="button complete-button"
         onclick="completeSelection()"
       >
         選択完了
@@ -515,7 +335,6 @@ h1 {
       >
         カートを空にする
       </button>
-
 
     </div>
 
@@ -534,24 +353,20 @@ h1 {
 
 
 /* =========================
-   LIFF設定
+   設定
 ========================= */
 
 const LIFF_ID =
   "2011037691-j7UfaGxQ";
 
 
-/* =========================
-   カート保存場所
-========================= */
-
 const CART_KEY =
   "salon_cart";
 
 
-/* =========================
-   メニュー画面
-========================= */
+/*
+ * メニュー画面
+ */
 
 const MENU_URL =
   "./menu.html";
@@ -564,43 +379,30 @@ const MENU_URL =
 
 function getCart() {
 
-
   const saved =
     localStorage.getItem(CART_KEY);
 
-
   if (!saved) {
-
     return [];
-
   }
 
-
   try {
-
 
     const cart =
       JSON.parse(saved);
 
-
     if (!Array.isArray(cart)) {
-
       return [];
-
     }
-
 
     return cart;
 
-
   } catch (error) {
-
 
     console.error(
       "カート読み込みエラー：",
       error
     );
-
 
     return [];
 
@@ -616,13 +418,9 @@ function getCart() {
 
 function saveCart(cart) {
 
-
   localStorage.setItem(
-
     CART_KEY,
-
     JSON.stringify(cart)
-
   );
 
 }
@@ -635,10 +433,8 @@ function saveCart(cart) {
 
 function formatPrice(price) {
 
-
   const number =
     Number(price) || 0;
-
 
   return (
     "¥" +
@@ -655,22 +451,18 @@ function formatPrice(price) {
 
 function renderCart() {
 
-
   const cart =
     getCart();
-
 
   const cartList =
     document.getElementById(
       "cartList"
     );
 
-
   const totalArea =
     document.getElementById(
       "totalArea"
     );
-
 
   const buttonArea =
     document.getElementById(
@@ -678,12 +470,9 @@ function renderCart() {
     );
 
 
-  /*
-   * カートが空の場合
-   */
+  /* 空の場合 */
 
   if (cart.length === 0) {
-
 
     cartList.innerHTML = `
 
@@ -704,24 +493,17 @@ function renderCart() {
 
     `;
 
-
     totalArea.style.display =
       "none";
-
 
     buttonArea.style.display =
       "none";
 
-
     return;
-
   }
 
 
-
-  /*
-   * カート項目を作成
-   */
+  /* メニュー一覧 */
 
   cartList.innerHTML =
     cart.map(
@@ -729,57 +511,35 @@ function renderCart() {
 
         <div class="cart-item">
 
-
           <div class="item-top">
 
-
             <div class="item-name">
-
               ${escapeHTML(
                 item.name || "メニュー"
               )}
-
             </div>
 
-
             <button
-
               class="delete-button"
-
-              onclick="
-                removeItem(${index})
-              "
-
+              onclick="removeItem(${index})"
             >
-
               削除
-
             </button>
 
-
           </div>
-
 
 
           <div class="item-bottom">
 
-
             <div class="item-time">
-
               約${Number(item.time) || 0}分
-
             </div>
-
 
             <div class="item-price">
-
               ${formatPrice(item.price)}
-
             </div>
 
-
           </div>
-
 
         </div>
 
@@ -787,33 +547,22 @@ function renderCart() {
     ).join("");
 
 
-
-  /*
-   * 合計計算
-   */
+  /* 合計 */
 
   let totalPrice = 0;
-
   let totalTime = 0;
 
 
-  cart.forEach(
-    item => {
+  cart.forEach(item => {
 
-      totalPrice +=
-        Number(item.price) || 0;
+    totalPrice +=
+      Number(item.price) || 0;
 
-      totalTime +=
-        Number(item.time) || 0;
+    totalTime +=
+      Number(item.time) || 0;
 
-    }
-  );
+  });
 
-
-
-  /*
-   * 合計表示
-   */
 
   document.getElementById(
     "totalPrice"
@@ -830,10 +579,8 @@ function renderCart() {
   totalArea.style.display =
     "block";
 
-
   buttonArea.style.display =
     "block";
-
 
 }
 
@@ -845,16 +592,12 @@ function renderCart() {
 
 function removeItem(index) {
 
-
   const cart =
     getCart();
 
-
   cart.splice(index, 1);
 
-
   saveCart(cart);
-
 
   renderCart();
 
@@ -868,15 +611,11 @@ function removeItem(index) {
 
 function clearCart() {
 
-
   const cart =
     getCart();
 
-
   if (cart.length === 0) {
-
     return;
-
   }
 
 
@@ -887,16 +626,13 @@ function clearCart() {
 
 
   if (!result) {
-
     return;
-
   }
 
 
   localStorage.removeItem(
     CART_KEY
   );
-
 
   renderCart();
 
@@ -910,7 +646,6 @@ function clearCart() {
 
 function addMenu() {
 
-
   window.location.href =
     MENU_URL;
 
@@ -919,25 +654,21 @@ function addMenu() {
 
 
 /* =========================
-   LINE送信用メッセージ作成
+   LINEメッセージ作成
 ========================= */
 
 function createLineMessage() {
-
 
   const cart =
     getCart();
 
 
   if (cart.length === 0) {
-
     return "";
-
   }
 
 
   let totalPrice = 0;
-
   let totalTime = 0;
 
 
@@ -949,36 +680,31 @@ function createLineMessage() {
     "【選択したメニュー一覧】\n\n";
 
 
-  cart.forEach(
-    item => {
+  cart.forEach(item => {
+
+    const name =
+      item.name || "メニュー";
+
+    const price =
+      Number(item.price) || 0;
+
+    const time =
+      Number(item.time) || 0;
 
 
-      const name =
-        item.name || "メニュー";
+    message +=
+      "✔ " +
+      name +
+      "　" +
+      formatPrice(price) +
+      "\n";
 
 
-      const price =
-        Number(item.price) || 0;
+    totalPrice += price;
 
+    totalTime += time;
 
-      const time =
-        Number(item.time) || 0;
-
-
-      message +=
-        "✔ " +
-        name +
-        "　" +
-        formatPrice(price) +
-        "\n";
-
-
-      totalPrice += price;
-
-      totalTime += time;
-
-    }
-  );
+  });
 
 
   message +=
@@ -1004,18 +730,15 @@ function createLineMessage() {
 
 async function completeSelection() {
 
-
   const cart =
     getCart();
 
 
   if (cart.length === 0) {
 
-
     alert(
       "メニューを選択してください。"
     );
-
 
     return;
 
@@ -1027,7 +750,6 @@ async function completeSelection() {
       "completeButton"
     );
 
-
   const status =
     document.getElementById(
       "status"
@@ -1035,59 +757,52 @@ async function completeSelection() {
 
 
   /*
-   * 二重送信防止
+   * 二重タップ防止
    */
 
-  button.disabled =
-    true;
-
-
-  button.classList.add(
-    "sending"
-  );
-
+  button.disabled = true;
 
   button.textContent =
     "送信中…";
 
 
   status.textContent =
-    "選択したメニューを送信しています…";
+    "選択したメニューをLINEへ送信しています…";
 
 
   try {
 
 
-    /*
-     * LIFF初期化
-     */
+    /* =========================
+       LIFF初期化
+    ========================== */
 
     await liff.init({
-
       liffId: LIFF_ID
-
     });
 
 
+    console.log(
+      "LIFF初期化成功"
+    );
 
-    /*
-     * LINEアプリ内LIFFか確認
-     */
+
+    /* =========================
+       LINEアプリ内か確認
+    ========================== */
 
     if (!liff.isInClient()) {
 
-
       throw new Error(
-        "LINEアプリ内のLIFFから開いてください。"
+        "LINEアプリ内から開いてください。"
       );
 
     }
 
 
-
-    /*
-     * chat_message.write が利用可能か確認
-     */
+    /* =========================
+       sendMessages利用確認
+    ========================== */
 
     if (
       !liff.isApiAvailable(
@@ -1095,51 +810,50 @@ async function completeSelection() {
       )
     ) {
 
-
       throw new Error(
-        "LINEメッセージ送信機能が利用できません。LIFFのchat_message.write設定を確認してください。"
+        "LINEメッセージ送信機能が利用できません。LIFF設定の「chat_message.write」を確認してください。"
       );
 
     }
 
 
-
-    /*
-     * メッセージ作成
-     */
+    /* =========================
+       メッセージ作成
+    ========================== */
 
     const message =
       createLineMessage();
 
 
-    /*
-     * LINEトークへ送信
-     */
+    /* =========================
+       LINEトークへ送信
+    ========================== */
 
     await liff.sendMessages([
 
       {
-
         type: "text",
-
         text: message
-
       }
 
     ]);
 
 
+    console.log(
+      "LINE送信成功"
+    );
 
-    /*
-     * 送信成功
-     */
+
+    /* =========================
+       送信成功
+    ========================== */
 
     status.textContent =
       "送信しました。";
 
 
     /*
-     * カートを空にする
+     * 送信後にカートを空にする
      */
 
     localStorage.removeItem(
@@ -1148,21 +862,20 @@ async function completeSelection() {
 
 
     /*
-     * LIFFを閉じる
+     * 少し待ってから閉じる
      */
 
     setTimeout(
-      () => {
+      function() {
 
         liff.closeWindow();
 
       },
-      300
+      500
     );
 
 
   } catch (error) {
-
 
     console.error(
       "LINE送信エラー：",
@@ -1170,18 +883,8 @@ async function completeSelection() {
     );
 
 
-    /*
-     * エラー表示
-     */
-
     button.disabled =
       false;
-
-
-    button.classList.remove(
-      "sending"
-    );
-
 
     button.textContent =
       "選択完了";
@@ -1207,7 +910,6 @@ async function completeSelection() {
 ========================= */
 
 function escapeHTML(value) {
-
 
   return String(value)
 
@@ -1245,15 +947,12 @@ function escapeHTML(value) {
 ========================= */
 
 window.addEventListener(
-
   "DOMContentLoaded",
-
   function() {
 
     renderCart();
 
   }
-
 );
 
 
