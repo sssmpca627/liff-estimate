@@ -2,7 +2,6 @@
 <html lang="ja">
 
 <head>
-
 <meta charset="UTF-8">
 
 <meta
@@ -20,7 +19,6 @@
 
 body {
   margin: 0;
-  padding: 0;
   background: #f7f7f7;
   color: #333;
   font-family:
@@ -35,13 +33,13 @@ body {
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 30px 20px 50px;
+  padding: 30px 20px;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
-  padding: 30px 22px;
+  padding: 28px 20px 30px;
   box-shadow: 0 3px 15px rgba(0,0,0,0.06);
 }
 
@@ -49,34 +47,33 @@ body {
   text-align: right;
   font-size: 28px;
   color: #999;
-  cursor: pointer;
   line-height: 1;
+  cursor: pointer;
 }
 
 h1 {
   text-align: center;
   font-size: 24px;
-  margin: 10px 0 25px;
+  margin: 12px 0 28px;
 }
 
-.title {
+.label {
   text-align: center;
-  font-size: 15px;
-  color: #777;
-  margin-bottom: 8px;
+  color: #888;
+  font-size: 14px;
 }
 
 .time {
   text-align: center;
   font-size: 38px;
   font-weight: 700;
-  margin: 5px 0 20px;
+  margin: 8px 0 20px;
 }
 
 .description {
   text-align: center;
-  font-size: 14px;
   color: #777;
+  font-size: 14px;
   line-height: 1.8;
   margin-bottom: 30px;
 }
@@ -95,7 +92,6 @@ h1 {
 }
 
 </style>
-
 </head>
 
 
@@ -103,50 +99,44 @@ h1 {
 
 <div class="container">
 
-<div class="card">
+  <div class="card">
 
-<div
-  class="close"
-  onclick="closePage()"
->
-×
-</div>
+    <div
+      class="close"
+      onclick="closePage()"
+    >
+      ×
+    </div>
 
+    <h1>
+      予約枠を選択する
+    </h1>
 
-<h1>
-予約枠を選択する
-</h1>
+    <div class="label">
+      施術時間目安
+    </div>
 
+    <div
+      id="time"
+      class="time"
+    >
+      0分
+    </div>
 
-<div class="title">
-施術時間目安
-</div>
+    <div class="description">
+      今回の施術時間に合わせて<br>
+      予約枠をお選びください。
+    </div>
 
+    <a
+      id="reserveButton"
+      class="reserve-button"
+      href="#"
+    >
+      予約日時を選択する
+    </a>
 
-<div
-  id="time"
-  class="time"
->
-読み込み中...
-</div>
-
-
-<div class="description">
-今回の施術時間に合わせて<br>
-予約枠をお選びください。
-</div>
-
-
-<a
-  id="reserveButton"
-  class="reserve-button"
-  href="#"
->
-予約日時を選択する
-</a>
-
-
-</div>
+  </div>
 
 </div>
 
@@ -154,8 +144,8 @@ h1 {
 <script>
 
 /* ==================================================
-   元の予約フォームURL
-   ※ここには time を付けない
+   元々使用している予約フォームURL
+   ※ここは変更しない
 ================================================== */
 
 const RESERVATION_FORM_URL =
@@ -166,41 +156,26 @@ const RESERVATION_FORM_URL =
    URLから施術時間を取得
 ================================================== */
 
-function getTreatmentTime() {
+function getTime() {
 
   const params =
     new URLSearchParams(
       window.location.search
     );
 
-
-  const time =
+  const value =
     params.get("time");
 
-
-  if (!time) {
-
-    return 0;
-
-  }
-
-
-  const number =
-    Number(time);
-
+  const time =
+    parseInt(value, 10);
 
   if (
-    !Number.isFinite(number) ||
-    number < 0
+    Number.isNaN(time)
   ) {
-
     return 0;
-
   }
 
-
-  return Math.round(number);
-
+  return time;
 }
 
 
@@ -208,11 +183,10 @@ function getTreatmentTime() {
    表示
 ================================================== */
 
-function displayTime() {
+function init() {
 
   const time =
-    getTreatmentTime();
-
+    getTime();
 
   document.getElementById(
     "time"
@@ -220,10 +194,17 @@ function displayTime() {
     time + "分";
 
 
+  /*
+    予約フォームへは
+    timeを一切付けない
+  */
+
   document.getElementById(
     "reserveButton"
-  ).href =
-    RESERVATION_FORM_URL;
+  ).setAttribute(
+    "href",
+    RESERVATION_FORM_URL
+  );
 
 }
 
@@ -234,7 +215,17 @@ function displayTime() {
 
 function closePage() {
 
-  window.history.back();
+  if (
+    window.history.length > 1
+  ) {
+
+    window.history.back();
+
+  } else {
+
+    window.close();
+
+  }
 
 }
 
@@ -245,7 +236,7 @@ function closePage() {
 
 document.addEventListener(
   "DOMContentLoaded",
-  displayTime
+  init
 );
 
 </script>
