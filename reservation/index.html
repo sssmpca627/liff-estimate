@@ -10,9 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>選択したメニュー</title>
-
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<title>予約枠を選択する</title>
 
 <style>
 
@@ -34,115 +32,59 @@ body {
 }
 
 .container {
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 30px 20px 60px;
+  padding: 30px 20px;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
-  padding: 28px 20px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  padding: 28px 20px 30px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+
+.close {
+  text-align: right;
+  font-size: 28px;
+  color: #999;
+  line-height: 1;
+  cursor: pointer;
 }
 
 h1 {
   text-align: center;
-  font-size: 27px;
-  margin: 0 0 10px;
+  font-size: 24px;
+  margin: 12px 0 28px;
 }
 
-.subtitle {
+.label {
   text-align: center;
   color: #888;
-  font-size: 15px;
-  margin-bottom: 25px;
+  font-size: 14px;
 }
 
-.cart-item {
-  border: 1px solid #e3e3e3;
-  border-radius: 18px;
-  padding: 17px;
-  margin-bottom: 12px;
-}
-
-.item-name {
-  font-size: 19px;
+.time {
+  text-align: center;
+  font-size: 38px;
   font-weight: 700;
+  margin: 8px 0 20px;
 }
 
-.item-category {
-  margin-top: 5px;
-  color: #999;
-  font-size: 13px;
-}
-
-.item-bottom {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+.description {
+  text-align: center;
   color: #777;
-}
-
-.delete-button {
-  margin-top: 12px;
-  border: none;
-  background: transparent;
-  color: #999;
-  padding: 0;
-  cursor: pointer;
-}
-
-.total {
-  border-top: 1px solid #ddd;
-  margin-top: 22px;
-  padding-top: 20px;
-}
-
-.total-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 13px;
-}
-
-.total-label {
-  color: #666;
-}
-
-.total-value {
-  font-size: 21px;
-  font-weight: 700;
-}
-
-.button {
-  width: 100%;
-  border-radius: 16px;
-  padding: 16px;
-  font-size: 17px;
-  font-weight: 700;
-  margin-top: 12px;
-  cursor: pointer;
-}
-
-.add-button {
-  background: #fff;
-  border: 1px solid #ccc;
-}
-
-.complete-button {
-  background: #333;
-  border: 1px solid #333;
-  color: #fff;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 30px;
 }
 
 .reserve-button {
   display: block;
   width: 100%;
+  padding: 17px 10px;
   border-radius: 16px;
-  padding: 16px;
-  margin-top: 12px;
   background: #333;
-  border: 1px solid #333;
   color: #fff;
   text-align: center;
   text-decoration: none;
@@ -150,138 +92,53 @@ h1 {
   font-weight: 700;
 }
 
-.clear-button {
-  display: block;
-  margin: 20px auto 0;
-  border: none;
-  background: transparent;
-  color: #aaa;
-  cursor: pointer;
-}
-
-#status {
-  text-align: center;
-  color: #888;
-  font-size: 14px;
-  margin-top: 18px;
-  white-space: pre-line;
-}
-
-.loading {
-  text-align: center;
-  padding: 35px 10px;
-  color: #888;
-  font-size: 15px;
-}
-
 </style>
 
 </head>
+
 
 <body>
 
 <div class="container">
 
-<div class="card">
+  <div class="card">
 
-<h1>
-選択したメニュー
-</h1>
+    <div
+      class="close"
+      onclick="closePage()"
+    >
+      ×
+    </div>
 
-<div class="subtitle">
-追加したメニューをご確認ください
-</div>
+    <h1>
+      予約枠を選択する
+    </h1>
 
-<div id="cartList">
+    <div class="label">
+      施術時間目安
+    </div>
 
-<div class="loading">
-メニューを追加しています…
-</div>
+    <div
+      id="time"
+      class="time"
+    >
+      読み込み中...
+    </div>
 
-</div>
+    <div class="description">
+      今回の施術時間に合わせて<br>
+      予約枠をお選びください。
+    </div>
 
+    <a
+      id="reserveButton"
+      class="reserve-button"
+      href="#"
+    >
+      予約日時を選択する
+    </a>
 
-<div class="total">
-
-<div class="total-row">
-
-<div class="total-label">
-合計金額
-</div>
-
-<div
-  id="totalPrice"
-  class="total-value"
->
-¥0
-</div>
-
-</div>
-
-
-<div class="total-row">
-
-<div class="total-label">
-施術時間目安
-</div>
-
-<div
-  id="totalTime"
-  class="total-value"
->
-0分
-</div>
-
-</div>
-
-</div>
-
-
-<!-- メニュー追加 -->
-
-<button
-  type="button"
-  class="button add-button"
-  onclick="addMenuMessage()"
->
-メニュー追加
-</button>
-
-
-<!-- 予約枠を選択する -->
-
-<a
-  id="reserveButton"
-  class="reserve-button"
-  href="#"
->
-予約枠を選択する
-</a>
-
-
-<!-- 選択完了 -->
-
-<button
-  type="button"
-  id="completeButton"
-  class="button complete-button"
-  onclick="completeSelection()"
->
-選択完了
-</button>
-
-
-<button
-  type="button"
-  class="clear-button"
-  onclick="clearCart()"
->
-カートを空にする
-</button>
-
-</div>
-
-<div id="status"></div>
+  </div>
 
 </div>
 
@@ -289,1310 +146,111 @@ h1 {
 <script>
 
 /* ==================================================
-   設定
+   元々使用している予約フォームURL
+   ※ここは変更しない
 ================================================== */
 
-const LIFF_ID =
-  "2011037691-j7UfaGxQ";
-
-const CART_KEY =
-  "salon_cart";
+const RESERVATION_FORM_URL =
+  "https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL";
 
 
 /* ==================================================
-   予約枠ページURL
+   URLから施術時間を取得
 ================================================== */
 
-const RESERVATION_PAGE_URL =
-  "https://sssmpca627.github.io/liff-estimate/reservation/";
-
-
-/* ==================================================
-   メニュー一覧
-================================================== */
-
-const MENUS = {
-
-  /* ---------- 全身脱毛 ---------- */
-
-  full_none: {
-    menu: "full_none",
-    name: "顔・VIOなし",
-    category: "全身脱毛",
-    price: 13000,
-    time: 90
-  },
-
-  full_face_or_vio: {
-    menu: "full_face_or_vio",
-    name: "顔orVIO",
-    category: "全身脱毛",
-    price: 14000,
-    time: 100
-  },
-
-  full_face_vio: {
-    menu: "full_face_vio",
-    name: "顔・VIO",
-    category: "全身脱毛",
-    price: 15000,
-    time: 120
-  },
-
-
-  /* ---------- 顔・首まわり ---------- */
-
-  face_all: {
-    menu: "face_all",
-    name: "顔全体",
-    category: "顔・首まわり",
-    price: 5000,
-    time: 30
-  },
-
-  face_upper: {
-    menu: "face_upper",
-    name: "上顔面／鼻上",
-    category: "顔・首まわり",
-    price: 3000,
-    time: 30
-  },
-
-  face_lower: {
-    menu: "face_lower",
-    name: "下顔面／鼻下",
-    category: "顔・首まわり",
-    price: 3000,
-    time: 30
-  },
-
-  eyebrow: {
-    menu: "eyebrow",
-    name: "眉毛",
-    category: "顔・首まわり",
-    price: 1500,
-    time: 20
-  },
-
-  mouth: {
-    menu: "mouth",
-    name: "口周り",
-    category: "顔・首まわり",
-    price: 2000,
-    time: 20
-  },
-
-  nose_hair: {
-    menu: "nose_hair",
-    name: "鼻毛",
-    category: "顔・首まわり",
-    price: 1000,
-    time: 20
-  },
-
-  ear_hair: {
-    menu: "ear_hair",
-    name: "耳毛",
-    category: "顔・首まわり",
-    price: 1000,
-    time: 20
-  },
-
-  neck: {
-    menu: "neck",
-    name: "うなじ",
-    category: "顔・首まわり",
-    price: 3000,
-    time: 20
-  },
-
-
-  /* ---------- 上半身 ---------- */
-
-  arm_all: {
-    menu: "arm_all",
-    name: "うで全体／指込",
-    category: "上半身",
-    price: 5000,
-    time: 30
-  },
-
-  upper_arm: {
-    menu: "upper_arm",
-    name: "ひじ上",
-    category: "上半身",
-    price: 2000,
-    time: 30
-  },
-
-  lower_arm: {
-    menu: "lower_arm",
-    name: "ひじ下",
-    category: "上半身",
-    price: 2000,
-    time: 30
-  },
-
-  hand: {
-    menu: "hand",
-    name: "手の甲・指",
-    category: "上半身",
-    price: 1500,
-    time: 20
-  },
-
-  armpit: {
-    menu: "armpit",
-    name: "脇",
-    category: "上半身",
-    price: 2000,
-    time: 20
-  },
-
-  chest: {
-    menu: "chest",
-    name: "胸全体",
-    category: "上半身",
-    price: 3000,
-    time: 20
-  },
-
-  areola: {
-    menu: "areola",
-    name: "乳輪周り",
-    category: "上半身",
-    price: 2000,
-    time: 20
-  },
-
-  stomach: {
-    menu: "stomach",
-    name: "お腹全体",
-    category: "上半身",
-    price: 4000,
-    time: 20
-  },
-
-  back_all: {
-    menu: "back_all",
-    name: "背中全体",
-    category: "上半身",
-    price: 5000,
-    time: 20
-  },
-
-  back_upper: {
-    menu: "back_upper",
-    name: "背中上",
-    category: "上半身",
-    price: 3000,
-    time: 20
-  },
-
-  waist: {
-    menu: "waist",
-    name: "腰",
-    category: "上半身",
-    price: 3000,
-    time: 20
-  },
-
-
-  /* ---------- 下半身 ---------- */
-
-  leg_all: {
-    menu: "leg_all",
-    name: "脚全体／指込",
-    category: "下半身",
-    price: 6000,
-    time: 30
-  },
-
-  thigh: {
-    menu: "thigh",
-    name: "ひざ上",
-    category: "下半身",
-    price: 3000,
-    time: 30
-  },
-
-  lower_leg: {
-    menu: "lower_leg",
-    name: "ひざ下",
-    category: "下半身",
-    price: 2000,
-    time: 30
-  },
-
-  foot: {
-    menu: "foot",
-    name: "足の甲・指",
-    category: "下半身",
-    price: 1500,
-    time: 20
-  },
-
-  hip: {
-    menu: "hip",
-    name: "おしり",
-    category: "下半身",
-    price: 3000,
-    time: 20
-  },
-
-
-  /* ---------- VIO ---------- */
-
-  vio_all: {
-    menu: "vio_all",
-    name: "VIO全体",
-    category: "VIO",
-    price: 5000,
-    time: 40
-  },
-
-  v_line: {
-    menu: "v_line",
-    name: "Vライン",
-    category: "VIO",
-    price: 3500,
-    time: 30
-  },
-
-  v: {
-    menu: "v",
-    name: "V",
-    category: "VIO",
-    price: 2000,
-    time: 20
-  },
-
-  i: {
-    menu: "i",
-    name: "I",
-    category: "VIO",
-    price: 2000,
-    time: 20
-  },
-
-  o: {
-    menu: "o",
-    name: "O",
-    category: "VIO",
-    price: 2000,
-    time: 20
-  },
-
-
-  /* ---------- フェイシャル ---------- */
-
-  facial_light: {
-    menu: "facial_light",
-    name: "光美肌コース／ライト",
-    category: "フェイシャル",
-    price: 5000,
-    time: 40
-  },
-
-  facial_standard: {
-    menu: "facial_standard",
-    name: "光美肌コース／スタンダード",
-    category: "フェイシャル",
-    price: 7000,
-    time: 60
-  },
-
-  facial_premium: {
-    menu: "facial_premium",
-    name: "光美肌コース／プレミアム",
-    category: "フェイシャル",
-    price: 9000,
-    time: 90
-  },
-
-  hydro_light: {
-    menu: "hydro_light",
-    name: "水素ハイドラコース／ライト",
-    category: "フェイシャル",
-    price: 5000,
-    time: 40
-  },
-
-  hydro_standard: {
-    menu: "hydro_standard",
-    name: "水素ハイドラコース／スタンダード",
-    category: "フェイシャル",
-    price: 7000,
-    time: 60
-  },
-
-  hydro_premium: {
-    menu: "hydro_premium",
-    name: "水素ハイドラコース／プレミアム",
-    category: "フェイシャル",
-    price: 9000,
-    time: 90
-  },
-
-  plasma_light: {
-    menu: "plasma_light",
-    name: "プラズマ肌改善コース／ライト",
-    category: "フェイシャル",
-    price: 5000,
-    time: 40
-  },
-
-  plasma_standard: {
-    menu: "plasma_standard",
-    name: "プラズマ肌改善コース／スタンダード",
-    category: "フェイシャル",
-    price: 7000,
-    time: 60
-  },
-
-  plasma_premium: {
-    menu: "plasma_premium",
-    name: "プラズマ肌改善コース／プレミアム",
-    category: "フェイシャル",
-    price: 9000,
-    time: 90
-  },
-
-  radio_ems_light: {
-    menu: "radio_ems_light",
-    name: "ラジオ波＆EMS小顔コース／ライト",
-    category: "フェイシャル",
-    price: 5000,
-    time: 40
-  },
-
-  radio_ems_standard: {
-    menu: "radio_ems_standard",
-    name: "ラジオ波＆EMS小顔コース／スタンダード",
-    category: "フェイシャル",
-    price: 7000,
-    time: 60
-  },
-
-  radio_ems_premium: {
-    menu: "radio_ems_premium",
-    name: "ラジオ波＆EMS小顔コース／プレミアム",
-    category: "フェイシャル",
-    price: 9000,
-    time: 90
-  },
-
-  pencil_light: {
-    menu: "pencil_light",
-    name: "ペンシルシミケアコース／ライト",
-    category: "フェイシャル",
-    price: 5000,
-    time: 40
-  },
-
-  pencil_standard: {
-    menu: "pencil_standard",
-    name: "ペンシルシミケアコース／スタンダード",
-    category: "フェイシャル",
-    price: 7000,
-    time: 60
-  },
-
-  pencil_premium: {
-    menu: "pencil_premium",
-    name: "ペンシルシミケアコース／プレミアム",
-    category: "フェイシャル",
-    price: 9000,
-    time: 90
-  },
-
-  totte_light: {
-    menu: "totte_light",
-    name: "totte+コース／ライト",
-    category: "フェイシャル",
-    price: 5000,
-    time: 40
-  },
-
-  totte_standard: {
-    menu: "totte_standard",
-    name: "totte+コース／スタンダード",
-    category: "フェイシャル",
-    price: 7000,
-    time: 60
-  },
-
-  totte_premium: {
-    menu: "totte_premium",
-    name: "totte+コース／プレミアム",
-    category: "フェイシャル",
-    price: 9000,
-    time: 90
-  }
-
-};
-
-
-/* ==================================================
-   LIFF初期化
-================================================== */
-
-let liffInitialized = false;
-let liffInitializing = false;
-
-async function initLIFF() {
-
-  if (liffInitialized) {
-    return;
-  }
-
-  if (liffInitializing) {
-
-    while (liffInitializing) {
-
-      await new Promise(
-        resolve =>
-          setTimeout(resolve, 50)
-      );
-
-    }
-
-    return;
-  }
-
-  liffInitializing = true;
-
-  try {
-
-    await liff.init({
-      liffId: LIFF_ID
-    });
-
-    liffInitialized = true;
-
-  } finally {
-
-    liffInitializing = false;
-
-  }
-
-}
-
-
-/* ==================================================
-   カート取得
-================================================== */
-
-function getCart() {
-
-  const saved =
-    localStorage.getItem(CART_KEY);
-
-  if (!saved) {
-    return [];
-  }
-
-  try {
-
-    const cart =
-      JSON.parse(saved);
-
-    return Array.isArray(cart)
-      ? cart
-      : [];
-
-  } catch (error) {
-
-    console.error(
-      "カート読み込みエラー",
-      error
+function getTreatmentTime() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
     );
 
-    return [];
+  const value =
+    params.get("time");
+
+  const time =
+    Number(value);
+
+  if (
+    !Number.isFinite(time)
+  ) {
+
+    return 0;
 
   }
 
-}
-
-
-/* ==================================================
-   カート保存
-================================================== */
-
-function saveCart(cart) {
-
-  localStorage.setItem(
-    CART_KEY,
-    JSON.stringify(cart)
-  );
+  return Math.round(time);
 
 }
 
 
 /* ==================================================
-   合計時間取得
+   初期表示
 ================================================== */
 
-function getTotalTime() {
+function init() {
 
-  const cart =
-    getCart();
-
-  return cart.reduce(
-    (total, item) => {
-
-      const time =
-        Number(item.time);
-
-      return total +
-        (
-          Number.isFinite(time)
-            ? time
-            : 0
-        );
-
-    },
-    0
-  );
-
-}
+  const time =
+    getTreatmentTime();
 
 
-/* ==================================================
-   合計金額取得
-================================================== */
-
-function getTotalPrice() {
-
-  const cart =
-    getCart();
-
-  return cart.reduce(
-    (total, item) => {
-
-      const price =
-        Number(item.price);
-
-      return total +
-        (
-          Number.isFinite(price)
-            ? price
-            : 0
-        );
-
-    },
-    0
-  );
-
-}
+  document.getElementById(
+    "time"
+  ).textContent =
+    time + "分";
 
 
-/* ==================================================
-   予約ページURLを作成
-================================================== */
-
-function getReservationURL() {
-
-  const totalTime =
-    getTotalTime();
-
-  return (
-    RESERVATION_PAGE_URL +
-    "?time=" +
-    encodeURIComponent(totalTime)
-  );
-
-}
-
-
-/* ==================================================
-   予約ボタン更新
-================================================== */
-
-function updateReservationButton() {
+  /*
+   * 予約フォームURLには
+   * timeを付けない
+   *
+   * 予約フォーム側の既存設定を
+   * そのまま使用する
+   */
 
   const button =
     document.getElementById(
       "reserveButton"
     );
 
-  const cart =
-    getCart();
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    button.href = "#";
-
-    button.style.opacity = "0.5";
-
-    return;
-
-  }
-
 
   button.href =
-    getReservationURL();
-
-  button.style.opacity = "1";
+    RESERVATION_FORM_URL;
 
 }
 
 
 /* ==================================================
-   URLメニュー追加
+   閉じる
 ================================================== */
 
-async function addMenuFromURL(menuId) {
-
-  const menu =
-    MENUS[menuId];
-
-
-  if (!menu) {
-
-    showError(
-      "メニュー情報がありません。\n" +
-      menuId
-    );
-
-    return;
-
-  }
-
-
-  const cart =
-    getCart();
-
-
-  const exists =
-    cart.some(
-      item =>
-        item.menu === menuId
-    );
-
-
-  if (!exists) {
-
-    cart.push({
-      menu: menu.menu,
-      name: menu.name,
-      category: menu.category,
-      price: menu.price,
-      time: menu.time
-    });
-
-    saveCart(cart);
-
-  }
-
-
-  renderCart();
-
-
-  try {
-
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: "カートに追加しました"
-      }
-    ]);
-
-
-    setTimeout(
-      () => {
-
-        try {
-
-          if (
-            liff.isInClient()
-          ) {
-
-            liff.closeWindow();
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "closeWindow error",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "カート追加エラー",
-      error
-    );
-
-    renderCart();
-
-    showError(
-      "LINEへの送信に失敗しました。\n" +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* ==================================================
-   カート表示
-================================================== */
-
-function renderCart() {
-
-  const cart =
-    getCart();
-
-
-  const list =
-    document.getElementById(
-      "cartList"
-    );
-
+function closePage() {
 
   if (
-    cart.length === 0
+    window.history.length > 1
   ) {
 
-    list.innerHTML =
-      `
-      <div
-        style="
-          text-align:center;
-          padding:30px;
-          color:#888;
-        "
-      >
-        カートは空です
-      </div>
-      `;
-
-
-    document.getElementById(
-      "totalPrice"
-    ).textContent =
-      "¥0";
-
-
-    document.getElementById(
-      "totalTime"
-    ).textContent =
-      "0分";
-
-
-    updateReservationButton();
+    window.history.back();
 
     return;
 
   }
-
-
-  list.innerHTML =
-    cart.map(
-      (item, index) => `
-
-        <div class="cart-item">
-
-          <div class="item-name">
-            ${escapeHTML(
-              item.name || "メニュー"
-            )}
-          </div>
-
-          <div class="item-category">
-            ${escapeHTML(
-              item.category || ""
-            )}
-          </div>
-
-          <div class="item-bottom">
-
-            <span>
-              約${Number(item.time) || 0}分
-            </span>
-
-            <span>
-              ¥${(
-                Number(item.price) || 0
-              ).toLocaleString("ja-JP")}
-            </span>
-
-          </div>
-
-          <button
-            type="button"
-            class="delete-button"
-            onclick="removeItem(${index})"
-          >
-            削除
-          </button>
-
-        </div>
-
-      `
-    ).join("");
-
-
-  const totalPrice =
-    getTotalPrice();
-
-
-  const totalTime =
-    getTotalTime();
-
-
-  document.getElementById(
-    "totalPrice"
-  ).textContent =
-    "¥" +
-    totalPrice.toLocaleString("ja-JP");
-
-
-  document.getElementById(
-    "totalTime"
-  ).textContent =
-    totalTime + "分";
 
 
   /*
-   * ★ここが今回の重要部分
-   *
-   * 合計時間を予約ページへ渡す
+   * LINE内ブラウザ等で
+   * history.back()できない場合
    */
 
-  updateReservationButton();
-
-}
-
-
-/* ==================================================
-   削除
-================================================== */
-
-function removeItem(index) {
-
-  const cart =
-    getCart();
-
-
-  cart.splice(
-    index,
-    1
-  );
-
-
-  saveCart(cart);
-
-  renderCart();
-
-}
-
-
-/* ==================================================
-   カートを空にする
-================================================== */
-
-function clearCart() {
-
-  if (
-    getCart().length === 0
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    !confirm(
-      "カートを空にしますか？"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  localStorage.removeItem(
-    CART_KEY
-  );
-
-
-  renderCart();
-
-}
-
-
-/* ==================================================
-   メニュー追加
-================================================== */
-
-async function addMenuMessage() {
-
   try {
 
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: "メニュー追加"
-      }
-    ]);
-
-
-    setTimeout(
-      () => {
-
-        try {
-
-          if (
-            liff.isInClient()
-          ) {
-
-            liff.closeWindow();
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "closeWindow error",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
-
+    window.close();
 
   } catch (error) {
 
     console.error(
-      "メニュー追加エラー",
+      "close error",
       error
-    );
-
-
-    showError(
-      "メニュー追加の送信に失敗しました。\n" +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* ==================================================
-   選択完了
-================================================== */
-
-async function completeSelection() {
-
-  const cart =
-    getCart();
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    alert(
-      "メニューを選択してください。"
-    );
-
-    return;
-
-  }
-
-
-  const button =
-    document.getElementById(
-      "completeButton"
-    );
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "送信中…";
-
-
-  try {
-
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    const totalPrice =
-      getTotalPrice();
-
-
-    const totalTime =
-      getTotalTime();
-
-
-    let message =
-      "【選択したメニュー一覧】\n\n";
-
-
-    cart.forEach(
-      item => {
-
-        const price =
-          Number(item.price) || 0;
-
-        const time =
-          Number(item.time) || 0;
-
-
-        message +=
-          "✔ " +
-          item.name +
-          "　¥" +
-          price.toLocaleString("ja-JP") +
-          "｜約" +
-          time +
-          "分\n";
-
-      }
-    );
-
-
-    message +=
-      "\n■ 合計金額\n¥" +
-      totalPrice.toLocaleString("ja-JP");
-
-
-    message +=
-      "\n\n■ 施術時間目安\n" +
-      totalTime +
-      "分";
-
-
-    message +=
-      "\n\nこちらの内容でよろしいですか？";
-
-
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: message
-      }
-    ]);
-
-
-    /*
-     * 選択完了では
-     * カートを削除する
-     */
-
-    localStorage.removeItem(
-      CART_KEY
-    );
-
-
-    setTimeout(
-      () => {
-
-        try {
-
-          if (
-            liff.isInClient()
-          ) {
-
-            liff.closeWindow();
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "closeWindow error",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "選択完了エラー",
-      error
-    );
-
-
-    showError(
-      "LINEへの送信に失敗しました。\n" +
-      error.message
-    );
-
-
-    button.disabled = false;
-
-    button.textContent =
-      "選択完了";
-
-  }
-
-}
-
-
-/* ==================================================
-   エラー
-================================================== */
-
-function showError(message) {
-
-  document.getElementById(
-    "status"
-  ).textContent =
-    message;
-
-}
-
-
-/* ==================================================
-   HTMLエスケープ
-================================================== */
-
-function escapeHTML(value) {
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* ==================================================
-   起動
-================================================== */
-
-async function startPage() {
-
-  try {
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-
-    const menuId =
-      params.get("menu");
-
-
-    if (menuId) {
-
-      await addMenuFromURL(
-        menuId
-      );
-
-      return;
-
-    }
-
-
-    await initLIFF();
-
-    renderCart();
-
-  } catch (error) {
-
-    console.error(
-      "起動エラー",
-      error
-    );
-
-
-    /*
-     * LIFF初期化に失敗しても
-     * カート自体は表示する
-     */
-
-    renderCart();
-
-
-    showError(
-      "LIFFの起動に失敗しました。\n" +
-      error.message
     );
 
   }
@@ -1604,9 +262,9 @@ async function startPage() {
    起動
 ================================================== */
 
-window.addEventListener(
+document.addEventListener(
   "DOMContentLoaded",
-  startPage
+  init
 );
 
 </script>
