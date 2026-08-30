@@ -146,6 +146,10 @@ h1 {
   white-space: pre-line;
 }
 
+.hidden {
+  display: none;
+}
+
 </style>
 
 </head>
@@ -153,9 +157,15 @@ h1 {
 
 <body>
 
+
 <div class="container">
 
 <div class="card">
+
+
+<!-- ==================================================
+     カート画面
+================================================== -->
 
 <div id="cartScreen">
 
@@ -206,9 +216,7 @@ h1 {
 </div>
 
 
-<!-- =========================
-     メニュー追加
-========================= -->
+<!-- メニュー追加 -->
 
 <button
   type="button"
@@ -219,9 +227,7 @@ h1 {
 </button>
 
 
-<!-- =========================
-     選択完了
-========================= -->
+<!-- 選択完了 -->
 
 <button
   type="button"
@@ -232,6 +238,8 @@ h1 {
 選択完了
 </button>
 
+
+<!-- カートを空にする -->
 
 <button
   type="button"
@@ -245,12 +253,14 @@ h1 {
 
 </div>
 
+
 <div id="status"></div>
 
 </div>
 
 
 <script>
+
 
 /* ==================================================
    設定
@@ -265,29 +275,470 @@ const CART_KEY =
 
 /* ==================================================
    メニュー情報
+   現在は男性料金
 ================================================== */
 
 const MENUS = {
 
+
+  /* =========================
+     全身脱毛
+  ========================= */
+
+  full_no_face_vio: {
+    menu: "full_no_face_vio",
+    name: "顔・VIOなし",
+    category: "全身脱毛",
+    price: 13000,
+    time: 90
+  },
+
+  full_face_or_vio: {
+    menu: "full_face_or_vio",
+    name: "顔orVIO",
+    category: "全身脱毛",
+    price: 14000,
+    time: 100
+  },
+
+  full_face_vio: {
+    menu: "full_face_vio",
+    name: "顔・VIO",
+    category: "全身脱毛",
+    price: 15000,
+    time: 120
+  },
+
+
+  /* =========================
+     セレクト脱毛
+     顔・首まわり
+  ========================= */
+
   face_all: {
     menu: "face_all",
     name: "顔全体",
+    category: "顔・首まわり",
     price: 5000,
     time: 30
   },
 
   face_upper: {
     menu: "face_upper",
-    name: "上顔面",
+    name: "上顔面／鼻上",
+    category: "顔・首まわり",
     price: 3000,
     time: 30
   },
 
   face_lower: {
     menu: "face_lower",
-    name: "下顔面",
+    name: "下顔面／鼻下",
+    category: "顔・首まわり",
     price: 3000,
     time: 30
+  },
+
+  eyebrow: {
+    menu: "eyebrow",
+    name: "眉毛",
+    category: "顔・首まわり",
+    price: 1500,
+    time: 20
+  },
+
+  mouth: {
+    menu: "mouth",
+    name: "口周り",
+    category: "顔・首まわり",
+    price: 2000,
+    time: 20
+  },
+
+  nose_hair: {
+    menu: "nose_hair",
+    name: "鼻毛",
+    category: "顔・首まわり",
+    price: 1000,
+    time: 20
+  },
+
+  ear_hair: {
+    menu: "ear_hair",
+    name: "耳毛",
+    category: "顔・首まわり",
+    price: 1000,
+    time: 20
+  },
+
+  nape: {
+    menu: "nape",
+    name: "うなじ",
+    category: "顔・首まわり",
+    price: 3000,
+    time: 20
+  },
+
+
+  /* =========================
+     上半身
+  ========================= */
+
+  arm_all: {
+    menu: "arm_all",
+    name: "うで全体／指込",
+    category: "上半身",
+    price: 5000,
+    time: 30
+  },
+
+  upper_arm: {
+    menu: "upper_arm",
+    name: "ひじ上",
+    category: "上半身",
+    price: 2000,
+    time: 30
+  },
+
+  lower_arm: {
+    menu: "lower_arm",
+    name: "ひじ下",
+    category: "上半身",
+    price: 2000,
+    time: 30
+  },
+
+  hand: {
+    menu: "hand",
+    name: "手の甲・指",
+    category: "上半身",
+    price: 1500,
+    time: 20
+  },
+
+  armpit: {
+    menu: "armpit",
+    name: "脇",
+    category: "上半身",
+    price: 2000,
+    time: 20
+  },
+
+  chest_all: {
+    menu: "chest_all",
+    name: "胸全体",
+    category: "上半身",
+    price: 3000,
+    time: 20
+  },
+
+  areola: {
+    menu: "areola",
+    name: "乳輪周り",
+    category: "上半身",
+    price: 2000,
+    time: 20
+  },
+
+  stomach_all: {
+    menu: "stomach_all",
+    name: "お腹全体",
+    category: "上半身",
+    price: 4000,
+    time: 20
+  },
+
+  back_all: {
+    menu: "back_all",
+    name: "背中全体",
+    category: "上半身",
+    price: 5000,
+    time: 20
+  },
+
+  upper_back: {
+    menu: "upper_back",
+    name: "背中上",
+    category: "上半身",
+    price: 3000,
+    time: 20
+  },
+
+  waist: {
+    menu: "waist",
+    name: "腰",
+    category: "上半身",
+    price: 3000,
+    time: 20
+  },
+
+
+  /* =========================
+     下半身
+  ========================= */
+
+  leg_all: {
+    menu: "leg_all",
+    name: "脚全体／指込",
+    category: "下半身",
+    price: 6000,
+    time: 30
+  },
+
+  upper_leg: {
+    menu: "upper_leg",
+    name: "ひざ上",
+    category: "下半身",
+    price: 3000,
+    time: 30
+  },
+
+  lower_leg: {
+    menu: "lower_leg",
+    name: "ひざ下",
+    category: "下半身",
+    price: 2000,
+    time: 30
+  },
+
+  foot: {
+    menu: "foot",
+    name: "足の甲・指",
+    category: "下半身",
+    price: 1500,
+    time: 20
+  },
+
+  buttocks: {
+    menu: "buttocks",
+    name: "おしり",
+    category: "下半身",
+    price: 3000,
+    time: 20
+  },
+
+
+  /* =========================
+     VIO
+  ========================= */
+
+  vio_all: {
+    menu: "vio_all",
+    name: "VIO全体",
+    category: "VIO",
+    price: 5000,
+    time: 40
+  },
+
+  v_line: {
+    menu: "v_line",
+    name: "Vライン",
+    category: "VIO",
+    price: 3500,
+    time: 30
+  },
+
+  v: {
+    menu: "v",
+    name: "V",
+    category: "VIO",
+    price: 2000,
+    time: 20
+  },
+
+  i: {
+    menu: "i",
+    name: "I",
+    category: "VIO",
+    price: 2000,
+    time: 20
+  },
+
+  o: {
+    menu: "o",
+    name: "O",
+    category: "VIO",
+    price: 2000,
+    time: 20
+  },
+
+
+  /* ==================================================
+     フェイシャル
+  ================================================== */
+
+
+  /* -------------------------
+     光美肌コース
+  ------------------------- */
+
+  facial_light_light: {
+    menu: "facial_light_light",
+    name: "光美肌コース｜ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_light_standard: {
+    menu: "facial_light_standard",
+    name: "光美肌コース｜スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_light_premium: {
+    menu: "facial_light_premium",
+    name: "光美肌コース｜プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* -------------------------
+     水素ハイドラコース
+  ------------------------- */
+
+  facial_hydra_light: {
+    menu: "facial_hydra_light",
+    name: "水素ハイドラコース｜ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_hydra_standard: {
+    menu: "facial_hydra_standard",
+    name: "水素ハイドラコース｜スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_hydra_premium: {
+    menu: "facial_hydra_premium",
+    name: "水素ハイドラコース｜プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* -------------------------
+     プラズマ肌改善コース
+  ------------------------- */
+
+  facial_plasma_light: {
+    menu: "facial_plasma_light",
+    name: "プラズマ肌改善コース｜ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_plasma_standard: {
+    menu: "facial_plasma_standard",
+    name: "プラズマ肌改善コース｜スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_plasma_premium: {
+    menu: "facial_plasma_premium",
+    name: "プラズマ肌改善コース｜プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* -------------------------
+     ラジオ波＆EMS小顔コース
+  ------------------------- */
+
+  facial_ems_light: {
+    menu: "facial_ems_light",
+    name: "ラジオ波＆EMS小顔コース｜ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_ems_standard: {
+    menu: "facial_ems_standard",
+    name: "ラジオ波＆EMS小顔コース｜スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_ems_premium: {
+    menu: "facial_ems_premium",
+    name: "ラジオ波＆EMS小顔コース｜プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* -------------------------
+     ペンシルシミケアコース
+  ------------------------- */
+
+  facial_pencil_light: {
+    menu: "facial_pencil_light",
+    name: "ペンシルシミケアコース｜ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_pencil_standard: {
+    menu: "facial_pencil_standard",
+    name: "ペンシルシミケアコース｜スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_pencil_premium: {
+    menu: "facial_pencil_premium",
+    name: "ペンシルシミケアコース｜プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* -------------------------
+     totte+コース
+  ------------------------- */
+
+  facial_totte_light: {
+    menu: "facial_totte_light",
+    name: "totte+コース｜ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_totte_standard: {
+    menu: "facial_totte_standard",
+    name: "totte+コース｜スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_totte_premium: {
+    menu: "facial_totte_premium",
+    name: "totte+コース｜プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
   }
 
 };
@@ -308,7 +759,6 @@ async function initLIFF() {
     return;
   }
 
-
   if (liffInitializing) {
 
     while (liffInitializing) {
@@ -324,9 +774,7 @@ async function initLIFF() {
 
   }
 
-
   liffInitializing = true;
-
 
   try {
 
@@ -352,21 +800,16 @@ async function initLIFF() {
 function getCart() {
 
   const saved =
-    localStorage.getItem(
-      CART_KEY
-    );
-
+    localStorage.getItem(CART_KEY);
 
   if (!saved) {
     return [];
   }
 
-
   try {
 
     const cart =
       JSON.parse(saved);
-
 
     return Array.isArray(cart)
       ? cart
@@ -406,6 +849,12 @@ function saveCart(cart) {
 
 async function addMenu(menuId) {
 
+  console.log(
+    "addMenu:",
+    menuId
+  );
+
+
   const menu =
     MENUS[menuId];
 
@@ -413,17 +862,15 @@ async function addMenu(menuId) {
   if (!menu) {
 
     showError(
-      "メニュー情報を取得できませんでした。"
+      "メニュー情報を取得できませんでした。\n" +
+      "menu=" +
+      menuId
     );
 
     return;
 
   }
 
-
-  /* =========================
-     カートへ保存
-  ========================= */
 
   const cart =
     getCart();
@@ -439,29 +886,23 @@ async function addMenu(menuId) {
   if (!alreadyAdded) {
 
     cart.push({
-      menu: menu.menu,
-      name: menu.name,
-      price: menu.price,
-      time: menu.time
-    });
 
+      menu: menu.menu,
+
+      name: menu.name,
+
+      category: menu.category,
+
+      price: menu.price,
+
+      time: menu.time
+
+    });
 
     saveCart(cart);
 
   }
 
-
-  /*
-   * ★追加した直後に
-   * カート画面を表示
-   */
-
-  renderCart();
-
-
-  /* =========================
-     LINE送信
-  ========================= */
 
   try {
 
@@ -487,11 +928,8 @@ async function addMenu(menuId) {
     ]);
 
 
-    /*
-     * 送信成功後に閉じる
-     */
-
     setTimeout(
+
       function() {
 
         try {
@@ -508,21 +946,25 @@ async function addMenu(menuId) {
         }
 
       },
-      1000
+
+      500
+
     );
 
 
   } catch (error) {
 
     console.error(
-      "カート追加エラー",
+      "カート追加送信エラー",
       error
     );
 
 
     showError(
+
       "LINEへの送信に失敗しました。\n" +
       error.message
+
     );
 
   }
@@ -544,11 +986,6 @@ function renderCart() {
     document.getElementById(
       "cartList"
     );
-
-
-  if (!list) {
-    return;
-  }
 
 
   if (cart.length === 0) {
@@ -575,16 +1012,21 @@ function renderCart() {
 
 
   list.innerHTML =
+
     cart.map(
+
       (item, index) => `
 
         <div class="cart-item">
 
           <div class="item-name">
+
             ${escapeHTML(
               item.name || "メニュー"
             )}
+
           </div>
+
 
           <div class="item-bottom">
 
@@ -600,6 +1042,7 @@ function renderCart() {
 
           </div>
 
+
           <button
             type="button"
             class="delete-button"
@@ -611,6 +1054,7 @@ function renderCart() {
         </div>
 
       `
+
     ).join("");
 
 
@@ -620,6 +1064,7 @@ function renderCart() {
 
 
   cart.forEach(
+
     item => {
 
       totalPrice +=
@@ -629,12 +1074,14 @@ function renderCart() {
         Number(item.time) || 0;
 
     }
+
   );
 
 
   document.getElementById(
     "totalPrice"
   ).textContent =
+
     "¥" +
     totalPrice.toLocaleString(
       "ja-JP"
@@ -644,7 +1091,9 @@ function renderCart() {
   document.getElementById(
     "totalTime"
   ).textContent =
-    totalTime + "分";
+
+    totalTime +
+    "分";
 
 }
 
@@ -728,10 +1177,6 @@ async function addMoreMenu() {
     }
 
 
-    /* =========================
-       LINE送信
-    ========================= */
-
     await liff.sendMessages([
 
       {
@@ -742,11 +1187,8 @@ async function addMoreMenu() {
     ]);
 
 
-    /* =========================
-       送信成功後に閉じる
-    ========================= */
-
     setTimeout(
+
       function() {
 
         try {
@@ -763,7 +1205,9 @@ async function addMoreMenu() {
         }
 
       },
+
       500
+
     );
 
 
@@ -776,8 +1220,10 @@ async function addMoreMenu() {
 
 
     showError(
+
       "LINEへの送信に失敗しました。\n" +
       error.message
+
     );
 
   }
@@ -844,6 +1290,7 @@ async function completeSelection() {
 
 
     cart.forEach(
+
       item => {
 
         const price =
@@ -854,6 +1301,7 @@ async function completeSelection() {
 
 
         message +=
+
           "✔ " +
           item.name +
           "　¥" +
@@ -873,10 +1321,12 @@ async function completeSelection() {
           time;
 
       }
+
     );
 
 
     message +=
+
       "\n■ 合計金額\n¥" +
       totalPrice.toLocaleString(
         "ja-JP"
@@ -884,18 +1334,16 @@ async function completeSelection() {
 
 
     message +=
+
       "\n\n■ 施術時間目安\n" +
       totalTime +
       "分";
 
 
     message +=
+
       "\n\nこちらの内容でよろしいですか？";
 
-
-    /* =========================
-       LINE送信
-    ========================= */
 
     await liff.sendMessages([
 
@@ -907,20 +1355,18 @@ async function completeSelection() {
     ]);
 
 
-    /* =========================
-       送信成功後にカート削除
-    ========================= */
+    /* -------------------------
+       送信成功後のみ
+       カートを空にする
+    ------------------------- */
 
     localStorage.removeItem(
       CART_KEY
     );
 
 
-    /* =========================
-       自動終了
-    ========================= */
-
     setTimeout(
+
       function() {
 
         try {
@@ -937,7 +1383,9 @@ async function completeSelection() {
         }
 
       },
+
       500
+
     );
 
 
@@ -950,8 +1398,10 @@ async function completeSelection() {
 
 
     showError(
+
       "LINEへの送信に失敗しました。\n" +
       error.message
+
     );
 
 
@@ -1032,11 +1482,25 @@ async function startPage() {
       );
 
 
-    /*
-     * menu=face_all
-     *
-     * メニュー追加
-     */
+    /* -------------------------
+       カートを見る
+       ?mode=cart
+    ------------------------- */
+
+    if (
+      params.get("mode") === "cart"
+    ) {
+
+      renderCart();
+
+      return;
+
+    }
+
+
+    /* -------------------------
+       menu=指定
+    ------------------------- */
 
     const menuId =
       params.get("menu");
@@ -1051,28 +1515,10 @@ async function startPage() {
     }
 
 
-    /*
-     * mode=cart
-     *
-     * カートを見る
-     */
-
-    if (
-      params.get("mode") === "cart"
-    ) {
-
-      renderCart();
-
-      return;
-
-    }
-
-
-    /*
-     * URL指定なし
-     *
-     * 保存されているカートを表示
-     */
+    /* -------------------------
+       URL指定なし
+       → カート表示
+    ------------------------- */
 
     renderCart();
 
@@ -1085,14 +1531,20 @@ async function startPage() {
 
 
     showError(
+
       "LIFFの起動に失敗しました。\n" +
       error.message
+
     );
 
   }
 
 }
 
+
+/* ==================================================
+   起動
+================================================== */
 
 window.addEventListener(
   "DOMContentLoaded",
