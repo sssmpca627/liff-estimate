@@ -152,8 +152,11 @@ h1 {
   white-space: pre-line;
 }
 
-.hidden {
-  display: none;
+.loading {
+  text-align: center;
+  padding: 35px 10px;
+  color: #888;
+  font-size: 15px;
 }
 
 </style>
@@ -174,7 +177,13 @@ h1 {
 追加したメニューをご確認ください
 </div>
 
-<div id="cartList"></div>
+<div id="cartList">
+
+<div class="loading">
+メニューを追加しています…
+</div>
+
+</div>
 
 <div class="total">
 
@@ -714,6 +723,7 @@ async function initLIFF() {
     }
 
     return;
+
   }
 
   liffInitializing = true;
@@ -794,6 +804,7 @@ async function addMenuFromURL(menuId) {
   const menu =
     MENUS[menuId];
 
+
   if (!menu) {
 
     showError(
@@ -806,7 +817,7 @@ async function addMenuFromURL(menuId) {
   }
 
 
-  let cart =
+  const cart =
     getCart();
 
 
@@ -833,20 +844,19 @@ async function addMenuFromURL(menuId) {
 
 
   /*
-   * ここが今回の重要ポイント
+   * 画面を先にカート内容へ更新
    *
-   * カート追加
-   * ↓
-   * 「カートに追加しました」だけ送信
-   * ↓
-   * 画面は閉じない
-   * ↓
-   * 追加されたメニューを画面に表示
+   * 「カートは空です」を
+   * 一度も表示しない
    */
+
+  renderCart();
+
 
   try {
 
     await initLIFF();
+
 
     if (!liff.isInClient()) {
 
@@ -857,6 +867,10 @@ async function addMenuFromURL(menuId) {
     }
 
 
+    /*
+     * 送信内容はこれだけ
+     */
+
     await liff.sendMessages([
       {
         type: "text",
@@ -866,10 +880,35 @@ async function addMenuFromURL(menuId) {
 
 
     /*
-     * 送信後、カート画面を表示
+     * LINE送信成功後
+     * 自動で閉じる
      */
 
-    renderCart();
+    setTimeout(
+      () => {
+
+        try {
+
+          if (
+            liff.isInClient()
+          ) {
+
+            liff.closeWindow();
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            "closeWindow error",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
 
 
   } catch (error) {
@@ -879,15 +918,16 @@ async function addMenuFromURL(menuId) {
       error
     );
 
+
     /*
-     * LINE送信が失敗しても
-     * カート自体は表示する
+     * 送信に失敗しても
+     * 追加されたメニューは表示
      */
 
     renderCart();
 
+
     showError(
-      "メニューは追加されましたが、\n" +
       "LINEへの送信に失敗しました。\n" +
       error.message
     );
@@ -905,6 +945,7 @@ function renderCart() {
 
   const cart =
     getCart();
+
 
   const list =
     document.getElementById(
@@ -929,15 +970,18 @@ function renderCart() {
       </div>
       `;
 
+
     document.getElementById(
       "totalPrice"
     ).textContent =
       "¥0";
 
+
     document.getElementById(
       "totalTime"
     ).textContent =
       "0分";
+
 
     return;
 
@@ -1031,10 +1075,12 @@ function removeItem(index) {
   const cart =
     getCart();
 
+
   cart.splice(
     index,
     1
   );
+
 
   saveCart(cart);
 
@@ -1071,6 +1117,7 @@ function clearCart() {
     CART_KEY
   );
 
+
   renderCart();
 
 }
@@ -1085,6 +1132,7 @@ async function addMenuMessage() {
   try {
 
     await initLIFF();
+
 
     if (!liff.isInClient()) {
 
@@ -1104,9 +1152,8 @@ async function addMenuMessage() {
 
 
     /*
-     * メニュー追加後は閉じる
-     *
-     * LINE側で次のメニューを選択
+     * メニュー追加送信後
+     * 自動で閉じる
      */
 
     setTimeout(
@@ -1142,6 +1189,7 @@ async function addMenuMessage() {
       "メニュー追加エラー",
       error
     );
+
 
     showError(
       "メニュー追加の送信に失敗しました。\n" +
@@ -1233,6 +1281,7 @@ async function completeSelection() {
         totalPrice +=
           price;
 
+
         totalTime +=
           time;
 
@@ -1264,7 +1313,7 @@ async function completeSelection() {
 
 
     /*
-     * 送信成功後のみカート削除
+     * 送信成功後のみ削除
      */
 
     localStorage.removeItem(
@@ -1273,7 +1322,7 @@ async function completeSelection() {
 
 
     /*
-     * 選択完了は送信後に閉じる
+     * 自動終了
      */
 
     setTimeout(
@@ -1310,10 +1359,12 @@ async function completeSelection() {
       error
     );
 
+
     showError(
       "LINEへの送信に失敗しました。\n" +
       error.message
     );
+
 
     button.disabled = false;
 
@@ -1326,7 +1377,7 @@ async function completeSelection() {
 
 
 /* ==================================================
-   エラー表示
+   エラー
 ================================================== */
 
 function showError(message) {
@@ -1383,8 +1434,9 @@ async function startPage() {
 
   try {
 
-    await initLIFF();
-
+    /*
+     * URLを最初に確認
+     */
 
     const params =
       new URLSearchParams(
@@ -1392,20 +1444,19 @@ async function startPage() {
       );
 
 
-    /*
-     * menu=face_all
-     *
-     * ↓
-     * 顔全体をカート追加
-     * ↓
-     * カートに追加しました
-     * ↓
-     * そのまま画面表示
-     */
-
     const menuId =
       params.get("menu");
 
+
+    /*
+     * menu=xxx の場合
+     *
+     * 最初からメニュー追加処理へ
+     *
+     * renderCart() は
+     * addMenuFromURL() の中で
+     * カート追加後に実行する
+     */
 
     if (menuId) {
 
@@ -1419,29 +1470,12 @@ async function startPage() {
 
 
     /*
-     * mode=cart
-     *
-     * ↓
-     * カート表示
+     * menu= がない場合だけ
+     * LIFF初期化後にカート表示
      */
 
-    if (
-      params.get("mode") === "cart"
-    ) {
+    await initLIFF();
 
-      renderCart();
-
-      return;
-
-    }
-
-
-    /*
-     * 通常起動
-     *
-     * ↓
-     * 選択したメニューを表示
-     */
 
     renderCart();
 
@@ -1451,6 +1485,7 @@ async function startPage() {
       "起動エラー",
       error
     );
+
 
     showError(
       "LIFFの起動に失敗しました。\n" +
