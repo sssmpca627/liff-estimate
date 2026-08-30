@@ -10,7 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>メニュー</title>
+<title>カートに追加</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -70,6 +70,7 @@ h1 {
   text-align: center;
   color: #888;
   font-size: 14px;
+  word-break: break-all;
 }
 
 </style>
@@ -84,7 +85,7 @@ h1 {
   <div class="card">
 
     <h1 id="title">
-      処理中…
+      カートに追加中…
     </h1>
 
     <div
@@ -107,16 +108,11 @@ h1 {
 <script>
 
 /* =========================
-   LIFF
+   設定
 ========================= */
 
 const LIFF_ID =
   "2011037691-j7UfaGxQ";
-
-
-/* =========================
-   カート
-========================= */
 
 const CART_KEY =
   "salon_cart";
@@ -153,6 +149,33 @@ const MENUS = {
 
 
 /* =========================
+   URLからmenuを取得
+========================= */
+
+function getMenuId() {
+
+  const url =
+    new URL(window.location.href);
+
+  const menuId =
+    url.searchParams.get("menu");
+
+  console.log(
+    "現在のURL:",
+    window.location.href
+  );
+
+  console.log(
+    "取得したmenu:",
+    menuId
+  );
+
+  return menuId;
+
+}
+
+
+/* =========================
    カート取得
 ========================= */
 
@@ -170,11 +193,20 @@ function getCart() {
     const cart =
       JSON.parse(saved);
 
-    return Array.isArray(cart)
-      ? cart
-      : [];
+    if (
+      !Array.isArray(cart)
+    ) {
+      return [];
+    }
+
+    return cart;
 
   } catch (error) {
+
+    console.error(
+      "カート読み込みエラー:",
+      error
+    );
 
     return [];
 
@@ -198,30 +230,7 @@ function saveCart(cart) {
 
 
 /* =========================
-   URLからメニュー取得
-========================= */
-
-function getSelectedMenu() {
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-  const menuId =
-    params.get("menu");
-
-  if (!menuId) {
-    return null;
-  }
-
-  return MENUS[menuId] || null;
-
-}
-
-
-/* =========================
-   カートに追加
+   カートへ追加
 ========================= */
 
 function addToCart(menu) {
@@ -243,14 +252,23 @@ function addToCart(menu) {
 
   saveCart(cart);
 
+  console.log(
+    "カート:",
+    cart
+  );
+
 }
 
 
 /* =========================
-   LINEへ送信
+   LINE送信
 ========================= */
 
 async function sendMessage() {
+
+  console.log(
+    "LINE送信開始"
+  );
 
   await liff.sendMessages([
 
@@ -261,90 +279,112 @@ async function sendMessage() {
 
   ]);
 
+  console.log(
+    "LINE送信完了"
+  );
+
 }
 
 
 /* =========================
-   LIFFを閉じる
+   LIFF終了
 ========================= */
 
 function closeLIFF() {
 
-  setTimeout(function() {
+  setTimeout(
+    () => {
 
-    if (liff.isInClient()) {
+      try {
 
-      liff.closeWindow();
+        if (
+          liff.isInClient()
+        ) {
 
-    }
+          liff.closeWindow();
 
-  }, 500);
+        }
+
+      } catch (error) {
+
+        console.error(
+          "LIFF終了エラー:",
+          error
+        );
+
+      }
+
+    },
+    500
+  );
 
 }
 
 
 /* =========================
-   メニュー追加
+   メイン
 ========================= */
 
-async function addMenu() {
-
-  const menu =
-    getSelectedMenu();
-
-
-  /*
-   * メニューが取得できない場合
-   */
-
-  if (!menu) {
-
-    document.getElementById(
-      "title"
-    ).textContent =
-      "エラー";
-
-    document.getElementById(
-      "message"
-    ).textContent =
-      "メニュー情報を取得できませんでした。";
-
-    return;
-
-  }
-
-
-  /*
-   * 画面表示
-   */
-
-  document.getElementById(
-    "title"
-  ).textContent =
-    "カートに追加しました";
-
-  document.getElementById(
-    "menuName"
-  ).textContent =
-    menu.name;
-
-  document.getElementById(
-    "message"
-  ).textContent =
-    "このメニューをカートに追加しました。";
-
+async function main() {
 
   try {
 
     /*
-     * ① カートへ追加
+     * ① URLからmenu取得
+     */
+
+    const menuId =
+      getMenuId();
+
+
+    /*
+     * ② メニュー確認
+     */
+
+    const menu =
+      MENUS[menuId];
+
+
+    if (!menu) {
+
+      throw new Error(
+        "menu=" +
+        menuId +
+        " を取得しましたが、登録されたメニューがありません。"
+      );
+
+    }
+
+
+    /*
+     * ③ 画面表示
+     */
+
+    document.getElementById(
+      "title"
+    ).textContent =
+      "カートに追加しました";
+
+    document.getElementById(
+      "menuName"
+    ).textContent =
+      menu.name;
+
+    document.getElementById(
+      "message"
+    ).textContent =
+      "このメニューをカートに追加しました。";
+
+
+    /*
+     * ④ カート保存
      */
 
     addToCart(menu);
 
 
     /*
-     * ② LIFF初期化
+     * ⑤ LIFF初期化
      */
 
     await liff.init({
@@ -355,11 +395,18 @@ async function addMenu() {
     });
 
 
+    console.log(
+      "LIFF初期化成功"
+    );
+
+
     /*
-     * ③ LINEアプリ内か確認
+     * ⑥ LINEアプリ内確認
      */
 
-    if (!liff.isInClient()) {
+    if (
+      !liff.isInClient()
+    ) {
 
       throw new Error(
         "LINEアプリ内で開いてください。"
@@ -369,14 +416,14 @@ async function addMenu() {
 
 
     /*
-     * ④ LINEへ送信
+     * ⑦ LINEへ送信
      */
 
     await sendMessage();
 
 
     /*
-     * ⑤ 自動で閉じる
+     * ⑧ 自動終了
      */
 
     closeLIFF();
@@ -385,14 +432,23 @@ async function addMenu() {
   } catch (error) {
 
     console.error(
-      "エラー：",
+      "処理エラー:",
       error
     );
 
     document.getElementById(
+      "title"
+    ).textContent =
+      "エラー";
+
+    document.getElementById(
+      "message"
+    ).textContent =
+      "";
+
+    document.getElementById(
       "status"
     ).textContent =
-      "エラー：" +
       error.message;
 
   }
@@ -406,7 +462,7 @@ async function addMenu() {
 
 window.addEventListener(
   "DOMContentLoaded",
-  addMenu
+  main
 );
 
 </script>
