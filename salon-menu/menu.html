@@ -5,7 +5,10 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>メニュー追加</title>
 
@@ -772,16 +775,16 @@ async function completeSelection() {
     }
 
 
+    /* ==================================================
+       メッセージ作成
+    ================================================== */
+
     let totalPrice = 0;
 
     let totalTime = 0;
 
 
     let message =
-      "【選択完了】\n\n";
-
-
-    message +=
       "【選択したメニュー一覧】\n\n";
 
 
@@ -800,11 +803,14 @@ async function completeSelection() {
           item.name +
           "　¥" +
           price.toLocaleString("ja-JP") +
-          "\n";
+          "｜約" +
+          time +
+          "分\n";
 
 
         totalPrice +=
           price;
+
 
         totalTime +=
           time;
@@ -824,6 +830,14 @@ async function completeSelection() {
       "分";
 
 
+    message +=
+      "\n\nこちらの内容でよろしいですか？";
+
+
+    /* ==================================================
+       LINE送信
+    ================================================== */
+
     await liff.sendMessages([
       {
         type: "text",
@@ -832,10 +846,18 @@ async function completeSelection() {
     ]);
 
 
+    /* ==================================================
+       送信成功後のみカート削除
+    ================================================== */
+
     localStorage.removeItem(
       CART_KEY
     );
 
+
+    /* ==================================================
+       自動で閉じる
+    ================================================== */
 
     setTimeout(
       function() {
@@ -985,7 +1007,7 @@ async function startPage() {
 
 
     /* =========================
-       追加するメニュー
+       メニュー指定
        ?menu=face_all
     ========================= */
 
@@ -1003,7 +1025,7 @@ async function startPage() {
 
 
     /* =========================
-       menu指定なし
+       メニュー指定なし
     ========================= */
 
     showError(
