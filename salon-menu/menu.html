@@ -12,24 +12,16 @@
 
 <title>カートに追加</title>
 
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-
-
 <style>
 
 * {
   box-sizing: border-box;
 }
 
-
 body {
-
   margin: 0;
-
   background: #f7f7f7;
-
   color: #333;
-
   font-family:
     -apple-system,
     BlinkMacSystemFont,
@@ -37,78 +29,58 @@ body {
     "Hiragino Kaku Gothic ProN",
     "Yu Gothic",
     sans-serif;
-
 }
-
 
 .container {
-
   max-width: 700px;
-
   margin: 0 auto;
-
   padding: 50px 20px;
-
 }
-
 
 .card {
-
   background: #fff;
-
   border-radius: 24px;
-
   padding: 35px 25px;
-
   box-shadow:
     0 3px 12px rgba(0,0,0,0.06);
-
   text-align: center;
-
 }
-
-
-.menu-name {
-
-  font-size: 22px;
-
-  font-weight: 700;
-
-  margin-bottom: 15px;
-
-}
-
 
 h1 {
-
   font-size: 28px;
-
   margin: 0 0 25px;
-
 }
 
+.menu-name {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
 
 .message {
-
   color: #777;
-
   font-size: 17px;
-
-  margin-bottom: 30px;
-
+  line-height: 1.7;
 }
 
+.button {
+  display: block;
+  width: 100%;
+  margin-top: 30px;
+  padding: 16px 20px;
+  border-radius: 16px;
+  border: none;
+  background: #333;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
 
 #status {
-
   margin-top: 20px;
-
   text-align: center;
-
-  color: #777;
-
+  color: #888;
   font-size: 14px;
-
 }
 
 </style>
@@ -121,20 +93,16 @@ h1 {
 
 <div class="container">
 
-
   <div class="card">
-
 
     <h1>
       カートに追加しました
     </h1>
 
-
     <div
       id="menuName"
       class="menu-name"
     ></div>
-
 
     <div class="message">
 
@@ -142,35 +110,34 @@ h1 {
 
     </div>
 
+    <button
+      class="button"
+      onclick="goToMenu()"
+    >
+      選択したメニューを見る
+    </button>
 
   </div>
 
-
   <div id="status"></div>
-
 
 </div>
 
 
-
 <script>
-
-
-/* =========================
-   LIFF設定
-========================= */
-
-const LIFF_ID =
-  "2011037691-j7UfaGxQ";
-
 
 /* =========================
    カート保存場所
 ========================= */
 
-const CART_KEY =
-  "salon_cart";
+const CART_KEY = "salon_cart";
 
+
+/* =========================
+   メニュー画面
+========================= */
+
+const MENU_URL = "./menu.html";
 
 
 /* =========================
@@ -179,16 +146,13 @@ const CART_KEY =
 
 function getMenuFromURL() {
 
-
   const params =
     new URLSearchParams(
       window.location.search
     );
 
-
   const menuId =
-    params.get("menu") || "face_all";
-
+    params.get("menu");
 
   const menuNames = {
 
@@ -203,7 +167,6 @@ function getMenuFromURL() {
 
   };
 
-
   const menuPrices = {
 
     face_all:
@@ -216,7 +179,6 @@ function getMenuFromURL() {
       3000
 
   };
-
 
   const menuTimes = {
 
@@ -231,11 +193,10 @@ function getMenuFromURL() {
 
   };
 
-
   return {
 
     menu:
-      menuId,
+      menuId || "face_all",
 
     name:
       menuNames[menuId] || "メニュー",
@@ -251,19 +212,16 @@ function getMenuFromURL() {
 }
 
 
-
 /* =========================
    カート取得
 ========================= */
 
 function getCart() {
 
-
   const saved =
     localStorage.getItem(
       CART_KEY
     );
-
 
   if (!saved) {
 
@@ -271,13 +229,10 @@ function getCart() {
 
   }
 
-
   try {
-
 
     const cart =
       JSON.parse(saved);
-
 
     if (!Array.isArray(cart)) {
 
@@ -285,18 +240,14 @@ function getCart() {
 
     }
 
-
     return cart;
 
-
   } catch (error) {
-
 
     console.error(
       "カート読み込みエラー：",
       error
     );
-
 
     return [];
 
@@ -305,22 +256,14 @@ function getCart() {
 }
 
 
-
 /* =========================
    カート保存
 ========================= */
 
 function saveToCart(menu) {
 
-
   const cart =
     getCart();
-
-
-  /*
-   * 同じメニューがあれば
-   * 二重追加しない
-   */
 
   const alreadyAdded =
     cart.some(
@@ -328,22 +271,16 @@ function saveToCart(menu) {
         item.menu === menu.menu
     );
 
-
   if (!alreadyAdded) {
 
     cart.push(menu);
 
   }
 
-
   localStorage.setItem(
-
     CART_KEY,
-
     JSON.stringify(cart)
-
   );
-
 
   console.log(
     "現在のカート：",
@@ -353,83 +290,29 @@ function saveToCart(menu) {
 }
 
 
-
 /* =========================
-   LINEへ送信
+   メニューへ戻る
 ========================= */
 
-async function sendCartAddedMessage() {
+function goToMenu() {
 
-
-  await liff.sendMessages([
-
-    {
-
-      type: "text",
-
-      text:
-        "【カートに追加しました】"
-
-    }
-
-  ]);
+  window.location.href =
+    MENU_URL;
 
 }
-
-
-
-/* =========================
-   LIFFを閉じる
-========================= */
-
-function closeLIFF() {
-
-
-  if (liff.isInClient()) {
-
-
-    console.log(
-      "LIFFを閉じます"
-    );
-
-
-    setTimeout(
-
-      function() {
-
-        liff.closeWindow();
-
-      },
-
-      500
-
-    );
-
-  }
-
-}
-
 
 
 /* =========================
    メイン処理
 ========================= */
 
-async function main() {
-
-
-  /*
-   * メニュー取得
-   */
+function main() {
 
   const menu =
     getMenuFromURL();
 
 
-
-  /*
-   * メニュー名表示
-   */
+  /* メニュー名表示 */
 
   document.getElementById(
     "menuName"
@@ -437,111 +320,26 @@ async function main() {
     menu.name;
 
 
+  /* カートへ保存 */
 
-  try {
-
-
-    /*
-     * LIFF初期化
-     */
-
-    await liff.init({
-
-      liffId:
-        LIFF_ID
-
-    });
+  saveToCart(menu);
 
 
-    console.log(
-      "LIFF初期化成功"
-    );
-
-
-
-    /*
-     * カート保存
-     */
-
-    saveToCart(menu);
-
-
-    console.log(
-      "カート保存成功"
-    );
-
-
-
-    /*
-     * LINEへ
-     *
-     * 「カートに追加しました」
-     */
-
-    try {
-
-
-      await sendCartAddedMessage();
-
-
-      console.log(
-        "LINE送信成功"
-      );
-
-
-    } catch (error) {
-
-
-      console.error(
-        "LINE送信エラー：",
-        error
-      );
-
-
-    }
-
-
-
-    /*
-     * LIFFを閉じる
-     */
-
-    closeLIFF();
-
-
-
-  } catch (error) {
-
-
-    console.error(
-      "エラー：",
-      error
-    );
-
-
-    document.getElementById(
-      "status"
-    ).textContent =
-
-      "エラー：" +
-      error.message;
-
-  }
+  console.log(
+    "カート追加完了：",
+    menu
+  );
 
 }
 
 
-
 /* =========================
-   ページ読み込み時に実行
+   起動
 ========================= */
 
 window.addEventListener(
-
   "DOMContentLoaded",
-
   main
-
 );
 
 </script>
