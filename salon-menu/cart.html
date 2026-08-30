@@ -12,16 +12,10 @@
 
 <title>選択したメニュー</title>
 
-
-<!-- LINE LIFF SDK -->
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
 
 <style>
-
-/* =========================
-   基本設定
-========================= */
 
 * {
   box-sizing: border-box;
@@ -47,10 +41,6 @@ body {
 }
 
 
-/* =========================
-   コンテナ
-========================= */
-
 .container {
 
   max-width: 700px;
@@ -61,10 +51,6 @@ body {
 
 }
 
-
-/* =========================
-   メインカード
-========================= */
 
 .card {
 
@@ -79,10 +65,6 @@ body {
 
 }
 
-
-/* =========================
-   タイトル
-========================= */
 
 h1 {
 
@@ -164,13 +146,6 @@ h1 {
   padding: 2px 0;
 
   cursor: pointer;
-
-}
-
-
-.delete-button:active {
-
-  opacity: 0.5;
 
 }
 
@@ -384,10 +359,6 @@ h1 {
 }
 
 
-/* =========================
-   送信中
-========================= */
-
 .sending {
 
   opacity: 0.6;
@@ -396,11 +367,9 @@ h1 {
 
 }
 
-
 </style>
 
 </head>
-
 
 
 <body>
@@ -409,121 +378,113 @@ h1 {
 <div class="container">
 
 
-  <div class="card">
+<div class="card">
 
 
-    <!-- =========================
-         タイトル
-    ========================== -->
-
-    <h1>
-      選択したメニュー
-    </h1>
+<h1>
+選択したメニュー
+</h1>
 
 
-    <div class="subtitle">
-      ご希望のメニューをご確認ください
-    </div>
+<div class="subtitle">
+ご希望のメニューをご確認ください
+</div>
 
 
-
-    <!-- =========================
-         カート内容
-    ========================== -->
-
-    <div id="cartList"></div>
+<div id="cartList"></div>
 
 
 
-    <!-- =========================
-         合計
-    ========================== -->
+<!-- =========================
+     合計
+========================= -->
 
-    <div
-      id="totalArea"
-      class="total"
-      style="display:none;"
-    >
-
-      <div class="total-row">
-
-        <div class="total-label">
-          合計金額
-        </div>
-
-        <div
-          id="totalPrice"
-          class="total-price"
-        >
-          ¥0
-        </div>
-
-      </div>
+<div
+  id="totalArea"
+  class="total"
+  style="display:none;"
+>
 
 
-      <div class="total-row">
+<div class="total-row">
 
-        <div class="total-label">
-          施術時間目安
-        </div>
+<div class="total-label">
+合計金額
+</div>
 
-        <div
-          id="totalTime"
-          class="total-time"
-        >
-          0分
-        </div>
+<div
+  id="totalPrice"
+  class="total-price"
+>
+¥0
+</div>
 
-      </div>
-
-
-    </div>
+</div>
 
 
+<div class="total-row">
 
-    <!-- =========================
-         ボタン
-    ========================== -->
+<div class="total-label">
+施術時間目安
+</div>
 
-    <div
-      id="buttonArea"
-      class="button-area"
-      style="display:none;"
-    >
+<div
+  id="totalTime"
+  class="total-time"
+>
+0分
+</div>
 
-
-      <button
-        class="button add-button"
-        onclick="addMenu()"
-      >
-        メニューを追加
-      </button>
+</div>
 
 
-      <button
-        id="completeButton"
-        class="button reserve-button"
-        onclick="completeSelection()"
-      >
-        選択完了
-      </button>
+</div>
 
 
-      <button
-        class="clear-button"
-        onclick="clearCart()"
-      >
-        カートを空にする
-      </button>
+
+<!-- =========================
+     ボタン
+========================= -->
+
+<div
+  id="buttonArea"
+  class="button-area"
+  style="display:none;"
+>
 
 
-    </div>
+<button
+  class="button add-button"
+  onclick="addMenu()"
+>
+メニューを追加
+</button>
 
 
-  </div>
+<button
+  id="completeButton"
+  class="button reserve-button"
+  onclick="completeSelection()"
+>
+選択完了
+</button>
 
 
-  <div id="status"></div>
+<button
+  class="clear-button"
+  onclick="clearCart()"
+>
+カートを空にする
+</button>
+
+
+</div>
+
+
+</div>
+
+
+<div id="status"></div>
 
 
 </div>
@@ -556,53 +517,6 @@ const CART_KEY =
 const MENU_URL =
   "./menu.html";
 
-/* =========================
-   LIFF初期化状態
-========================= */
-
-let liffInitialized = false;
-
-let liffInitError = null;
-
-
-/* =========================
-   LIFF初期化
-   ページを開いた時に実行
-========================= */
-
-async function initializeLIFF() {
-
-  try {
-
-    await liff.init({
-
-      liffId: LIFF_ID,
-
-      withLoginOnExternalBrowser: false
-
-    });
-
-
-    liffInitialized = true;
-
-    console.log(
-      "LIFF初期化成功"
-    );
-
-
-  } catch (error) {
-
-    liffInitError = error;
-
-    console.error(
-      "LIFF初期化エラー：",
-      error
-    );
-
-  }
-
-}
-
 
 
 /* =========================
@@ -613,7 +527,9 @@ function getCart() {
 
 
   const saved =
-    localStorage.getItem(CART_KEY);
+    localStorage.getItem(
+      CART_KEY
+    );
 
 
   if (!saved) {
@@ -725,9 +641,10 @@ function renderCart() {
     );
 
 
-  /*
-   * カートが空の場合
-   */
+
+  /* =========================
+     空の場合
+  ========================= */
 
   if (cart.length === 0) {
 
@@ -737,12 +654,16 @@ function renderCart() {
       <div class="empty">
 
         <div class="empty-title">
+
           カートは空です
+
         </div>
+
 
         <div class="empty-message">
 
           メニューを選択して<br>
+
           カートに追加してください。
 
         </div>
@@ -766,11 +687,12 @@ function renderCart() {
 
 
 
-  /*
-   * カート項目を作成
-   */
+  /* =========================
+     カート項目表示
+  ========================= */
 
   cartList.innerHTML =
+
     cart.map(
       (item, index) => `
 
@@ -835,9 +757,9 @@ function renderCart() {
 
 
 
-  /*
-   * 合計計算
-   */
+  /* =========================
+     合計
+  ========================= */
 
   let totalPrice = 0;
 
@@ -858,10 +780,6 @@ function renderCart() {
 
 
 
-  /*
-   * 合計表示
-   */
-
   document.getElementById(
     "totalPrice"
   ).textContent =
@@ -880,7 +798,6 @@ function renderCart() {
 
   buttonArea.style.display =
     "block";
-
 
 }
 
@@ -966,7 +883,7 @@ function addMenu() {
 
 
 /* =========================
-   LINE送信用メッセージ作成
+   LINE送信メッセージ
 ========================= */
 
 function createLineMessage() {
@@ -1081,10 +998,6 @@ async function completeSelection() {
     );
 
 
-  /*
-   * 二重送信防止
-   */
-
   button.disabled =
     true;
 
@@ -1102,28 +1015,25 @@ async function completeSelection() {
     "選択したメニューを送信しています…";
 
 
+
   try {
 
 
     /*
-     * ページ読み込み時に
-     * LIFF初期化済みか確認
+     * ★ここで初めてLIFFを初期化
      */
 
-    if (!liffInitialized) {
+    await liff.init({
+
+      liffId:
+        LIFF_ID,
+
+      withLoginOnExternalBrowser:
+        false
+
+    });
 
 
-      throw new Error(
-        "LIFFの初期化に失敗しています。"
-      );
-
-    }
-
-
-
-    /*
-     * LINEアプリ内LIFFか確認
-     */
 
     if (!liff.isInClient()) {
 
@@ -1135,11 +1045,6 @@ async function completeSelection() {
     }
 
 
-
-    /*
-     * chat_message.write
-     * 利用可能か確認
-     */
 
     if (
       !liff.isApiAvailable(
@@ -1156,18 +1061,10 @@ async function completeSelection() {
 
 
 
-    /*
-     * メッセージ作成
-     */
-
     const message =
       createLineMessage();
 
 
-
-    /*
-     * LINEトークへ送信
-     */
 
     await liff.sendMessages([
 
@@ -1183,34 +1080,31 @@ async function completeSelection() {
 
 
 
-    /*
-     * 送信成功
-     */
-
     status.textContent =
       "送信しました。";
 
-
-    /*
-     * カートを空にする
-     */
 
     localStorage.removeItem(
       CART_KEY
     );
 
 
-    /*
-     * LIFFを閉じる
-     */
-
     setTimeout(
+
       () => {
 
-        liff.closeWindow();
+        if (
+          liff.isInClient()
+        ) {
+
+          liff.closeWindow();
+
+        }
 
       },
+
       300
+
     );
 
 
@@ -1222,10 +1116,6 @@ async function completeSelection() {
       error
     );
 
-
-    /*
-     * エラー表示
-     */
 
     button.disabled =
       false;
@@ -1245,8 +1135,11 @@ async function completeSelection() {
 
 
     alert(
+
       "LINEへの送信に失敗しました。\n\n" +
+
       error.message
+
     );
 
   }
@@ -1301,22 +1194,15 @@ window.addEventListener(
 
   "DOMContentLoaded",
 
-  async function() {
+  function() {
 
 
     /*
-     * まずカートを表示
+     * ★カートを見るでは
+     * LIFFを初期化しない
      */
 
     renderCart();
-
-
-    /*
-     * その後LIFF初期化
-     */
-
-    await initializeLIFF();
-
 
   }
 
