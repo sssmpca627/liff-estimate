@@ -71,6 +71,12 @@ h1 {
   font-weight: 700;
 }
 
+.item-category {
+  margin-top: 5px;
+  color: #999;
+  font-size: 13px;
+}
+
 .item-bottom {
   display: flex;
   justify-content: space-between;
@@ -560,7 +566,6 @@ const MENUS = {
     time: 90
   },
 
-
   hydro_light: {
     menu: "hydro_light",
     name: "水素ハイドラコース／ライト",
@@ -584,7 +589,6 @@ const MENUS = {
     price: 9000,
     time: 90
   },
-
 
   plasma_light: {
     menu: "plasma_light",
@@ -610,7 +614,6 @@ const MENUS = {
     time: 90
   },
 
-
   radio_ems_light: {
     menu: "radio_ems_light",
     name: "ラジオ波＆EMS小顔コース／ライト",
@@ -635,7 +638,6 @@ const MENUS = {
     time: 90
   },
 
-
   pencil_light: {
     menu: "pencil_light",
     name: "ペンシルシミケアコース／ライト",
@@ -659,7 +661,6 @@ const MENUS = {
     price: 9000,
     time: 90
   },
-
 
   totte_light: {
     menu: "totte_light",
@@ -689,12 +690,11 @@ const MENUS = {
 
 
 /* ==================================================
-   LIFF
+   LIFF初期化
 ================================================== */
 
 let liffInitialized = false;
 let liffInitializing = false;
-
 
 async function initLIFF() {
 
@@ -714,7 +714,6 @@ async function initLIFF() {
     }
 
     return;
-
   }
 
   liffInitializing = true;
@@ -787,7 +786,7 @@ function saveCart(cart) {
 
 
 /* ==================================================
-   URLのmenuをカートへ追加
+   URLメニュー追加
 ================================================== */
 
 async function addMenuFromURL(menuId) {
@@ -807,7 +806,7 @@ async function addMenuFromURL(menuId) {
   }
 
 
-  const cart =
+  let cart =
     getCart();
 
 
@@ -833,10 +832,17 @@ async function addMenuFromURL(menuId) {
   }
 
 
-  /* --------------------------------
-     カート追加メッセージ
-     これだけ送信
-  -------------------------------- */
+  /*
+   * ここが今回の重要ポイント
+   *
+   * カート追加
+   * ↓
+   * 「カートに追加しました」だけ送信
+   * ↓
+   * 画面は閉じない
+   * ↓
+   * 追加されたメニューを画面に表示
+   */
 
   try {
 
@@ -850,6 +856,7 @@ async function addMenuFromURL(menuId) {
 
     }
 
+
     await liff.sendMessages([
       {
         type: "text",
@@ -858,45 +865,29 @@ async function addMenuFromURL(menuId) {
     ]);
 
 
-    /* --------------------------------
-       送信後に必ず閉じる
-    -------------------------------- */
+    /*
+     * 送信後、カート画面を表示
+     */
 
-    setTimeout(
-      () => {
-
-        try {
-
-          if (
-            liff.isInClient()
-          ) {
-
-            liff.closeWindow();
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "closeWindow error",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
+    renderCart();
 
 
   } catch (error) {
 
     console.error(
-      "追加エラー",
+      "カート追加エラー",
       error
     );
 
+    /*
+     * LINE送信が失敗しても
+     * カート自体は表示する
+     */
+
+    renderCart();
+
     showError(
+      "メニューは追加されましたが、\n" +
       "LINEへの送信に失敗しました。\n" +
       error.message
     );
@@ -962,6 +953,12 @@ function renderCart() {
           <div class="item-name">
             ${escapeHTML(
               item.name || "メニュー"
+            )}
+          </div>
+
+          <div class="item-category">
+            ${escapeHTML(
+              item.category || ""
             )}
           </div>
 
@@ -1106,9 +1103,11 @@ async function addMenuMessage() {
     ]);
 
 
-    /* --------------------------------
-       送信後に閉じる
-    -------------------------------- */
+    /*
+     * メニュー追加後は閉じる
+     *
+     * LINE側で次のメニューを選択
+     */
 
     setTimeout(
       () => {
@@ -1256,10 +1255,6 @@ async function completeSelection() {
       "\n\nこちらの内容でよろしいですか？";
 
 
-    /* --------------------------------
-       選択一覧送信
-    -------------------------------- */
-
     await liff.sendMessages([
       {
         type: "text",
@@ -1268,18 +1263,18 @@ async function completeSelection() {
     ]);
 
 
-    /* --------------------------------
-       送信成功後にカート削除
-    -------------------------------- */
+    /*
+     * 送信成功後のみカート削除
+     */
 
     localStorage.removeItem(
       CART_KEY
     );
 
 
-    /* --------------------------------
-       自動終了
-    -------------------------------- */
+    /*
+     * 選択完了は送信後に閉じる
+     */
 
     setTimeout(
       () => {
@@ -1315,12 +1310,10 @@ async function completeSelection() {
       error
     );
 
-
     showError(
       "LINEへの送信に失敗しました。\n" +
       error.message
     );
-
 
     button.disabled = false;
 
@@ -1333,7 +1326,7 @@ async function completeSelection() {
 
 
 /* ==================================================
-   エラー
+   エラー表示
 ================================================== */
 
 function showError(message) {
@@ -1399,16 +1392,16 @@ async function startPage() {
       );
 
 
-    /* --------------------------------
-       menu= がある場合
-       
-       例：
-       ?menu=face_all
-       
-       → カート追加
-       → メッセージ送信
-       → 自動終了
-    -------------------------------- */
+    /*
+     * menu=face_all
+     *
+     * ↓
+     * 顔全体をカート追加
+     * ↓
+     * カートに追加しました
+     * ↓
+     * そのまま画面表示
+     */
 
     const menuId =
       params.get("menu");
@@ -1425,11 +1418,12 @@ async function startPage() {
     }
 
 
-    /* --------------------------------
-       mode=cart
-       
-       → カート画面表示
-    -------------------------------- */
+    /*
+     * mode=cart
+     *
+     * ↓
+     * カート表示
+     */
 
     if (
       params.get("mode") === "cart"
@@ -1442,12 +1436,12 @@ async function startPage() {
     }
 
 
-    /* --------------------------------
-       通常起動
-       
-       メニュー選択画面は出さない
-       カートだけ表示
-    -------------------------------- */
+    /*
+     * 通常起動
+     *
+     * ↓
+     * 選択したメニューを表示
+     */
 
     renderCart();
 
