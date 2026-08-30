@@ -152,46 +152,42 @@ h1 {
 const RESERVATION_FORM_URL =
   "https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL";
 
+
 const CART_KEY =
   "salon_cart";
 
 
+const TOTAL_TIME_KEY =
+  "salon_total_time";
+
+
 /* ==================================================
-   施術時間を取得
+   数値変換
 ================================================== */
 
-function getTreatmentTime() {
+function toNumber(value) {
 
-  /*
-   * ① URLの ?time=xxx を確認
-   */
-
-  const params =
-    new URLSearchParams(
-      window.location.search
-    );
-
-  const urlTime =
-    Number(
-      params.get("time")
-    );
-
+  const number =
+    Number(value);
 
   if (
-    Number.isFinite(urlTime) &&
-    urlTime > 0
+    Number.isFinite(number)
   ) {
 
-    return Math.round(
-      urlTime
-    );
+    return number;
 
   }
 
+  return 0;
 
-  /*
-   * ② カートから合計時間を計算
-   */
+}
+
+
+/* ==================================================
+   カートから合計時間を取得
+================================================== */
+
+function getTimeFromCart() {
 
   const saved =
     localStorage.getItem(
@@ -199,92 +195,182 @@ function getTreatmentTime() {
     );
 
 
-  if (saved) {
+  if (!saved) {
 
-    try {
+    return 0;
 
-      const cart =
-        JSON.parse(saved);
-
-
-      if (
-        Array.isArray(cart) &&
-        cart.length > 0
-      ) {
-
-        let totalTime = 0;
+  }
 
 
-        cart.forEach(
-          item => {
+  try {
 
-            const time =
-              Number(item.time);
-
-
-            if (
-              Number.isFinite(time) &&
-              time > 0
-            ) {
-
-              totalTime += time;
-
-            }
-
-          }
-        );
+    const cart =
+      JSON.parse(saved);
 
 
-        if (totalTime > 0) {
+    if (
+      !Array.isArray(cart)
+    ) {
 
-          return Math.round(
-            totalTime
-          );
-
-        }
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "カート読み込みエラー",
-        error
-      );
+      return 0;
 
     }
 
+
+    let totalTime = 0;
+
+
+    cart.forEach(
+      item => {
+
+        totalTime +=
+          toNumber(item.time);
+
+      }
+    );
+
+
+    return Math.round(
+      totalTime
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "カート時間取得エラー",
+      error
+    );
+
+
+    return 0;
+
   }
 
+}
 
-  /*
-   * ③ 旧方式
-   * salon_total_time
-   */
 
-  const savedTotal =
-    Number(
-      localStorage.getItem(
-        "salon_total_time"
-      )
+/* ==================================================
+   保存されている合計時間を取得
+================================================== */
+
+function getSavedTotalTime() {
+
+  const value =
+    localStorage.getItem(
+      TOTAL_TIME_KEY
     );
+
+
+  const time =
+    toNumber(value);
 
 
   if (
-    Number.isFinite(savedTotal) &&
-    savedTotal > 0
+    time > 0
   ) {
 
     return Math.round(
-      savedTotal
+      time
     );
 
   }
 
 
+  return 0;
+
+}
+
+
+/* ==================================================
+   URLから時間を取得
+================================================== */
+
+function getURLTime() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const value =
+    params.get("time");
+
+
+  const time =
+    toNumber(value);
+
+
+  if (
+    time > 0
+  ) {
+
+    return Math.round(
+      time
+    );
+
+  }
+
+
+  return 0;
+
+}
+
+
+/* ==================================================
+   施術時間取得
+================================================== */
+
+function getTreatmentTime() {
+
   /*
-   * ④ 取得できない場合
+   * 優先順位
+   *
+   * ① salon_cart
+   * ② salon_total_time
+   * ③ URL ?time=
    */
+
+
+  const cartTime =
+    getTimeFromCart();
+
+
+  if (
+    cartTime > 0
+  ) {
+
+    return cartTime;
+
+  }
+
+
+  const savedTime =
+    getSavedTotalTime();
+
+
+  if (
+    savedTime > 0
+  ) {
+
+    return savedTime;
+
+  }
+
+
+  const urlTime =
+    getURLTime();
+
+
+  if (
+    urlTime > 0
+  ) {
+
+    return urlTime;
+
+  }
+
 
   return 0;
 
@@ -301,14 +387,38 @@ function init() {
     getTreatmentTime();
 
 
-  document.getElementById(
-    "time"
-  ).textContent =
+  const timeElement =
+    document.getElementById(
+      "time"
+    );
+
+
+  timeElement.textContent =
     time + "分";
 
 
   /*
-   * 予約フォームURLは変更しない
+   * 取得できた時間を
+   * salon_total_time に保存
+   */
+
+  if (
+    time > 0
+  ) {
+
+    localStorage.setItem(
+      TOTAL_TIME_KEY,
+      String(time)
+    );
+
+  }
+
+
+  /*
+   * 予約フォームURL
+   *
+   * ここは今まで使用していたURLを
+   * そのまま使用
    */
 
   document.getElementById(
