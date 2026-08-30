@@ -96,15 +96,17 @@ h1 {
   text-decoration: none;
 }
 
-.error-message {
+.error {
   display: none;
 
   margin-top: 18px;
 
   text-align: center;
+
   color: #999;
 
   font-size: 14px;
+
   line-height: 1.7;
 }
 
@@ -117,52 +119,52 @@ h1 {
 
 <div class="container">
 
-  <div class="card">
+<div class="card">
 
-    <h1>
-      予約枠を選択する
-    </h1>
-
-
-    <div class="message">
-      今回の施術時間に合わせて<br>
-      予約枠をお選びください。
-    </div>
+<h1>
+予約枠を選択する
+</h1>
 
 
-    <div class="time-box">
-
-      <div class="time-label">
-        施術時間目安
-      </div>
-
-      <div
-        id="totalTime"
-        class="time-value"
-      >
-        0分
-      </div>
-
-    </div>
+<div class="message">
+今回の施術時間に合わせて<br>
+予約枠をお選びください。
+</div>
 
 
-    <a
-      id="reserveButton"
-      class="reserve-button"
-      href="https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL"
-    >
-      予約日時を選択する
-    </a>
+<div class="time-box">
+
+<div class="time-label">
+施術時間目安
+</div>
+
+<div
+  id="time"
+  class="time-value"
+>
+0分
+</div>
+
+</div>
 
 
-    <div
-      id="errorMessage"
-      class="error-message"
-    >
-      選択したメニューの施術時間を取得できませんでした。
-    </div>
+<a
+  id="reserveButton"
+  class="reserve-button"
+  href="https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL"
+>
+予約日時を選択する
+</a>
 
-  </div>
+
+<div
+  id="error"
+  class="error"
+>
+施術時間が指定されていません。
+</div>
+
+</div>
 
 </div>
 
@@ -170,149 +172,79 @@ h1 {
 <script>
 
 /* ==================================================
-   設定
+   URLから施術時間を取得
 ================================================== */
 
-const CART_KEY = "salon_cart";
+function getTimeFromURL() {
 
-
-/* ==================================================
-   カート取得
-================================================== */
-
-function getCart() {
-
-  const saved =
-    localStorage.getItem(CART_KEY);
-
-
-  if (!saved) {
-    return [];
-  }
-
-
-  try {
-
-    const cart =
-      JSON.parse(saved);
-
-
-    if (
-      Array.isArray(cart)
-    ) {
-
-      return cart;
-
-    }
-
-  } catch (error) {
-
-    console.error(
-      "カート読み込みエラー",
-      error
+  const params =
+    new URLSearchParams(
+      window.location.search
     );
 
-  }
+
+  const time =
+    Number(
+      params.get("time")
+    );
 
 
-  return [];
-
-}
-
-
-/* ==================================================
-   合計施術時間
-================================================== */
-
-function getTotalTime() {
-
-  const cart =
-    getCart();
-
-
-  let totalTime = 0;
-
-
-  for (
-    let i = 0;
-    i < cart.length;
-    i++
+  if (
+    Number.isFinite(time) &&
+    time > 0
   ) {
 
-    const time =
-      Number(
-        cart[i].time
-      );
-
-
-    if (
-      Number.isFinite(time)
-    ) {
-
-      totalTime += time;
-
-    }
+    return time;
 
   }
 
 
-  return totalTime;
+  return 0;
 
 }
 
 
 /* ==================================================
-   画面表示
+   表示
 ================================================== */
 
-function renderReservationPage() {
+function showTime() {
 
-  const totalTime =
-    getTotalTime();
+  const time =
+    getTimeFromURL();
 
 
   const timeElement =
     document.getElementById(
-      "totalTime"
+      "time"
     );
 
 
   const errorElement =
     document.getElementById(
-      "errorMessage"
+      "error"
     );
 
 
-  /*
-   * 施術時間を表示
-   */
-
-  timeElement.textContent =
-    totalTime + "分";
-
-
-  /*
-   * メニューが取得できた場合
-   */
-
   if (
-    totalTime > 0
+    time > 0
   ) {
+
+    timeElement.textContent =
+      time + "分";
 
     errorElement.style.display =
       "none";
 
-    return;
+  } else {
+
+    timeElement.textContent =
+      "0分";
+
+    errorElement.style.display =
+      "block";
 
   }
-
-
-  /*
-   * 取得できなかった場合
-   */
-
-  errorElement.style.display =
-    "block";
 
 }
 
@@ -321,13 +253,9 @@ function renderReservationPage() {
    起動
 ================================================== */
 
-document.addEventListener(
+window.addEventListener(
   "DOMContentLoaded",
-  function() {
-
-    renderReservationPage();
-
-  }
+  showTime
 );
 
 </script>
