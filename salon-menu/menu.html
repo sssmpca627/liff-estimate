@@ -94,7 +94,9 @@ h1 {
     ></div>
 
     <div class="message">
+
       このメニューをカートに追加しました。
+
     </div>
 
   </div>
@@ -133,6 +135,7 @@ function getMenuFromURL() {
     new URLSearchParams(
       window.location.search
     );
+
 
   const menuId =
     params.get("menu") || "face_all";
@@ -212,7 +215,9 @@ function getCart() {
 
 
   if (!saved) {
+
     return [];
+
   }
 
 
@@ -223,7 +228,9 @@ function getCart() {
 
 
     if (!Array.isArray(cart)) {
+
       return [];
+
     }
 
 
@@ -282,7 +289,7 @@ function saveToCart(menu) {
 
 
 /* =========================
-   LINE送信
+   LINEへ送信
 ========================= */
 
 async function sendCartAddedMessage() {
@@ -302,7 +309,7 @@ async function sendCartAddedMessage() {
 
 
 /* =========================
-   自動で閉じる
+   LIFFを閉じる
 ========================= */
 
 function closeLIFF() {
@@ -329,11 +336,18 @@ function closeLIFF() {
 
 async function main() {
 
+
+  /* =====================
+     メニュー取得
+  ===================== */
+
   const menu =
     getMenuFromURL();
 
 
-  /* メニュー名表示 */
+  /* =====================
+     メニュー名表示
+  ===================== */
 
   document.getElementById(
     "menuName"
@@ -345,7 +359,7 @@ async function main() {
 
 
     /* =====================
-       ① カートへ保存
+       ① カート保存
     ===================== */
 
     saveToCart(menu);
@@ -382,24 +396,7 @@ async function main() {
 
 
     /* =====================
-       ④ メッセージ送信可能か確認
-    ===================== */
-
-    if (
-      !liff.isApiAvailable(
-        "sendMessages"
-      )
-    ) {
-
-      throw new Error(
-        "LINEメッセージ送信機能が利用できません。"
-      );
-
-    }
-
-
-    /* =====================
-       ⑤ LINEへ送信
+       ④ LINEへ送信
     ===================== */
 
     await sendCartAddedMessage();
@@ -411,13 +408,14 @@ async function main() {
 
 
     /* =====================
-       ⑥ 自動で閉じる
+       ⑤ 自動で閉じる
     ===================== */
 
     closeLIFF();
 
 
   } catch (error) {
+
 
     console.error(
       "処理エラー",
@@ -441,8 +439,11 @@ async function main() {
 ========================= */
 
 window.addEventListener(
+
   "DOMContentLoaded",
+
   main
+
 );
 
 
