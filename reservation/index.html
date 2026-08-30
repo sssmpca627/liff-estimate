@@ -146,8 +146,8 @@ h1 {
 <script>
 
 /* ==================================================
-   元々使用している予約フォームURL
-   ※ここは変更しない
+   予約フォームURL
+   ※既存のURLなので変更しない
 ================================================== */
 
 const RESERVATION_FORM_URL =
@@ -201,20 +201,16 @@ function init() {
 
 
   /*
-   * 予約フォームURLには
-   * timeを付けない
+   * 予約フォームへは
+   * timeを渡さない
    *
-   * 予約フォーム側の既存設定を
+   * 既存の予約フォームURLを
    * そのまま使用する
    */
 
-  const button =
-    document.getElementById(
-      "reserveButton"
-    );
-
-
-  button.href =
+  document.getElementById(
+    "reserveButton"
+  ).href =
     RESERVATION_FORM_URL;
 
 }
@@ -236,11 +232,6 @@ function closePage() {
 
   }
 
-
-  /*
-   * LINE内ブラウザ等で
-   * history.back()できない場合
-   */
 
   try {
 
