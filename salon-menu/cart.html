@@ -10,9 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>選択したメニュー</title>
-
-<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<title>予約枠を選択する</title>
 
 <style>
 
@@ -34,180 +32,64 @@ body {
 }
 
 .container {
-  max-width: 700px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 40px 20px 60px;
+  padding: 30px 20px;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
-  padding: 35px 25px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  padding: 28px 20px 30px;
+  box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+}
+
+.close {
+  text-align: right;
+  font-size: 28px;
+  color: #999;
+  line-height: 1;
+  cursor: pointer;
 }
 
 h1 {
   text-align: center;
-  font-size: 30px;
-  margin: 0 0 10px;
+  font-size: 24px;
+  margin: 12px 0 28px;
 }
 
-.subtitle {
-  text-align: center;
-  color: #888;
-  font-size: 16px;
-  margin-bottom: 30px;
-}
-
-.cart-item {
-  border: 1px solid #e3e3e3;
-  border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 15px;
-  background: #fff;
-}
-
-.item-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 15px;
-}
-
-.item-name {
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1.4;
-}
-
-.delete-button {
-  border: none;
-  background: transparent;
-  color: #aaa;
-  font-size: 16px;
-  padding: 2px 0;
-  cursor: pointer;
-}
-
-.item-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 14px;
-}
-
-.item-time {
-  color: #888;
-  font-size: 17px;
-}
-
-.item-price {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.total {
-  border-top: 1px solid #ddd;
-  margin-top: 25px;
-  padding-top: 25px;
-}
-
-.total-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 18px;
-}
-
-.total-label {
-  font-size: 18px;
-  color: #666;
-}
-
-.total-price {
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.total-time {
-  font-size: 28px;
-  font-weight: 700;
-}
-
-.button-area {
-  margin-top: 30px;
-}
-
-.button {
-  display: block;
-  width: 100%;
-  border-radius: 16px;
-  padding: 18px 20px;
-  font-size: 19px;
-  font-weight: 700;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-}
-
-.add-button {
-  background: #fff;
-  border: 1px solid #ccc;
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.reserve-button {
-  background: #333;
-  border: 1px solid #333;
-  color: #fff;
-  margin-bottom: 15px;
-}
-
-.complete-button {
-  background: #fff;
-  border: 1px solid #333;
-  color: #333;
-}
-
-.clear-button {
-  display: block;
-  margin: 25px auto 0;
-  border: none;
-  background: transparent;
-  color: #aaa;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.empty {
-  text-align: center;
-  padding: 35px 10px 20px;
-}
-
-.empty-title {
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-
-.empty-message {
-  color: #888;
-  font-size: 16px;
-  line-height: 1.7;
-}
-
-#status {
+.label {
   text-align: center;
   color: #888;
   font-size: 14px;
-  margin-top: 20px;
-  white-space: pre-line;
 }
 
-.sending {
-  opacity: 0.6;
-  pointer-events: none;
+.time {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  margin: 8px 0 20px;
+}
+
+.description {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 30px;
+}
+
+.reserve-button {
+  display: block;
+  width: 100%;
+  padding: 17px 10px;
+  border-radius: 16px;
+  background: #333;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
 }
 
 </style>
@@ -217,152 +99,72 @@ h1 {
 
 <body>
 
-
 <div class="container">
 
-<div class="card">
+  <div class="card">
 
+    <div
+      class="close"
+      onclick="closePage()"
+    >
+      ×
+    </div>
 
-<h1>
-選択したメニュー
-</h1>
+    <h1>
+      予約枠を選択する
+    </h1>
 
+    <div class="label">
+      施術時間目安
+    </div>
 
-<div class="subtitle">
-ご希望のメニューをご確認ください
-</div>
+    <div
+      id="time"
+      class="time"
+    >
+      読み込み中...
+    </div>
 
+    <div class="description">
+      今回の施術時間に合わせて<br>
+      予約枠をお選びください。
+    </div>
 
-<div id="cartList"></div>
+    <a
+      id="reserveButton"
+      class="reserve-button"
+      href="#"
+    >
+      予約日時を選択する
+    </a>
 
-
-<div
-  id="totalArea"
-  class="total"
-  style="display:none;"
->
-
-<div class="total-row">
-
-<div class="total-label">
-合計金額
-</div>
-
-<div
-  id="totalPrice"
-  class="total-price"
->
-¥0
-</div>
-
-</div>
-
-
-<div class="total-row">
-
-<div class="total-label">
-施術時間目安
-</div>
-
-<div
-  id="totalTime"
-  class="total-time"
->
-0分
-</div>
+  </div>
 
 </div>
-
-</div>
-
-
-<div
-  id="buttonArea"
-  class="button-area"
-  style="display:none;"
->
-
-<!-- メニュー追加 -->
-
-<button
-  type="button"
-  class="button add-button"
-  onclick="addMenu()"
->
-メニューを追加
-</button>
-
-
-<!-- 予約枠を選択する -->
-
-<a
-  id="reservationButton"
-  class="button reserve-button"
-  href="#"
->
-予約枠を選択する
-</a>
-
-
-<!-- 選択完了 -->
-
-<button
-  type="button"
-  id="completeButton"
-  class="button complete-button"
-  onclick="completeSelection()"
->
-選択完了
-</button>
-
-
-<button
-  type="button"
-  class="clear-button"
-  onclick="clearCart()"
->
-カートを空にする
-</button>
-
-</div>
-
-
-</div>
-
-
-<div id="status"></div>
-
-</div>
-
 
 
 <script>
 
-/* =========================
+/* ==================================================
    設定
-========================= */
-
-const LIFF_ID =
-  "2011037691-j7UfaGxQ";
+================================================== */
 
 const CART_KEY =
   "salon_cart";
 
-const MENU_URL =
-  "./menu.html";
+
+/* ==================================================
+   既存の予約フォームURL
+   ※ここは変更しない
+================================================== */
+
+const RESERVATION_FORM_URL =
+  "https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL";
 
 
-/* =========================
-   予約枠ページ
-========================= */
-
-const RESERVATION_PAGE_URL =
-  "https://sssmpca627.github.io/liff-estimate/reservation/";
-
-
-/* =========================
+/* ==================================================
    カート取得
-========================= */
+================================================== */
 
 function getCart() {
 
@@ -398,662 +200,119 @@ function getCart() {
 }
 
 
-/* =========================
-   カート保存
-========================= */
-
-function saveCart(cart) {
-
-  localStorage.setItem(
-    CART_KEY,
-    JSON.stringify(cart)
-  );
-
-}
-
-
-/* =========================
-   金額表示
-========================= */
-
-function formatPrice(price) {
-
-  const number =
-    Number(price) || 0;
-
-  return (
-    "¥" +
-    number.toLocaleString("ja-JP")
-  );
-
-}
-
-
-/* =========================
-   合計時間
-========================= */
+/* ==================================================
+   合計施術時間
+================================================== */
 
 function getTotalTime() {
 
   const cart =
     getCart();
 
-  return cart.reduce(
-    function(total, item) {
+  let totalTime = 0;
 
-      const time =
-        Number(item.time);
+  cart.forEach(item => {
 
-      if (
-        Number.isFinite(time)
-      ) {
+    const time =
+      Number(item.time);
 
-        return total + time;
+    if (
+      Number.isFinite(time)
+    ) {
 
-      }
+      totalTime += time;
 
-      return total;
+    }
 
-    },
-    0
-  );
+  });
 
-}
-
-
-/* =========================
-   合計金額
-========================= */
-
-function getTotalPrice() {
-
-  const cart =
-    getCart();
-
-  return cart.reduce(
-    function(total, item) {
-
-      const price =
-        Number(item.price);
-
-      if (
-        Number.isFinite(price)
-      ) {
-
-        return total + price;
-
-      }
-
-      return total;
-
-    },
-    0
-  );
+  return totalTime;
 
 }
 
 
-/* =========================
-   予約ページURL作成
-========================= */
+/* ==================================================
+   初期表示
+================================================== */
 
-function getReservationURL() {
+function init() {
 
   const totalTime =
     getTotalTime();
 
 
-  return (
-    RESERVATION_PAGE_URL +
-    "?time=" +
-    encodeURIComponent(
-      totalTime
-    )
+  console.log(
+    "予約枠ページのカート：",
+    getCart()
   );
 
-}
-
-
-/* =========================
-   予約ボタン更新
-========================= */
-
-function updateReservationButton() {
-
-  const button =
-    document.getElementById(
-      "reservationButton"
-    );
-
-  const cart =
-    getCart();
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    button.href = "#";
-
-    button.style.opacity = "0.5";
-
-    button.style.pointerEvents =
-      "none";
-
-    return;
-
-  }
-
-
-  button.href =
-    getReservationURL();
-
-  button.style.opacity = "1";
-
-  button.style.pointerEvents =
-    "auto";
-
-}
-
-
-/* =========================
-   カート表示
-========================= */
-
-function renderCart() {
-
-  const cart =
-    getCart();
-
-  const cartList =
-    document.getElementById(
-      "cartList"
-    );
-
-  const totalArea =
-    document.getElementById(
-      "totalArea"
-    );
-
-  const buttonArea =
-    document.getElementById(
-      "buttonArea"
-    );
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    cartList.innerHTML = `
-
-      <div class="empty">
-
-        <div class="empty-title">
-          カートは空です
-        </div>
-
-        <div class="empty-message">
-          メニューを選択して<br>
-          カートに追加してください。
-        </div>
-
-      </div>
-
-    `;
-
-
-    totalArea.style.display =
-      "none";
-
-    buttonArea.style.display =
-      "none";
-
-    return;
-
-  }
-
-
-  cartList.innerHTML =
-
-    cart.map(
-      function(item, index) {
-
-        return `
-
-          <div class="cart-item">
-
-            <div class="item-top">
-
-              <div class="item-name">
-                ${escapeHTML(
-                  item.name || "メニュー"
-                )}
-              </div>
-
-              <button
-                type="button"
-                class="delete-button"
-                onclick="removeItem(${index})"
-              >
-                削除
-              </button>
-
-            </div>
-
-            <div class="item-bottom">
-
-              <div class="item-time">
-                約${Number(item.time) || 0}分
-              </div>
-
-              <div class="item-price">
-                ${formatPrice(item.price)}
-              </div>
-
-            </div>
-
-          </div>
-
-        `;
-
-      }
-    ).join("");
-
-
-  const totalPrice =
-    getTotalPrice();
-
-  const totalTime =
-    getTotalTime();
+  console.log(
+    "合計施術時間：",
+    totalTime
+  );
 
 
   document.getElementById(
-    "totalPrice"
-  ).textContent =
-    formatPrice(totalPrice);
-
-
-  document.getElementById(
-    "totalTime"
+    "time"
   ).textContent =
     totalTime + "分";
 
 
-  totalArea.style.display =
-    "block";
-
-  buttonArea.style.display =
-    "block";
-
-
-  /*
-   * ★重要
-   *
-   * 合計時間を予約ページへ渡す
-   */
-
-  updateReservationButton();
-
-}
-
-
-/* =========================
-   メニュー削除
-========================= */
-
-function removeItem(index) {
-
-  const cart =
-    getCart();
-
-  cart.splice(
-    index,
-    1
-  );
-
-  saveCart(cart);
-
-  renderCart();
-
-}
-
-
-/* =========================
-   カートを空にする
-========================= */
-
-function clearCart() {
-
-  const cart =
-    getCart();
-
-  if (
-    cart.length === 0
-  ) {
-
-    return;
-
-  }
-
-
-  if (
-    !confirm(
-      "カートを空にしますか？"
-    )
-  ) {
-
-    return;
-
-  }
-
-
-  localStorage.removeItem(
-    CART_KEY
-  );
-
-  renderCart();
-
-}
-
-
-/* =========================
-   メニュー追加
-========================= */
-
-function addMenu() {
-
-  window.location.href =
-    MENU_URL;
-
-}
-
-
-/* =========================
-   LINE送信文作成
-========================= */
-
-function createLineMessage() {
-
-  const cart =
-    getCart();
-
-  if (
-    cart.length === 0
-  ) {
-
-    return "";
-
-  }
-
-
-  let totalPrice = 0;
-  let totalTime = 0;
-
-
-  let message =
-    "【選択したメニュー】\n\n";
-
-
-  cart.forEach(
-    function(item) {
-
-      const name =
-        item.name ||
-        "メニュー";
-
-      const price =
-        Number(item.price) || 0;
-
-      const time =
-        Number(item.time) || 0;
-
-
-      message +=
-        "✔ " +
-        name +
-        "　" +
-        formatPrice(price) +
-        "　約" +
-        time +
-        "分\n";
-
-
-      totalPrice +=
-        price;
-
-      totalTime +=
-        time;
-
-    }
-  );
-
-
-  message +=
-    "\n■ 合計金額\n" +
-    formatPrice(totalPrice);
-
-
-  message +=
-    "\n\n■ 施術時間目安\n" +
-    totalTime +
-    "分";
-
-
-  return message;
-
-}
-
-
-/* =========================
-   選択完了
-========================= */
-
-async function completeSelection() {
-
-  const cart =
-    getCart();
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    alert(
-      "メニューを選択してください。"
-    );
-
-    return;
-
-  }
-
-
   const button =
     document.getElementById(
-      "completeButton"
-    );
-
-  const status =
-    document.getElementById(
-      "status"
+      "reserveButton"
     );
 
 
-  button.disabled = true;
+  button.href =
+    RESERVATION_FORM_URL;
 
-  button.classList.add(
-    "sending"
-  );
+}
 
-  button.textContent =
-    "送信中…";
 
-  status.textContent =
-    "LINEへ送信しています…";
+/* ==================================================
+   閉じる
+================================================== */
+
+function closePage() {
+
+  if (
+    window.history.length > 1
+  ) {
+
+    window.history.back();
+
+    return;
+
+  }
 
 
   try {
 
-    await liff.init({
-
-      liffId:
-        LIFF_ID,
-
-      withLoginOnExternalBrowser:
-        false
-
-    });
-
-
-    if (
-      !liff.isInClient()
-    ) {
-
-      throw new Error(
-        "LINEアプリ内から実行してください。"
-      );
-
-    }
-
-
-    if (
-      !liff.isApiAvailable(
-        "sendMessages"
-      )
-    ) {
-
-      throw new Error(
-        "LINEメッセージ送信機能が利用できません。"
-      );
-
-    }
-
-
-    const message =
-      createLineMessage();
-
-
-    await liff.sendMessages([
-
-      {
-        type: "text",
-        text: message
-      }
-
-    ]);
-
-
-    status.textContent =
-      "送信しました。";
-
-
-    localStorage.removeItem(
-      CART_KEY
-    );
-
-
-    setTimeout(
-      function() {
-
-        if (
-          liff.isInClient()
-        ) {
-
-          liff.closeWindow();
-
-        }
-
-      },
-      500
-    );
-
+    window.close();
 
   } catch (error) {
 
     console.error(
-      "LINE送信エラー：",
+      "close error",
       error
     );
 
-
-    button.disabled = false;
-
-    button.classList.remove(
-      "sending"
-    );
-
-    button.textContent =
-      "選択完了";
-
-    status.textContent =
-      "";
-
-
-    alert(
-      "LINEへの送信に失敗しました。\n\n" +
-      error.message
-    );
-
   }
 
 }
 
 
-/* =========================
-   HTMLエスケープ
-========================= */
-
-function escapeHTML(value) {
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* =========================
+/* ==================================================
    起動
-========================= */
+================================================== */
 
-window.addEventListener(
+document.addEventListener(
   "DOMContentLoaded",
-  function() {
-
-    /*
-     * カートを表示
-     */
-
-    renderCart();
-
-  }
+  init
 );
 
 </script>
-
 
 </body>
 
