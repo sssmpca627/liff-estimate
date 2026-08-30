@@ -180,15 +180,14 @@ h1 {
 
 <body>
 
-
 <div class="container">
 
 <div class="card">
 
 
-<!-- ==================================================
+<!-- =========================
      メニュー選択画面
-================================================== -->
+========================= -->
 
 <div id="menuScreen">
 
@@ -254,9 +253,9 @@ h1 {
 </div>
 
 
-<!-- ==================================================
+<!-- =========================
      カート画面
-================================================== -->
+========================= -->
 
 <div
   id="cartScreen"
@@ -339,7 +338,6 @@ h1 {
 
 </div>
 
-
 </div>
 
 
@@ -349,7 +347,6 @@ h1 {
 
 
 <script>
-
 
 /* ==================================================
    設定
@@ -396,20 +393,43 @@ const MENUS = {
    LIFF初期化
 ================================================== */
 
-let liffReady = false;
+let liffInitialized = false;
+
+let liffInitializing = false;
 
 
 async function initLIFF() {
 
-  if (liffReady) {
+  if (liffInitialized) {
     return;
   }
 
-  await liff.init({
-    liffId: LIFF_ID
-  });
+  if (liffInitializing) {
 
-  liffReady = true;
+    while (liffInitializing) {
+      await new Promise(
+        resolve => setTimeout(resolve, 50)
+      );
+    }
+
+    return;
+  }
+
+  liffInitializing = true;
+
+  try {
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+    liffInitialized = true;
+
+  } finally {
+
+    liffInitializing = false;
+
+  }
 
 }
 
@@ -432,11 +452,9 @@ function getCart() {
     const cart =
       JSON.parse(saved);
 
-    if (!Array.isArray(cart)) {
-      return [];
-    }
-
-    return cart;
+    return Array.isArray(cart)
+      ? cart
+      : [];
 
   } catch (error) {
 
@@ -467,10 +485,16 @@ function saveCart(cart) {
 
 
 /* ==================================================
-   メニューをカートへ追加
+   メニュー追加
 ================================================== */
 
 async function addMenu(menuId) {
+
+  console.log(
+    "addMenu:",
+    menuId
+  );
+
 
   const menu =
     MENUS[menuId];
@@ -479,7 +503,8 @@ async function addMenu(menuId) {
   if (!menu) {
 
     showError(
-      "メニュー情報を取得できませんでした。"
+      "メニュー情報を取得できませんでした。\n" +
+      "menu=" + menuId
     );
 
     return;
@@ -487,9 +512,9 @@ async function addMenu(menuId) {
   }
 
 
-  /* --------------------------------
+  /* -------------------------
      カートへ追加
-  -------------------------------- */
+  ------------------------- */
 
   const cart =
     getCart();
@@ -504,25 +529,26 @@ async function addMenu(menuId) {
 
   if (!alreadyAdded) {
 
-    cart.push(menu);
+    cart.push({
+      menu: menu.menu,
+      name: menu.name,
+      price: menu.price,
+      time: menu.time
+    });
 
     saveCart(cart);
 
   }
 
 
-  /* --------------------------------
-     LINE初期化
-  -------------------------------- */
+  /* -------------------------
+     LIFF送信
+  ------------------------- */
 
   try {
 
     await initLIFF();
 
-
-    /* --------------------------------
-       LINEアプリ内か確認
-    -------------------------------- */
 
     if (!liff.isInClient()) {
 
@@ -533,30 +559,41 @@ async function addMenu(menuId) {
     }
 
 
-    /* --------------------------------
-       カート追加メッセージ送信
-    -------------------------------- */
+    console.log(
+      "カート追加メッセージ送信"
+    );
+
 
     await liff.sendMessages([
-
       {
         type: "text",
         text: "カートに追加しました"
       }
-
     ]);
 
 
-    /* --------------------------------
-       送信後にLIFFを閉じる
-    -------------------------------- */
+    console.log(
+      "送信成功"
+    );
+
+
+    /* -------------------------
+       自動で閉じる
+    ------------------------- */
 
     setTimeout(
       function() {
 
-        if (liff.isInClient()) {
+        try {
 
           liff.closeWindow();
+
+        } catch (error) {
+
+          console.error(
+            "LIFF終了エラー",
+            error
+          );
 
         }
 
@@ -568,9 +605,10 @@ async function addMenu(menuId) {
   } catch (error) {
 
     console.error(
-      "カート追加エラー",
+      "カート追加送信エラー",
       error
     );
+
 
     showError(
       "LINEへの送信に失敗しました。\n" +
@@ -662,6 +700,7 @@ function renderCart() {
 
 
   let totalPrice = 0;
+
   let totalTime = 0;
 
 
@@ -694,7 +733,7 @@ function renderCart() {
 
 
 /* ==================================================
-   カートから削除
+   削除
 ================================================== */
 
 function removeItem(index) {
@@ -722,11 +761,9 @@ function removeItem(index) {
 
 function clearCart() {
 
-  const cart =
-    getCart();
-
-
-  if (cart.length === 0) {
+  if (
+    getCart().length === 0
+  ) {
     return;
   }
 
@@ -753,7 +790,7 @@ function clearCart() {
 
 
 /* ==================================================
-   メニュー画面を表示
+   メニュー画面
 ================================================== */
 
 function showMenuScreen() {
@@ -775,7 +812,7 @@ function showMenuScreen() {
 
 
 /* ==================================================
-   カート画面を表示
+   カート画面
 ================================================== */
 
 function showCartScreen() {
@@ -809,7 +846,9 @@ async function completeSelection() {
     getCart();
 
 
-  if (cart.length === 0) {
+  if (
+    cart.length === 0
+  ) {
 
     alert(
       "メニューを選択してください。"
@@ -899,39 +938,45 @@ async function completeSelection() {
       "分";
 
 
-    /* --------------------------------
-       選択一覧をLINE送信
-    -------------------------------- */
+    /* -------------------------
+       LINE送信
+    ------------------------- */
 
     await liff.sendMessages([
-
       {
         type: "text",
         text: message
       }
-
     ]);
 
 
-    /* --------------------------------
-       送信後カートを空にする
-    -------------------------------- */
+    /* -------------------------
+       送信成功後のみ
+       カートを空にする
+    ------------------------- */
 
     localStorage.removeItem(
       CART_KEY
     );
 
 
-    /* --------------------------------
-       LIFFを閉じる
-    -------------------------------- */
+    /* -------------------------
+       自動終了
+    ------------------------- */
 
     setTimeout(
       function() {
 
-        if (liff.isInClient()) {
+        try {
 
           liff.closeWindow();
+
+        } catch (error) {
+
+          console.error(
+            "LIFF終了エラー",
+            error
+          );
 
         }
 
@@ -965,7 +1010,7 @@ async function completeSelection() {
 
 
 /* ==================================================
-   エラー表示
+   エラー
 ================================================== */
 
 function showError(message) {
@@ -1015,57 +1060,79 @@ function escapeHTML(value) {
 
 
 /* ==================================================
-   起動
+   ページ起動
 ================================================== */
 
-function startPage() {
+async function startPage() {
 
-  const params =
-    new URLSearchParams(
-      window.location.search
+  try {
+
+    /*
+     * 最初にLIFFを初期化
+     */
+
+    await initLIFF();
+
+
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    /* -------------------------
+       カートを見る
+       ?mode=cart
+    ------------------------- */
+
+    if (
+      params.get("mode") === "cart"
+    ) {
+
+      showCartScreen();
+
+      return;
+
+    }
+
+
+    /* -------------------------
+       menu=指定
+    ------------------------- */
+
+    const menuId =
+      params.get("menu");
+
+
+    if (menuId) {
+
+      await addMenu(menuId);
+
+      return;
+
+    }
+
+
+    /* -------------------------
+       通常のメニュー画面
+    ------------------------- */
+
+    showMenuScreen();
+
+  } catch (error) {
+
+    console.error(
+      "起動エラー",
+      error
     );
 
 
-  const mode =
-    params.get("mode");
-
-
-  /* --------------------------------
-     カートを見る
-     ?mode=cart
-  -------------------------------- */
-
-  if (mode === "cart") {
-
-    showCartScreen();
-
-    return;
+    showError(
+      "LIFFの起動に失敗しました。\n" +
+      error.message
+    );
 
   }
-
-
-  /* --------------------------------
-     menu= が付いている場合
-  -------------------------------- */
-
-  const menuId =
-    params.get("menu");
-
-
-  if (menuId) {
-
-    addMenu(menuId);
-
-    return;
-
-  }
-
-
-  /* --------------------------------
-     通常のメニュー選択画面
-  -------------------------------- */
-
-  showMenuScreen();
 
 }
 
@@ -1080,7 +1147,6 @@ window.addEventListener(
 );
 
 </script>
-
 
 </body>
 
