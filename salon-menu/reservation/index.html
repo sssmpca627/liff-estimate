@@ -55,13 +55,13 @@ h1 {
 .message {
   text-align: center;
   color: #666;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.8;
   margin-bottom: 25px;
 }
 
 .time-box {
-  border: 1px solid #ddd;
+  border: 1px solid #e3e3e3;
   border-radius: 18px;
   padding: 22px 15px;
   text-align: center;
@@ -79,29 +79,33 @@ h1 {
   font-weight: 700;
 }
 
-.button {
+.reserve-button {
   display: block;
   width: 100%;
-  border-radius: 16px;
   padding: 17px;
+
+  border-radius: 16px;
+
+  background: #333;
+  color: #fff;
+
   font-size: 17px;
   font-weight: 700;
+
   text-align: center;
   text-decoration: none;
-  cursor: pointer;
 }
 
-.reserve-button {
-  background: #333;
-  border: 1px solid #333;
-  color: #fff;
-}
+.error-message {
+  display: none;
 
-.empty-message {
+  margin-top: 18px;
+
   text-align: center;
-  color: #888;
-  line-height: 1.8;
-  padding: 20px 5px;
+  color: #999;
+
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 </style>
@@ -113,57 +117,52 @@ h1 {
 
 <div class="container">
 
-<div class="card">
+  <div class="card">
 
-<h1>
-予約枠を選択する
-</h1>
-
-
-<div class="message">
-今回の施術時間に合わせて<br>
-予約枠をお選びください。
-</div>
+    <h1>
+      予約枠を選択する
+    </h1>
 
 
-<div class="time-box">
-
-<div class="time-label">
-施術時間目安
-</div>
-
-
-<div
-  id="totalTime"
-  class="time-value"
->
-読み込み中…
-</div>
-
-</div>
+    <div class="message">
+      今回の施術時間に合わせて<br>
+      予約枠をお選びください。
+    </div>
 
 
-<a
-  id="reserveButton"
-  class="button reserve-button"
-  href="#"
->
-予約日時を選択する
-</a>
+    <div class="time-box">
+
+      <div class="time-label">
+        施術時間目安
+      </div>
+
+      <div
+        id="totalTime"
+        class="time-value"
+      >
+        0分
+      </div>
+
+    </div>
 
 
-<div
-  id="emptyMessage"
-  class="empty-message"
-  style="display:none;"
->
-選択したメニューを取得できませんでした。
-<br>
-先にメニューを選択してください。
-</div>
+    <a
+      id="reserveButton"
+      class="reserve-button"
+      href="https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL"
+    >
+      予約日時を選択する
+    </a>
 
 
-</div>
+    <div
+      id="errorMessage"
+      class="error-message"
+    >
+      選択したメニューの施術時間を取得できませんでした。
+    </div>
+
+  </div>
 
 </div>
 
@@ -174,19 +173,7 @@ h1 {
    設定
 ================================================== */
 
-
-/*
- * 今のカートと同じ保存場所
- */
-const CART_KEY =
-  "salon_cart";
-
-
-/*
- * 予約フォームURL
- */
-const RESERVATION_URL =
-  "https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL";
+const CART_KEY = "salon_cart";
 
 
 /* ==================================================
@@ -200,9 +187,7 @@ function getCart() {
 
 
   if (!saved) {
-
     return [];
-
   }
 
 
@@ -220,9 +205,6 @@ function getCart() {
 
     }
 
-
-    return [];
-
   } catch (error) {
 
     console.error(
@@ -230,9 +212,10 @@ function getCart() {
       error
     );
 
-    return [];
-
   }
+
+
+  return [];
 
 }
 
@@ -250,23 +233,27 @@ function getTotalTime() {
   let totalTime = 0;
 
 
-  cart.forEach(
-    item => {
+  for (
+    let i = 0;
+    i < cart.length;
+    i++
+  ) {
 
-      const time =
-        Number(item.time);
+    const time =
+      Number(
+        cart[i].time
+      );
 
 
-      if (
-        Number.isFinite(time)
-      ) {
+    if (
+      Number.isFinite(time)
+    ) {
 
-        totalTime += time;
-
-      }
+      totalTime += time;
 
     }
-  );
+
+  }
 
 
   return totalTime;
@@ -278,7 +265,7 @@ function getTotalTime() {
    画面表示
 ================================================== */
 
-function renderPage() {
+function renderReservationPage() {
 
   const totalTime =
     getTotalTime();
@@ -290,41 +277,30 @@ function renderPage() {
     );
 
 
-  const button =
+  const errorElement =
     document.getElementById(
-      "reserveButton"
-    );
-
-
-  const emptyMessage =
-    document.getElementById(
-      "emptyMessage"
+      "errorMessage"
     );
 
 
   /*
-   * メニューがある場合
+   * 施術時間を表示
+   */
+
+  timeElement.textContent =
+    totalTime + "分";
+
+
+  /*
+   * メニューが取得できた場合
    */
 
   if (
     totalTime > 0
   ) {
 
-    timeElement.textContent =
-      totalTime + "分";
-
-
-    button.href =
-      RESERVATION_URL;
-
-
-    button.style.display =
-      "block";
-
-
-    emptyMessage.style.display =
+    errorElement.style.display =
       "none";
-
 
     return;
 
@@ -332,18 +308,10 @@ function renderPage() {
 
 
   /*
-   * メニューがない場合
+   * 取得できなかった場合
    */
 
-  timeElement.textContent =
-    "0分";
-
-
-  button.style.display =
-    "none";
-
-
-  emptyMessage.style.display =
+  errorElement.style.display =
     "block";
 
 }
@@ -353,11 +321,11 @@ function renderPage() {
    起動
 ================================================== */
 
-window.addEventListener(
+document.addEventListener(
   "DOMContentLoaded",
   function() {
 
-    renderPage();
+    renderReservationPage();
 
   }
 );
