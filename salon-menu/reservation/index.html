@@ -1,1 +1,636 @@
+<!DOCTYPE html>
+<html lang="ja">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>予約枠を選択する</title>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f7;
+  color: #333;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 28px 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+h1 {
+  text-align: center;
+  font-size: 25px;
+  margin: 0 0 12px;
+}
+
+.message {
+  text-align: center;
+  color: #666;
+  font-size: 16px;
+  line-height: 1.8;
+  margin-bottom: 25px;
+}
+
+.time-box {
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.time-label {
+  color: #777;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.time-value {
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.button {
+  width: 100%;
+  border-radius: 16px;
+  padding: 17px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.reserve-button {
+  background: #333;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+#status {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  margin-top: 18px;
+  white-space: pre-line;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>
+施術時間目安
+</h1>
+
+<div class="message">
+今回の施術時間に合わせて<br>
+予約枠をお選びください。
+</div>
+
+<div class="time-box">
+
+<div class="time-label">
+施術時間目安
+</div>
+
+<div
+  id="totalTime"
+  class="time-value"
+>
+読み込み中…
+</div>
+
+</div>
+
+
+<button
+  type="button"
+  class="button reserve-button"
+  onclick="sendReservationMessage()"
+>
+予約日時を選択する
+</button>
+
+</div>
+
+<div id="status"></div>
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   設定
+================================================== */
+
+/*
+ * 今使っているLIFF ID
+ */
+const LIFF_ID =
+  "2011037691-j7UfaGxQ";
+
+
+/*
+ * 今のカートと同じ保存場所
+ */
+const CART_KEY =
+  "salon_cart";
+
+
+/*
+ * 予約フォームURL
+ *
+ * ↓ここを実際の予約フォームURLに変更
+ */
+const RESERVATION_URL =
+  "ここに予約フォームURLを入れる";
+
+
+/* ==================================================
+   LIFF初期化
+================================================== */
+
+let liffInitialized = false;
+
+let liffInitializing = false;
+
+
+async function initLIFF() {
+
+  if (liffInitialized) {
+    return;
+  }
+
+
+  if (liffInitializing) {
+
+    while (liffInitializing) {
+
+      await new Promise(
+        resolve =>
+          setTimeout(resolve, 50)
+      );
+
+    }
+
+    return;
+
+  }
+
+
+  liffInitializing = true;
+
+
+  try {
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+    liffInitialized = true;
+
+  } finally {
+
+    liffInitializing = false;
+
+  }
+
+}
+
+
+/* ==================================================
+   カート取得
+================================================== */
+
+function getCart() {
+
+  const saved =
+    localStorage.getItem(CART_KEY);
+
+
+  if (!saved) {
+    return [];
+  }
+
+
+  try {
+
+    const cart =
+      JSON.parse(saved);
+
+
+    return Array.isArray(cart)
+      ? cart
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "カート読み込みエラー",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* ==================================================
+   合計施術時間
+================================================== */
+
+function getTotalTime() {
+
+  const cart =
+    getCart();
+
+
+  let totalTime = 0;
+
+
+  cart.forEach(
+    item => {
+
+      totalTime +=
+        Number(item.time) || 0;
+
+    }
+  );
+
+
+  return totalTime;
+
+}
+
+
+/* ==================================================
+   画面表示
+================================================== */
+
+function renderTime() {
+
+  const totalTime =
+    getTotalTime();
+
+
+  const element =
+    document.getElementById(
+      "totalTime"
+    );
+
+
+  if (totalTime <= 0) {
+
+    element.textContent =
+      "0分";
+
+    showError(
+      "選択したメニューを取得できませんでした。"
+    );
+
+    return;
+
+  }
+
+
+  element.textContent =
+    totalTime + "分";
+
+}
+
+
+/* ==================================================
+   予約日時を選択する
+================================================== */
+
+async function sendReservationMessage() {
+
+  const totalTime =
+    getTotalTime();
+
+
+  if (totalTime <= 0) {
+
+    showError(
+      "選択したメニューがありません。\n" +
+      "先にメニューを選択してください。"
+    );
+
+    return;
+
+  }
+
+
+  if (
+    RESERVATION_URL ===
+    https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL
+  ) {
+
+    showError(
+      "予約フォームURLが設定されていません。"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.querySelector(
+      ".reserve-button"
+    );
+
+
+  button.disabled = true;
+
+  button.textContent =
+    "送信中…";
+
+
+  try {
+
+    await initLIFF();
+
+
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+
+    /*
+     * LINEに送るメッセージ
+     *
+     * 「予約日時を選択する」
+     * ボタンから予約フォームへ移動
+     */
+
+    const flexMessage = {
+
+      type: "flex",
+
+      altText:
+        "施術時間目安 " +
+        totalTime +
+        "分｜予約日時を選択してください",
+
+      contents: {
+
+        type: "bubble",
+
+        body: {
+
+          type: "box",
+
+          layout: "vertical",
+
+          spacing: "md",
+
+          contents: [
+
+            {
+
+              type: "text",
+
+              text:
+                "施術時間目安 " +
+                totalTime +
+                "分",
+
+              weight: "bold",
+
+              size: "xl",
+
+              align: "center"
+
+            },
+
+            {
+
+              type: "text",
+
+              text:
+                "予約日時を選択してください",
+
+              size: "md",
+
+              color: "#666666",
+
+              align: "center",
+
+              wrap: true
+
+            }
+
+          ]
+
+        },
+
+
+        footer: {
+
+          type: "box",
+
+          layout: "vertical",
+
+          spacing: "sm",
+
+          contents: [
+
+            {
+
+              type: "button",
+
+              style: "primary",
+
+              height: "sm",
+
+              action: {
+
+                type: "uri",
+
+                label:
+                  "予約日時を選択する",
+
+                uri:
+                  RESERVATION_URL
+
+              }
+
+            }
+
+          ]
+
+        }
+
+      }
+
+    };
+
+
+    /*
+     * LINEへ送信
+     */
+
+    await liff.sendMessages([
+      flexMessage
+    ]);
+
+
+    /*
+     * 送信成功後に自動で閉じる
+     */
+
+    setTimeout(
+      () => {
+
+        try {
+
+          if (
+            liff.isInClient()
+          ) {
+
+            liff.closeWindow();
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            "closeWindow error",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "予約枠メッセージ送信エラー",
+      error
+    );
+
+
+    showError(
+      "予約案内の送信に失敗しました。\n" +
+      error.message
+    );
+
+
+    button.disabled = false;
+
+    button.textContent =
+      "予約日時を選択する";
+
+  }
+
+}
+
+
+/* ==================================================
+   エラー
+================================================== */
+
+function showError(message) {
+
+  document.getElementById(
+    "status"
+  ).textContent =
+    message;
+
+}
+
+
+/* ==================================================
+   起動
+================================================== */
+
+async function startPage() {
+
+  try {
+
+    await initLIFF();
+
+    /*
+     * カートから合計時間を取得
+     */
+    renderTime();
+
+  } catch (error) {
+
+    console.error(
+      "起動エラー",
+      error
+    );
+
+
+    showError(
+      "LIFFの起動に失敗しました。\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   起動
+================================================== */
+
+window.addEventListener(
+  "DOMContentLoaded",
+  startPage
+);
+
+</script>
+
+</body>
+
+</html>
