@@ -875,36 +875,8 @@ function clearCart() {
 function addMenu() {
 
 
-  async function addMenu() {
-
-  try {
-
-    await liff.init({
-      liffId: LIFF_ID
-    });
-
-    if (liff.isInClient()) {
-
-      liff.closeWindow();
-
-    } else {
-
-      alert(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-  } catch (error) {
-
-    console.error(error);
-
-    alert(
-      "LINEに戻れませんでした。\n\n" +
-      error.message
-    );
-
-  }
+  window.location.href =
+    MENU_URL;
 
 }
 
@@ -1243,3 +1215,5 @@ window.addEventListener(
 </body>
 
 </html>
+</body>
+
