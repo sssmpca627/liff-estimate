@@ -12,6 +12,8 @@
 
 <title>カートに追加</title>
 
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+
 <style>
 
 * {
@@ -63,19 +65,6 @@ h1 {
   line-height: 1.7;
 }
 
-.button {
-  display: block;
-  width: 100%;
-  margin-top: 30px;
-  padding: 16px 20px;
-  border-radius: 16px;
-  border: none;
-  background: #333;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 700;
-}
-
 #status {
   margin-top: 20px;
   text-align: center;
@@ -105,17 +94,8 @@ h1 {
     ></div>
 
     <div class="message">
-
       このメニューをカートに追加しました。
-
     </div>
-
-    <button
-      class="button"
-      onclick="goToMenu()"
-    >
-      選択したメニューを見る
-    </button>
 
   </div>
 
@@ -126,18 +106,21 @@ h1 {
 
 <script>
 
+
+/* =========================
+   LIFF設定
+========================= */
+
+const LIFF_ID =
+  "2011037691-j7UfaGxQ";
+
+
 /* =========================
    カート保存場所
 ========================= */
 
-const CART_KEY = "salon_cart";
-
-
-/* =========================
-   メニュー画面
-========================= */
-
-const MENU_URL = "./menu.html";
+const CART_KEY =
+  "salon_cart";
 
 
 /* =========================
@@ -152,7 +135,8 @@ function getMenuFromURL() {
     );
 
   const menuId =
-    params.get("menu");
+    params.get("menu") || "face_all";
+
 
   const menuNames = {
 
@@ -167,6 +151,7 @@ function getMenuFromURL() {
 
   };
 
+
   const menuPrices = {
 
     face_all:
@@ -179,6 +164,7 @@ function getMenuFromURL() {
       3000
 
   };
+
 
   const menuTimes = {
 
@@ -193,10 +179,11 @@ function getMenuFromURL() {
 
   };
 
+
   return {
 
     menu:
-      menuId || "face_all",
+      menuId,
 
     name:
       menuNames[menuId] || "メニュー",
@@ -223,29 +210,29 @@ function getCart() {
       CART_KEY
     );
 
+
   if (!saved) {
-
     return [];
-
   }
+
 
   try {
 
     const cart =
       JSON.parse(saved);
 
+
     if (!Array.isArray(cart)) {
-
       return [];
-
     }
+
 
     return cart;
 
   } catch (error) {
 
     console.error(
-      "カート読み込みエラー：",
+      "カート読み込みエラー",
       error
     );
 
@@ -265,11 +252,13 @@ function saveToCart(menu) {
   const cart =
     getCart();
 
+
   const alreadyAdded =
     cart.some(
       item =>
         item.menu === menu.menu
     );
+
 
   if (!alreadyAdded) {
 
@@ -277,13 +266,15 @@ function saveToCart(menu) {
 
   }
 
+
   localStorage.setItem(
     CART_KEY,
     JSON.stringify(cart)
   );
 
+
   console.log(
-    "現在のカート：",
+    "カート保存完了",
     cart
   );
 
@@ -291,13 +282,43 @@ function saveToCart(menu) {
 
 
 /* =========================
-   メニューへ戻る
+   LINE送信
 ========================= */
 
-function goToMenu() {
+async function sendCartAddedMessage() {
 
-  window.location.href =
-    MENU_URL;
+  await liff.sendMessages([
+
+    {
+      type: "text",
+
+      text:
+        "カートに追加しました"
+    }
+
+  ]);
+
+}
+
+
+/* =========================
+   自動で閉じる
+========================= */
+
+function closeLIFF() {
+
+  setTimeout(
+    function() {
+
+      if (liff.isInClient()) {
+
+        liff.closeWindow();
+
+      }
+
+    },
+    500
+  );
 
 }
 
@@ -306,7 +327,7 @@ function goToMenu() {
    メイン処理
 ========================= */
 
-function main() {
+async function main() {
 
   const menu =
     getMenuFromURL();
@@ -320,15 +341,97 @@ function main() {
     menu.name;
 
 
-  /* カートへ保存 */
-
-  saveToCart(menu);
+  try {
 
 
-  console.log(
-    "カート追加完了：",
-    menu
-  );
+    /* =====================
+       ① カートへ保存
+    ===================== */
+
+    saveToCart(menu);
+
+
+    /* =====================
+       ② LIFF初期化
+    ===================== */
+
+    await liff.init({
+
+      liffId:
+        LIFF_ID
+
+    });
+
+
+    console.log(
+      "LIFF初期化成功"
+    );
+
+
+    /* =====================
+       ③ LINEアプリ内確認
+    ===================== */
+
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+
+    /* =====================
+       ④ メッセージ送信可能か確認
+    ===================== */
+
+    if (
+      !liff.isApiAvailable(
+        "sendMessages"
+      )
+    ) {
+
+      throw new Error(
+        "LINEメッセージ送信機能が利用できません。"
+      );
+
+    }
+
+
+    /* =====================
+       ⑤ LINEへ送信
+    ===================== */
+
+    await sendCartAddedMessage();
+
+
+    console.log(
+      "LINE送信成功"
+    );
+
+
+    /* =====================
+       ⑥ 自動で閉じる
+    ===================== */
+
+    closeLIFF();
+
+
+  } catch (error) {
+
+    console.error(
+      "処理エラー",
+      error
+    );
+
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      "エラー：" +
+      error.message;
+
+  }
 
 }
 
@@ -341,6 +444,7 @@ window.addEventListener(
   "DOMContentLoaded",
   main
 );
+
 
 </script>
 
