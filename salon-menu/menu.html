@@ -10,7 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>メニュー</title>
+<title>サロンメニュー</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -36,41 +36,137 @@ body {
 .container {
   max-width: 700px;
   margin: 0 auto;
-  padding: 50px 20px;
+  padding: 30px 20px 60px;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
-  padding: 35px 25px;
+  padding: 28px 20px;
   box-shadow:
     0 3px 12px rgba(0,0,0,0.06);
-  text-align: center;
 }
 
 h1 {
-  font-size: 28px;
-  margin: 0 0 25px;
+  text-align: center;
+  font-size: 27px;
+  margin: 0 0 10px;
+}
+
+.subtitle {
+  text-align: center;
+  color: #888;
+  font-size: 15px;
+  margin-bottom: 25px;
+}
+
+.menu-button {
+  width: 100%;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  padding: 20px;
+  margin-bottom: 12px;
+  text-align: left;
+  font-size: inherit;
 }
 
 .menu-name {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
-  margin-bottom: 15px;
 }
 
-.message {
+.menu-detail {
+  margin-top: 8px;
   color: #777;
+  font-size: 15px;
+}
+
+.cart-item {
+  border: 1px solid #e3e3e3;
+  border-radius: 18px;
+  padding: 17px;
+  margin-bottom: 12px;
+}
+
+.item-name {
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.item-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  color: #777;
+}
+
+.delete-button {
+  margin-top: 12px;
+  border: none;
+  background: transparent;
+  color: #999;
+  padding: 0;
+}
+
+.total {
+  border-top: 1px solid #ddd;
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
+.total-label {
+  color: #666;
+}
+
+.total-value {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.button {
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px;
   font-size: 17px;
-  line-height: 1.7;
+  font-weight: 700;
+  margin-top: 12px;
+}
+
+.add-button {
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.complete-button {
+  background: #333;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+.clear-button {
+  display: block;
+  margin: 20px auto 0;
+  border: none;
+  background: transparent;
+  color: #aaa;
 }
 
 #status {
-  margin-top: 20px;
   text-align: center;
   color: #888;
   font-size: 14px;
-  line-height: 1.6;
+  margin-top: 18px;
+}
+
+.hidden {
+  display: none;
 }
 
 </style>
@@ -83,25 +179,161 @@ h1 {
 
 <div class="container">
 
-  <div class="card">
+<div class="card">
 
-    <h1 id="title">
-      処理中…
-    </h1>
 
-    <div
-      id="menuName"
-      class="menu-name"
-    ></div>
+<!-- ==================================================
+     メニュー画面
+================================================== -->
 
-    <div
-      id="message"
-      class="message"
-    ></div>
+<div id="menuScreen">
 
-  </div>
+<h1>
+メニュー選択
+</h1>
 
-  <div id="status"></div>
+<div class="subtitle">
+ご希望のメニューをお選びください
+</div>
+
+
+<button
+  class="menu-button"
+  onclick="addMenu('face_all')"
+>
+
+<div class="menu-name">
+顔全体
+</div>
+
+<div class="menu-detail">
+¥5,000｜約30分
+</div>
+
+</button>
+
+
+<button
+  class="menu-button"
+  onclick="addMenu('face_upper')"
+>
+
+<div class="menu-name">
+上顔面
+</div>
+
+<div class="menu-detail">
+¥3,000｜約30分
+</div>
+
+</button>
+
+
+<button
+  class="menu-button"
+  onclick="addMenu('face_lower')"
+>
+
+<div class="menu-name">
+下顔面
+</div>
+
+<div class="menu-detail">
+¥3,000｜約30分
+</div>
+
+</button>
+
+</div>
+
+
+<!-- ==================================================
+     カート画面
+================================================== -->
+
+<div
+  id="cartScreen"
+  class="hidden"
+>
+
+<h1>
+選択したメニュー
+</h1>
+
+<div class="subtitle">
+ご希望のメニューをご確認ください
+</div>
+
+<div id="cartList"></div>
+
+
+<div class="total">
+
+<div class="total-row">
+
+<div class="total-label">
+合計金額
+</div>
+
+<div
+  id="totalPrice"
+  class="total-value"
+>
+¥0
+</div>
+
+</div>
+
+
+<div class="total-row">
+
+<div class="total-label">
+施術時間目安
+</div>
+
+<div
+  id="totalTime"
+  class="total-value"
+>
+0分
+</div>
+
+</div>
+
+</div>
+
+
+<button
+  class="button add-button"
+  onclick="showMenuScreen()"
+>
+メニューを追加
+</button>
+
+
+<button
+  id="completeButton"
+  class="button complete-button"
+  onclick="completeSelection()"
+>
+選択完了
+</button>
+
+
+<button
+  class="clear-button"
+  onclick="clearCart()"
+>
+カートを空にする
+</button>
+
+</div>
+
+
+</div>
+
+
+<div id="status"></div>
 
 </div>
 
@@ -110,16 +342,11 @@ h1 {
 
 
 /* ==================================================
-   LIFF
+   設定
 ================================================== */
 
 const LIFF_ID =
   "2011037691-j7UfaGxQ";
-
-
-/* ==================================================
-   カート
-================================================== */
 
 const CART_KEY =
   "salon_cart";
@@ -162,14 +389,10 @@ const MENUS = {
 function getCart() {
 
   const saved =
-    localStorage.getItem(
-      CART_KEY
-    );
+    localStorage.getItem(CART_KEY);
 
   if (!saved) {
-
     return [];
-
   }
 
   try {
@@ -177,19 +400,11 @@ function getCart() {
     const cart =
       JSON.parse(saved);
 
-    if (!Array.isArray(cart)) {
-
-      return [];
-
-    }
-
-    return cart;
+    return Array.isArray(cart)
+      ? cart
+      : [];
 
   } catch (error) {
-
-    console.error(
-      error
-    );
 
     return [];
 
@@ -213,257 +428,54 @@ function saveCart(cart) {
 
 
 /* ==================================================
-   カート追加
-================================================== */
-
-function addToCart(menu) {
-
-  const cart =
-    getCart();
-
-  const exists =
-    cart.some(
-      item =>
-        item.menu === menu.menu
-    );
-
-  if (!exists) {
-
-    cart.push(menu);
-
-  }
-
-  saveCart(cart);
-
-}
-
-
-/* ==================================================
-   LINE送信
-================================================== */
-
-async function sendAddedMessage() {
-
-  await liff.sendMessages([
-
-    {
-      type: "text",
-      text: "カートに追加しました"
-    }
-
-  ]);
-
-}
-
-
-/* ==================================================
-   LIFF終了
-================================================== */
-
-function closeLIFF() {
-
-  setTimeout(
-    () => {
-
-      if (
-        liff.isInClient()
-      ) {
-
-        liff.closeWindow();
-
-      }
-
-    },
-    500
-  );
-
-}
-
-
-/* ==================================================
-   エラー
-================================================== */
-
-function showError(message) {
-
-  document.getElementById(
-    "title"
-  ).textContent =
-    "エラー";
-
-  document.getElementById(
-    "menuName"
-  ).textContent =
-    "";
-
-  document.getElementById(
-    "message"
-  ).textContent =
-    "";
-
-  document.getElementById(
-    "status"
-  ).textContent =
-    message;
-
-}
-
-
-/* ==================================================
-   URLからパラメータ取得
-================================================== */
-
-function getParameter(name) {
-
-  /*
-   * まず通常のURLを確認
-   */
-
-  const currentParams =
-    new URLSearchParams(
-      window.location.search
-    );
-
-  let value =
-    currentParams.get(name);
-
-  if (value) {
-
-    return value;
-
-  }
-
-
-  /*
-   * 次にLIFFのstateを確認
-   */
-
-  const state =
-    liff.getDecodedIDToken
-      ? null
-      : liff.state;
-
-
-  if (state) {
-
-    const stateParams =
-      new URLSearchParams(
-        state.startsWith("?")
-          ? state.substring(1)
-          : state
-      );
-
-    value =
-      stateParams.get(name);
-
-    if (value) {
-
-      return value;
-
-    }
-
-  }
-
-
-  return null;
-
-}
-
-
-/* ==================================================
    メニュー追加
 ================================================== */
 
-async function processMenu(menuId) {
+async function addMenu(menuId) {
 
   const menu =
     MENUS[menuId];
 
-
   if (!menu) {
 
-    showError(
-      "メニュー情報を取得できませんでした。"
-    );
+    document.getElementById(
+      "status"
+    ).textContent =
+      "メニュー情報を取得できませんでした。";
 
     return;
 
   }
 
 
-  /*
-   * 画面表示
-   */
-
-  document.getElementById(
-    "title"
-  ).textContent =
-    "カートに追加しました";
-
-  document.getElementById(
-    "menuName"
-  ).textContent =
-    menu.name;
-
-  document.getElementById(
-    "message"
-  ).textContent =
-    "このメニューをカートに追加しました。";
+  const cart =
+    getCart();
 
 
-  try {
-
-
-    /*
-     * ① カート追加
-     */
-
-    addToCart(menu);
-
-
-    /*
-     * ② LINE送信
-     */
-
-    await sendAddedMessage();
-
-
-    /*
-     * ③ 自動終了
-     */
-
-    closeLIFF();
-
-
-  } catch (error) {
-
-    console.error(
-      "カート追加エラー",
-      error
+  const exists =
+    cart.some(
+      item =>
+        item.menu === menuId
     );
 
-    showError(
-      "エラー：" +
-      error.message
-    );
+
+  if (!exists) {
+
+    cart.push(menu);
+
+    saveCart(cart);
 
   }
 
-}
 
-
-/* ==================================================
-   メイン
-================================================== */
-
-async function main() {
+  /*
+   * ここでは画面を
+   * メニュー選択画面に戻さない
+   *
+   * メッセージ送信処理を行う
+   */
 
   try {
-
-
-    /*
-     * ① LIFF初期化
-     */
 
     await liff.init({
 
@@ -472,15 +484,6 @@ async function main() {
 
     });
 
-
-    console.log(
-      "LIFF初期化成功"
-    );
-
-
-    /*
-     * ② LINE内確認
-     */
 
     if (
       !liff.isInClient()
@@ -494,84 +497,45 @@ async function main() {
 
 
     /*
-     * ③ menu取得
-     *
-     * search と state の両方を見る
+     * LINE送信
      */
 
-    const menuId =
-      getParameter("menu");
+    await liff.sendMessages([
 
+      {
+        type: "text",
+        text: "カートに追加しました"
+      }
 
-    console.log(
-      "取得したmenu:",
-      menuId
-    );
+    ]);
 
 
     /*
-     * ④ menuがあれば
-     *    直接カート追加
+     * 自動終了
      */
 
-    if (menuId) {
+    setTimeout(
+      function() {
 
-      await processMenu(
-        menuId
-      );
+        liff.closeWindow();
 
-      return;
-
-    }
-
-
-    /*
-     * ⑤ mode=cart は
-     *    今回のメニュー追加処理では触らない
-     */
-
-    const mode =
-      getParameter("mode");
-
-
-    if (
-      mode === "cart"
-    ) {
-
-      /*
-       * カート画面側の処理へ
-       *
-       * ここではメニュー追加をしない
-       */
-
-      window.location.href =
-        "/salon-menu/cart.html";
-
-      return;
-
-    }
-
-
-    /*
-     * ⑥ どちらでもない場合
-     */
-
-    showError(
-      "メニューが指定されていません。"
+      },
+      500
     );
 
 
   } catch (error) {
 
     console.error(
-      "メイン処理エラー",
+      "送信エラー",
       error
     );
 
-    showError(
+    document.getElementById(
+      "status"
+    ).textContent =
       "エラー：" +
-      error.message
-    );
+      error.message;
 
   }
 
@@ -579,12 +543,466 @@ async function main() {
 
 
 /* ==================================================
-   起動
+   カート表示
 ================================================== */
+
+function renderCart() {
+
+  const cart =
+    getCart();
+
+  const list =
+    document.getElementById(
+      "cartList"
+    );
+
+
+  if (
+    cart.length === 0
+  ) {
+
+    list.innerHTML =
+      '<div style="text-align:center;padding:30px;color:#888;">カートは空です</div>';
+
+    document.getElementById(
+      "totalPrice"
+    ).textContent =
+      "¥0";
+
+    document.getElementById(
+      "totalTime"
+    ).textContent =
+      "0分";
+
+    return;
+
+  }
+
+
+  list.innerHTML =
+    cart.map(
+      (item, index) => `
+
+        <div class="cart-item">
+
+          <div class="item-name">
+            ${escapeHTML(
+              item.name || "メニュー"
+            )}
+          </div>
+
+          <div class="item-bottom">
+
+            <span>
+              約${Number(item.time) || 0}分
+            </span>
+
+            <span>
+              ¥${(
+                Number(item.price) || 0
+              ).toLocaleString("ja-JP")}
+            </span>
+
+          </div>
+
+          <button
+            class="delete-button"
+            onclick="removeItem(${index})"
+          >
+            削除
+          </button>
+
+        </div>
+
+      `
+    ).join("");
+
+
+  let totalPrice = 0;
+  let totalTime = 0;
+
+
+  cart.forEach(
+    item => {
+
+      totalPrice +=
+        Number(item.price) || 0;
+
+      totalTime +=
+        Number(item.time) || 0;
+
+    }
+  );
+
+
+  document.getElementById(
+    "totalPrice"
+  ).textContent =
+    "¥" +
+    totalPrice.toLocaleString("ja-JP");
+
+
+  document.getElementById(
+    "totalTime"
+  ).textContent =
+    totalTime + "分";
+
+}
+
+
+/* ==================================================
+   削除
+================================================== */
+
+function removeItem(index) {
+
+  const cart =
+    getCart();
+
+  cart.splice(
+    index,
+    1
+  );
+
+  saveCart(cart);
+
+  renderCart();
+
+}
+
+
+/* ==================================================
+   カートを空にする
+================================================== */
+
+function clearCart() {
+
+  if (
+    getCart().length === 0
+  ) {
+    return;
+  }
+
+
+  if (
+    !confirm(
+      "カートを空にしますか？"
+    )
+  ) {
+    return;
+  }
+
+
+  localStorage.removeItem(
+    CART_KEY
+  );
+
+  renderCart();
+
+}
+
+
+/* ==================================================
+   メニュー画面
+================================================== */
+
+function showMenuScreen() {
+
+  document.getElementById(
+    "cartScreen"
+  ).classList.add(
+    "hidden"
+  );
+
+  document.getElementById(
+    "menuScreen"
+  ).classList.remove(
+    "hidden"
+  );
+
+}
+
+
+/* ==================================================
+   カート画面
+================================================== */
+
+function showCartScreen() {
+
+  document.getElementById(
+    "menuScreen"
+  ).classList.add(
+    "hidden"
+  );
+
+  document.getElementById(
+    "cartScreen"
+  ).classList.remove(
+    "hidden"
+  );
+
+  renderCart();
+
+}
+
+
+/* ==================================================
+   選択完了
+================================================== */
+
+async function completeSelection() {
+
+  const cart =
+    getCart();
+
+
+  if (
+    cart.length === 0
+  ) {
+
+    alert(
+      "メニューを選択してください。"
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const button =
+      document.getElementById(
+        "completeButton"
+      );
+
+    button.disabled = true;
+
+    button.textContent =
+      "送信中…";
+
+
+    await liff.init({
+
+      liffId:
+        LIFF_ID
+
+    });
+
+
+    if (
+      !liff.isInClient()
+    ) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+
+    let totalPrice = 0;
+    let totalTime = 0;
+
+
+    let message =
+      "【選択完了】\n\n";
+
+    message +=
+      "【選択したメニュー一覧】\n\n";
+
+
+    cart.forEach(
+      item => {
+
+        const price =
+          Number(item.price) || 0;
+
+        const time =
+          Number(item.time) || 0;
+
+        message +=
+          "✔ " +
+          item.name +
+          "　¥" +
+          price.toLocaleString("ja-JP") +
+          "\n";
+
+        totalPrice +=
+          price;
+
+        totalTime +=
+          time;
+
+      }
+    );
+
+
+    message +=
+      "\n■ 合計金額\n¥" +
+      totalPrice.toLocaleString("ja-JP");
+
+
+    message +=
+      "\n\n■ 施術時間目安\n" +
+      totalTime +
+      "分";
+
+
+    await liff.sendMessages([
+
+      {
+        type: "text",
+        text: message
+      }
+
+    ]);
+
+
+    localStorage.removeItem(
+      CART_KEY
+    );
+
+
+    setTimeout(
+      function() {
+
+        liff.closeWindow();
+
+      },
+      500
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "選択完了エラー",
+      error
+    );
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      "エラー：" +
+      error.message;
+
+
+    const button =
+      document.getElementById(
+        "completeButton"
+      );
+
+    button.disabled = false;
+
+    button.textContent =
+      "選択完了";
+
+  }
+
+}
+
+
+/* ==================================================
+   HTMLエスケープ
+================================================== */
+
+function escapeHTML(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ==================================================
+   ページ判定
+================================================== */
+
+function startPage() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const mode =
+    params.get("mode");
+
+
+  /*
+   * カートを見る
+   */
+
+  if (
+    mode === "cart"
+  ) {
+
+    showCartScreen();
+
+    return;
+
+  }
+
+
+  /*
+   * メニュー追加URLから来た場合
+   *
+   * menu=face_all
+   * menu=face_upper
+   * menu=face_lower
+   */
+
+  const menuId =
+    params.get("menu");
+
+
+  if (menuId) {
+
+    addMenu(menuId);
+
+    return;
+
+  }
+
+
+  /*
+   * 通常のメニュー画面
+   */
+
+  showMenuScreen();
+
+}
+
 
 window.addEventListener(
   "DOMContentLoaded",
-  main
+  startPage
 );
 
 </script>
