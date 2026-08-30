@@ -59,35 +59,14 @@ h1 {
   margin-bottom: 25px;
 }
 
-.selected-box {
-  background: #f8f8f8;
-  border-radius: 18px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.selected-title {
+.category-title {
+  font-size: 21px;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin: 28px 0 14px;
 }
 
-.selected-item {
-  background: #fff;
-  border: 1px solid #e5e5e5;
-  border-radius: 14px;
-  padding: 13px;
-  margin-bottom: 8px;
-}
-
-.selected-name {
-  font-weight: 700;
-  font-size: 17px;
-}
-
-.selected-detail {
-  color: #777;
-  font-size: 14px;
-  margin-top: 5px;
+.category-title:first-child {
+  margin-top: 0;
 }
 
 .menu-button {
@@ -95,19 +74,19 @@ h1 {
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 18px;
-  padding: 20px;
+  padding: 18px 20px;
   margin-bottom: 12px;
   text-align: left;
   cursor: pointer;
 }
 
 .menu-name {
-  font-size: 20px;
+  font-size: 19px;
   font-weight: 700;
 }
 
 .menu-detail {
-  margin-top: 8px;
+  margin-top: 7px;
   color: #777;
   font-size: 15px;
 }
@@ -129,6 +108,7 @@ h1 {
   justify-content: space-between;
   margin-top: 10px;
   color: #777;
+  font-size: 15px;
 }
 
 .delete-button {
@@ -228,214 +208,170 @@ h1 {
 ご希望のメニューをお選びください
 </div>
 
-<!-- 追加済みメニュー表示 -->
-
-<div
-  id="selectedBox"
-  class="selected-box hidden"
->
-
-<div class="selected-title">
-現在選択中のメニュー
-</div>
-
-<div id="selectedList"></div>
-
-</div>
-
 
 <!-- =========================
      全身脱毛
 ========================= -->
 
+<div class="category-title">
+全身脱毛
+</div>
+
 <button
   type="button"
   class="menu-button"
-  onclick="addMenu('body_none')"
+  onclick="addMenu('body_no_face_vio')"
 >
-
-<div class="menu-name">
-顔・VIOなし
-</div>
-
-<div class="menu-detail">
-¥13,000｜約90分
-</div>
-
+  <div class="menu-name">
+    顔・VIOなし
+  </div>
+  <div class="menu-detail">
+    ¥13,000｜約90分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('body_face_or_vio')"
 >
-
-<div class="menu-name">
-顔orVIO
-</div>
-
-<div class="menu-detail">
-¥14,000｜約100分
-</div>
-
+  <div class="menu-name">
+    顔orVIO
+  </div>
+  <div class="menu-detail">
+    ¥14,000｜約100分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('body_face_vio')"
 >
-
-<div class="menu-name">
-顔・VIO
-</div>
-
-<div class="menu-detail">
-¥15,000｜約120分
-</div>
-
+  <div class="menu-name">
+    顔・VIO
+  </div>
+  <div class="menu-detail">
+    ¥15,000｜約120分
+  </div>
 </button>
 
 
 <!-- =========================
+     セレクト脱毛
      顔・首まわり
 ========================= -->
+
+<div class="category-title">
+セレクト脱毛
+</div>
+
+<div class="category-title">
+顔・首まわり
+</div>
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('face_all')"
 >
-
-<div class="menu-name">
-顔全体
-</div>
-
-<div class="menu-detail">
-¥5,000｜約30分
-</div>
-
+  <div class="menu-name">
+    顔全体
+  </div>
+  <div class="menu-detail">
+    ¥5,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('face_upper')"
 >
-
-<div class="menu-name">
-上顔面／鼻上
-</div>
-
-<div class="menu-detail">
-¥3,000｜約30分
-</div>
-
+  <div class="menu-name">
+    上顔面／鼻上
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('face_lower')"
 >
-
-<div class="menu-name">
-下顔面／鼻下
-</div>
-
-<div class="menu-detail">
-¥3,000｜約30分
-</div>
-
+  <div class="menu-name">
+    下顔面／鼻下
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('eyebrow')"
 >
-
-<div class="menu-name">
-眉毛
-</div>
-
-<div class="menu-detail">
-¥1,500｜約20分
-</div>
-
+  <div class="menu-name">
+    眉毛
+  </div>
+  <div class="menu-detail">
+    ¥1,500｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('mouth')"
 >
-
-<div class="menu-name">
-口周り
-</div>
-
-<div class="menu-detail">
-¥2,000｜約20分
-</div>
-
+  <div class="menu-name">
+    口周り
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('nose_hair')"
 >
-
-<div class="menu-name">
-鼻毛
-</div>
-
-<div class="menu-detail">
-¥1,000｜約20分
-</div>
-
+  <div class="menu-name">
+    鼻毛
+  </div>
+  <div class="menu-detail">
+    ¥1,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('ear_hair')"
 >
-
-<div class="menu-name">
-耳毛
-</div>
-
-<div class="menu-detail">
-¥1,000｜約20分
-</div>
-
+  <div class="menu-name">
+    耳毛
+  </div>
+  <div class="menu-detail">
+    ¥1,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('neck')"
 >
-
-<div class="menu-name">
-うなじ
-</div>
-
-<div class="menu-detail">
-¥3,000｜約20分
-</div>
-
+  <div class="menu-name">
+    うなじ
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約20分
+  </div>
 </button>
 
 
@@ -443,190 +379,151 @@ h1 {
      上半身
 ========================= -->
 
+<div class="category-title">
+上半身
+</div>
+
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('arm_all')"
 >
-
-<div class="menu-name">
-うで全体／指込
-</div>
-
-<div class="menu-detail">
-¥5,000｜約30分
-</div>
-
+  <div class="menu-name">
+    うで全体／指込
+  </div>
+  <div class="menu-detail">
+    ¥5,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('upper_arm')"
 >
-
-<div class="menu-name">
-ひじ上
-</div>
-
-<div class="menu-detail">
-¥2,000｜約30分
-</div>
-
+  <div class="menu-name">
+    ひじ上
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('lower_arm')"
 >
-
-<div class="menu-name">
-ひじ下
-</div>
-
-<div class="menu-detail">
-¥2,000｜約30分
-</div>
-
+  <div class="menu-name">
+    ひじ下
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('hand')"
 >
-
-<div class="menu-name">
-手の甲・指
-</div>
-
-<div class="menu-detail">
-¥1,500｜約20分
-</div>
-
+  <div class="menu-name">
+    手の甲・指
+  </div>
+  <div class="menu-detail">
+    ¥1,500｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('armpit')"
 >
-
-<div class="menu-name">
-脇
-</div>
-
-<div class="menu-detail">
-¥2,000｜約20分
-</div>
-
+  <div class="menu-name">
+    脇
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('chest')"
 >
-
-<div class="menu-name">
-胸全体
-</div>
-
-<div class="menu-detail">
-¥3,000｜約20分
-</div>
-
+  <div class="menu-name">
+    胸全体
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('areola')"
 >
-
-<div class="menu-name">
-乳輪周り
-</div>
-
-<div class="menu-detail">
-¥2,000｜約20分
-</div>
-
+  <div class="menu-name">
+    乳輪周り
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('stomach')"
 >
-
-<div class="menu-name">
-お腹全体
-</div>
-
-<div class="menu-detail">
-¥4,000｜約20分
-</div>
-
+  <div class="menu-name">
+    お腹全体
+  </div>
+  <div class="menu-detail">
+    ¥4,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('back_all')"
 >
-
-<div class="menu-name">
-背中全体
-</div>
-
-<div class="menu-detail">
-¥5,000｜約20分
-</div>
-
+  <div class="menu-name">
+    背中全体
+  </div>
+  <div class="menu-detail">
+    ¥5,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
-  onclick="addMenu('back_upper')"
+  onclick="addMenu('upper_back')"
 >
-
-<div class="menu-name">
-背中上
-</div>
-
-<div class="menu-detail">
-¥3,000｜約20分
-</div>
-
+  <div class="menu-name">
+    背中上
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('waist')"
 >
-
-<div class="menu-name">
-腰
-</div>
-
-<div class="menu-detail">
-¥3,000｜約20分
-</div>
-
+  <div class="menu-name">
+    腰
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約20分
+  </div>
 </button>
 
 
@@ -634,88 +531,73 @@ h1 {
      下半身
 ========================= -->
 
+<div class="category-title">
+下半身
+</div>
+
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('leg_all')"
 >
-
-<div class="menu-name">
-脚全体／指込
-</div>
-
-<div class="menu-detail">
-¥6,000｜約30分
-</div>
-
+  <div class="menu-name">
+    脚全体／指込
+  </div>
+  <div class="menu-detail">
+    ¥6,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('thigh')"
 >
-
-<div class="menu-name">
-ひざ上
-</div>
-
-<div class="menu-detail">
-¥3,000｜約30分
-</div>
-
+  <div class="menu-name">
+    ひざ上
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
-  onclick="addMenu('calf')"
+  onclick="addMenu('shin')"
 >
-
-<div class="menu-name">
-ひざ下
-</div>
-
-<div class="menu-detail">
-¥2,000｜約30分
-</div>
-
+  <div class="menu-name">
+    ひざ下
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('foot')"
 >
-
-<div class="menu-name">
-足の甲・指
-</div>
-
-<div class="menu-detail">
-¥1,500｜約20分
-</div>
-
+  <div class="menu-name">
+    足の甲・指
+  </div>
+  <div class="menu-detail">
+    ¥1,500｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('hip')"
 >
-
-<div class="menu-name">
-おしり
-</div>
-
-<div class="menu-detail">
-¥3,000｜約20分
-</div>
-
+  <div class="menu-name">
+    おしり
+  </div>
+  <div class="menu-detail">
+    ¥3,000｜約20分
+  </div>
 </button>
 
 
@@ -723,88 +605,73 @@ h1 {
      VIO
 ========================= -->
 
+<div class="category-title">
+VIO
+</div>
+
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('vio_all')"
 >
-
-<div class="menu-name">
-VIO全体
-</div>
-
-<div class="menu-detail">
-¥5,000｜約40分
-</div>
-
+  <div class="menu-name">
+    VIO全体
+  </div>
+  <div class="menu-detail">
+    ¥5,000｜約40分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('v_line')"
 >
-
-<div class="menu-name">
-Vライン
-</div>
-
-<div class="menu-detail">
-¥3,500｜約30分
-</div>
-
+  <div class="menu-name">
+    Vライン
+  </div>
+  <div class="menu-detail">
+    ¥3,500｜約30分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('v')"
 >
-
-<div class="menu-name">
-V
-</div>
-
-<div class="menu-detail">
-¥2,000｜約20分
-</div>
-
+  <div class="menu-name">
+    V
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('i')"
 >
-
-<div class="menu-name">
-I
-</div>
-
-<div class="menu-detail">
-¥2,000｜約20分
-</div>
-
+  <div class="menu-name">
+    I
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約20分
+  </div>
 </button>
-
 
 <button
   type="button"
   class="menu-button"
   onclick="addMenu('o')"
 >
-
-<div class="menu-name">
-O
-</div>
-
-<div class="menu-detail">
-¥2,000｜約20分
-</div>
-
+  <div class="menu-name">
+    O
+  </div>
+  <div class="menu-detail">
+    ¥2,000｜約20分
+  </div>
 </button>
 
 
@@ -812,61 +679,219 @@ O
      フェイシャル
 ========================= -->
 
+<div class="category-title">
+フェイシャル
+</div>
+
+
+<!-- 光美肌 -->
+
+<div class="category-title">
+光美肌コース
+</div>
+
 <button
   type="button"
   class="menu-button"
-  onclick="addMenu('facial_light')"
+  onclick="addMenu('photo_light')"
 >
+  <div class="menu-name">ライト</div>
+  <div class="menu-detail">¥5,000｜約40分</div>
+</button>
 
-<div class="menu-name">
-光美肌コース｜ライト
-</div>
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('photo_standard')"
+>
+  <div class="menu-name">スタンダード</div>
+  <div class="menu-detail">¥7,000｜約60分</div>
+</button>
 
-<div class="menu-detail">
-¥5,000｜約40分
-</div>
-
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('photo_premium')"
+>
+  <div class="menu-name">プレミアム</div>
+  <div class="menu-detail">¥9,000｜約90分</div>
 </button>
 
 
+<!-- 水素ハイドラ -->
+
+<div class="category-title">
+水素ハイドラコース
+</div>
+
 <button
   type="button"
   class="menu-button"
-  onclick="addMenu('facial_standard')"
+  onclick="addMenu('hydra_light')"
 >
+  <div class="menu-name">ライト</div>
+  <div class="menu-detail">¥5,000｜約40分</div>
+</button>
 
-<div class="menu-name">
-光美肌コース｜スタンダード
-</div>
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('hydra_standard')"
+>
+  <div class="menu-name">スタンダード</div>
+  <div class="menu-detail">¥7,000｜約60分</div>
+</button>
 
-<div class="menu-detail">
-¥7,000｜約60分
-</div>
-
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('hydra_premium')"
+>
+  <div class="menu-name">プレミアム</div>
+  <div class="menu-detail">¥9,000｜約90分</div>
 </button>
 
 
+<!-- プラズマ -->
+
+<div class="category-title">
+プラズマ肌改善コース
+</div>
+
 <button
   type="button"
   class="menu-button"
-  onclick="addMenu('facial_premium')"
+  onclick="addMenu('plasma_light')"
 >
+  <div class="menu-name">ライト</div>
+  <div class="menu-detail">¥5,000｜約40分</div>
+</button>
 
-<div class="menu-name">
-光美肌コース｜プレミアム
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('plasma_standard')"
+>
+  <div class="menu-name">スタンダード</div>
+  <div class="menu-detail">¥7,000｜約60分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('plasma_premium')"
+>
+  <div class="menu-name">プレミアム</div>
+  <div class="menu-detail">¥9,000｜約90分</div>
+</button>
+
+
+<!-- ラジオ波 -->
+
+<div class="category-title">
+ラジオ波＆EMS小顔コース
 </div>
 
-<div class="menu-detail">
-¥9,000｜約90分
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('ems_light')"
+>
+  <div class="menu-name">ライト</div>
+  <div class="menu-detail">¥5,000｜約40分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('ems_standard')"
+>
+  <div class="menu-name">スタンダード</div>
+  <div class="menu-detail">¥7,000｜約60分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('ems_premium')"
+>
+  <div class="menu-name">プレミアム</div>
+  <div class="menu-detail">¥9,000｜約90分</div>
+</button>
+
+
+<!-- ペンシル -->
+
+<div class="category-title">
+ペンシルシミケアコース
 </div>
 
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('pencil_light')"
+>
+  <div class="menu-name">ライト</div>
+  <div class="menu-detail">¥5,000｜約40分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('pencil_standard')"
+>
+  <div class="menu-name">スタンダード</div>
+  <div class="menu-detail">¥7,000｜約60分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('pencil_premium')"
+>
+  <div class="menu-name">プレミアム</div>
+  <div class="menu-detail">¥9,000｜約90分</div>
+</button>
+
+
+<!-- totte+ -->
+
+<div class="category-title">
+totte+コース
+</div>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('totte_light')"
+>
+  <div class="menu-name">ライト</div>
+  <div class="menu-detail">¥5,000｜約40分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('totte_standard')"
+>
+  <div class="menu-name">スタンダード</div>
+  <div class="menu-detail">¥7,000｜約60分</div>
+</button>
+
+<button
+  type="button"
+  class="menu-button"
+  onclick="addMenu('totte_premium')"
+>
+  <div class="menu-name">プレミアム</div>
+  <div class="menu-detail">¥9,000｜約90分</div>
 </button>
 
 </div>
 
 
 <!-- ==================================================
-     カート画面
+     選択したメニュー画面
 ================================================== -->
 
 <div
@@ -926,7 +951,7 @@ O
 <button
   type="button"
   class="button add-button"
-  onclick="menuAddFromCart()"
+  onclick="addMoreMenu()"
 >
 メニュー追加
 </button>
@@ -955,9 +980,10 @@ O
 </div>
 
 
-<div id="status"></div>
-
 </div>
+
+
+<div id="status"></div>
 
 </div>
 
@@ -977,251 +1003,389 @@ const CART_KEY =
 
 /* ==================================================
    メニュー情報
+   ※現在は男性料金
 ================================================== */
 
 const MENUS = {
 
-  body_none:
-  {
+  /* 全身脱毛 */
+
+  body_no_face_vio: {
+    menu: "body_no_face_vio",
     name: "顔・VIOなし",
     price: 13000,
     time: 90
   },
 
-  body_face_or_vio:
-  {
+  body_face_or_vio: {
+    menu: "body_face_or_vio",
     name: "顔orVIO",
     price: 14000,
     time: 100
   },
 
-  body_face_vio:
-  {
+  body_face_vio: {
+    menu: "body_face_vio",
     name: "顔・VIO",
     price: 15000,
     time: 120
   },
 
-  face_all:
-  {
+
+  /* 顔・首まわり */
+
+  face_all: {
+    menu: "face_all",
     name: "顔全体",
     price: 5000,
     time: 30
   },
 
-  face_upper:
-  {
+  face_upper: {
+    menu: "face_upper",
     name: "上顔面／鼻上",
     price: 3000,
     time: 30
   },
 
-  face_lower:
-  {
+  face_lower: {
+    menu: "face_lower",
     name: "下顔面／鼻下",
     price: 3000,
     time: 30
   },
 
-  eyebrow:
-  {
+  eyebrow: {
+    menu: "eyebrow",
     name: "眉毛",
     price: 1500,
     time: 20
   },
 
-  mouth:
-  {
+  mouth: {
+    menu: "mouth",
     name: "口周り",
     price: 2000,
     time: 20
   },
 
-  nose_hair:
-  {
+  nose_hair: {
+    menu: "nose_hair",
     name: "鼻毛",
     price: 1000,
     time: 20
   },
 
-  ear_hair:
-  {
+  ear_hair: {
+    menu: "ear_hair",
     name: "耳毛",
     price: 1000,
     time: 20
   },
 
-  neck:
-  {
+  neck: {
+    menu: "neck",
     name: "うなじ",
     price: 3000,
     time: 20
   },
 
-  arm_all:
-  {
+
+  /* 上半身 */
+
+  arm_all: {
+    menu: "arm_all",
     name: "うで全体／指込",
     price: 5000,
     time: 30
   },
 
-  upper_arm:
-  {
+  upper_arm: {
+    menu: "upper_arm",
     name: "ひじ上",
     price: 2000,
     time: 30
   },
 
-  lower_arm:
-  {
+  lower_arm: {
+    menu: "lower_arm",
     name: "ひじ下",
     price: 2000,
     time: 30
   },
 
-  hand:
-  {
+  hand: {
+    menu: "hand",
     name: "手の甲・指",
     price: 1500,
     time: 20
   },
 
-  armpit:
-  {
+  armpit: {
+    menu: "armpit",
     name: "脇",
     price: 2000,
     time: 20
   },
 
-  chest:
-  {
+  chest: {
+    menu: "chest",
     name: "胸全体",
     price: 3000,
     time: 20
   },
 
-  areola:
-  {
+  areola: {
+    menu: "areola",
     name: "乳輪周り",
     price: 2000,
     time: 20
   },
 
-  stomach:
-  {
+  stomach: {
+    menu: "stomach",
     name: "お腹全体",
     price: 4000,
     time: 20
   },
 
-  back_all:
-  {
+  back_all: {
+    menu: "back_all",
     name: "背中全体",
     price: 5000,
     time: 20
   },
 
-  back_upper:
-  {
+  upper_back: {
+    menu: "upper_back",
     name: "背中上",
     price: 3000,
     time: 20
   },
 
-  waist:
-  {
+  waist: {
+    menu: "waist",
     name: "腰",
     price: 3000,
     time: 20
   },
 
-  leg_all:
-  {
+
+  /* 下半身 */
+
+  leg_all: {
+    menu: "leg_all",
     name: "脚全体／指込",
     price: 6000,
     time: 30
   },
 
-  thigh:
-  {
+  thigh: {
+    menu: "thigh",
     name: "ひざ上",
     price: 3000,
     time: 30
   },
 
-  calf:
-  {
+  shin: {
+    menu: "shin",
     name: "ひざ下",
     price: 2000,
     time: 30
   },
 
-  foot:
-  {
+  foot: {
+    menu: "foot",
     name: "足の甲・指",
     price: 1500,
     time: 20
   },
 
-  hip:
-  {
+  hip: {
+    menu: "hip",
     name: "おしり",
     price: 3000,
     time: 20
   },
 
-  vio_all:
-  {
+
+  /* VIO */
+
+  vio_all: {
+    menu: "vio_all",
     name: "VIO全体",
     price: 5000,
     time: 40
   },
 
-  v_line:
-  {
+  v_line: {
+    menu: "v_line",
     name: "Vライン",
     price: 3500,
     time: 30
   },
 
-  v:
-  {
+  v: {
+    menu: "v",
     name: "V",
     price: 2000,
     time: 20
   },
 
-  i:
-  {
+  i: {
+    menu: "i",
     name: "I",
     price: 2000,
     time: 20
   },
 
-  o:
-  {
+  o: {
+    menu: "o",
     name: "O",
     price: 2000,
     time: 20
   },
 
-  facial_light:
-  {
-    name: "光美肌コース｜ライト",
+
+  /* 光美肌 */
+
+  photo_light: {
+    menu: "photo_light",
+    name: "光美肌コース／ライト",
     price: 5000,
     time: 40
   },
 
-  facial_standard:
-  {
-    name: "光美肌コース｜スタンダード",
+  photo_standard: {
+    menu: "photo_standard",
+    name: "光美肌コース／スタンダード",
     price: 7000,
     time: 60
   },
 
-  facial_premium:
-  {
-    name: "光美肌コース｜プレミアム",
+  photo_premium: {
+    menu: "photo_premium",
+    name: "光美肌コース／プレミアム",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* 水素ハイドラ */
+
+  hydra_light: {
+    menu: "hydra_light",
+    name: "水素ハイドラコース／ライト",
+    price: 5000,
+    time: 40
+  },
+
+  hydra_standard: {
+    menu: "hydra_standard",
+    name: "水素ハイドラコース／スタンダード",
+    price: 7000,
+    time: 60
+  },
+
+  hydra_premium: {
+    menu: "hydra_premium",
+    name: "水素ハイドラコース／プレミアム",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* プラズマ */
+
+  plasma_light: {
+    menu: "plasma_light",
+    name: "プラズマ肌改善コース／ライト",
+    price: 5000,
+    time: 40
+  },
+
+  plasma_standard: {
+    menu: "plasma_standard",
+    name: "プラズマ肌改善コース／スタンダード",
+    price: 7000,
+    time: 60
+  },
+
+  plasma_premium: {
+    menu: "plasma_premium",
+    name: "プラズマ肌改善コース／プレミアム",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* ラジオ波＆EMS */
+
+  ems_light: {
+    menu: "ems_light",
+    name: "ラジオ波＆EMS小顔コース／ライト",
+    price: 5000,
+    time: 40
+  },
+
+  ems_standard: {
+    menu: "ems_standard",
+    name: "ラジオ波＆EMS小顔コース／スタンダード",
+    price: 7000,
+    time: 60
+  },
+
+  ems_premium: {
+    menu: "ems_premium",
+    name: "ラジオ波＆EMS小顔コース／プレミアム",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* ペンシルシミケア */
+
+  pencil_light: {
+    menu: "pencil_light",
+    name: "ペンシルシミケアコース／ライト",
+    price: 5000,
+    time: 40
+  },
+
+  pencil_standard: {
+    menu: "pencil_standard",
+    name: "ペンシルシミケアコース／スタンダード",
+    price: 7000,
+    time: 60
+  },
+
+  pencil_premium: {
+    menu: "pencil_premium",
+    name: "ペンシルシミケアコース／プレミアム",
+    price: 9000,
+    time: 90
+  },
+
+
+  /* totte+ */
+
+  totte_light: {
+    menu: "totte_light",
+    name: "totte+コース／ライト",
+    price: 5000,
+    time: 40
+  },
+
+  totte_standard: {
+    menu: "totte_standard",
+    name: "totte+コース／スタンダード",
+    price: 7000,
+    time: 60
+  },
+
+  totte_premium: {
+    menu: "totte_premium",
+    name: "totte+コース／プレミアム",
     price: 9000,
     time: 90
   }
@@ -1234,6 +1398,7 @@ const MENUS = {
 ================================================== */
 
 let liffInitialized = false;
+
 let liffInitializing = false;
 
 
@@ -1299,7 +1464,12 @@ function getCart() {
       ? cart
       : [];
 
-  } catch {
+  } catch (error) {
+
+    console.error(
+      "カート読み込みエラー",
+      error
+    );
 
     return [];
 
@@ -1323,67 +1493,6 @@ function saveCart(cart) {
 
 
 /* ==================================================
-   追加済みメニュー表示
-================================================== */
-
-function renderSelectedMenus() {
-
-  const cart =
-    getCart();
-
-  const box =
-    document.getElementById(
-      "selectedBox"
-    );
-
-  const list =
-    document.getElementById(
-      "selectedList"
-    );
-
-
-  if (cart.length === 0) {
-
-    box.classList.add(
-      "hidden"
-    );
-
-    list.innerHTML = "";
-
-    return;
-
-  }
-
-
-  box.classList.remove(
-    "hidden"
-  );
-
-
-  list.innerHTML =
-    cart.map(
-      item => `
-
-        <div class="selected-item">
-
-          <div class="selected-name">
-            ${escapeHTML(item.name)}
-          </div>
-
-          <div class="selected-detail">
-            ¥${Number(item.price).toLocaleString("ja-JP")}
-            ｜約${Number(item.time)}分
-          </div>
-
-        </div>
-
-      `
-    ).join("");
-
-}
-
-
-/* ==================================================
    メニュー追加
 ================================================== */
 
@@ -1396,7 +1505,8 @@ async function addMenu(menuId) {
   if (!menu) {
 
     showError(
-      "メニュー情報を取得できませんでした。"
+      "メニュー情報を取得できませんでした。\n" +
+      "menu=" + menuId
     );
 
     return;
@@ -1408,25 +1518,20 @@ async function addMenu(menuId) {
     getCart();
 
 
-  const exists =
+  const alreadyAdded =
     cart.some(
       item =>
         item.menu === menuId
     );
 
 
-  if (!exists) {
+  if (!alreadyAdded) {
 
     cart.push({
-
-      menu: menuId,
-
+      menu: menu.menu,
       name: menu.name,
-
       price: menu.price,
-
       time: menu.time
-
     });
 
     saveCart(cart);
@@ -1434,12 +1539,20 @@ async function addMenu(menuId) {
   }
 
 
-  /* ★ここが今回の重要部分 */
+  /*
+   * 重要
+   *
+   * 追加後はメニュー選択画面ではなく
+   * 「選択したメニュー」画面を表示
+   */
 
-  renderSelectedMenus();
+  showCartScreen();
 
 
-  /* LINE送信 */
+  /*
+   * LINEへ
+   * 「カートに追加しました」
+   */
 
   try {
 
@@ -1447,11 +1560,7 @@ async function addMenu(menuId) {
 
 
     if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
+      return;
     }
 
 
@@ -1465,31 +1574,11 @@ async function addMenu(menuId) {
     ]);
 
 
-    /* 少し待って閉じる */
-
-    setTimeout(
-      function() {
-
-        try {
-
-          liff.closeWindow();
-
-        } catch {}
-
-      },
-      500
-    );
-
-
   } catch (error) {
 
     console.error(
+      "カート追加メッセージ送信エラー",
       error
-    );
-
-    showError(
-      "LINEへの送信に失敗しました。\n" +
-      error.message
     );
 
   }
@@ -1505,6 +1594,7 @@ function renderCart() {
 
   const cart =
     getCart();
+
 
   const list =
     document.getElementById(
@@ -1534,22 +1624,26 @@ function renderCart() {
 
   list.innerHTML =
     cart.map(
-      (item,index) => `
+      (item, index) => `
 
         <div class="cart-item">
 
           <div class="item-name">
-            ${escapeHTML(item.name)}
+            ${escapeHTML(
+              item.name || "メニュー"
+            )}
           </div>
 
           <div class="item-bottom">
 
             <span>
-              約${Number(item.time)}分
+              約${Number(item.time) || 0}分
             </span>
 
             <span>
-              ¥${Number(item.price).toLocaleString("ja-JP")}
+              ¥${(
+                Number(item.price) || 0
+              ).toLocaleString("ja-JP")}
             </span>
 
           </div>
@@ -1569,6 +1663,7 @@ function renderCart() {
 
 
   let totalPrice = 0;
+
   let totalTime = 0;
 
 
@@ -1609,16 +1704,16 @@ function removeItem(index) {
   const cart =
     getCart();
 
+
   cart.splice(
     index,
     1
   );
 
+
   saveCart(cart);
 
   renderCart();
-
-  renderSelectedMenus();
 
 }
 
@@ -1632,9 +1727,7 @@ function clearCart() {
   if (
     getCart().length === 0
   ) {
-
     return;
-
   }
 
 
@@ -1653,9 +1746,68 @@ function clearCart() {
     CART_KEY
   );
 
+
   renderCart();
 
-  renderSelectedMenus();
+}
+
+
+/* ==================================================
+   メニュー追加
+================================================== */
+
+async function addMoreMenu() {
+
+  /*
+   * LINEへ「メニュー追加」
+   */
+
+  try {
+
+    await initLIFF();
+
+
+    if (
+      liff.isInClient()
+    ) {
+
+      await liff.sendMessages([
+
+        {
+          type: "text",
+          text: "メニュー追加"
+        }
+
+      ]);
+
+    }
+
+  } catch (error) {
+
+    console.error(
+      "メニュー追加送信エラー",
+      error
+    );
+
+  }
+
+
+  /*
+   * メニュー選択画面へ
+   */
+
+  document.getElementById(
+    "cartScreen"
+  ).classList.add(
+    "hidden"
+  );
+
+
+  document.getElementById(
+    "menuScreen"
+  ).classList.remove(
+    "hidden"
+  );
 
 }
 
@@ -1686,62 +1838,6 @@ function showCartScreen() {
 
 
 /* ==================================================
-   メニュー追加ボタン
-================================================== */
-
-async function menuAddFromCart() {
-
-  try {
-
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    await liff.sendMessages([
-
-      {
-        type: "text",
-        text: "メニュー追加"
-      }
-
-    ]);
-
-
-    /*
-     * 送信後にメニュー選択画面へ
-     */
-
-    setTimeout(
-      function() {
-
-        showMenuScreen();
-
-      },
-      300
-    );
-
-
-  } catch (error) {
-
-    showError(
-      "メニュー追加の送信に失敗しました。\n" +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* ==================================================
    メニュー画面
 ================================================== */
 
@@ -1760,9 +1856,6 @@ function showMenuScreen() {
     "hidden"
   );
 
-
-  renderSelectedMenus();
-
 }
 
 
@@ -1776,9 +1869,7 @@ async function completeSelection() {
     getCart();
 
 
-  if (
-    cart.length === 0
-  ) {
+  if (cart.length === 0) {
 
     alert(
       "メニューを選択してください。"
@@ -1816,6 +1907,7 @@ async function completeSelection() {
 
 
     let totalPrice = 0;
+
     let totalTime = 0;
 
 
@@ -1878,10 +1970,18 @@ async function completeSelection() {
     ]);
 
 
+    /*
+     * 送信成功後のみカート削除
+     */
+
     localStorage.removeItem(
       CART_KEY
     );
 
+
+    /*
+     * 選択完了後はLIFFを閉じる
+     */
 
     setTimeout(
       function() {
@@ -1890,7 +1990,14 @@ async function completeSelection() {
 
           liff.closeWindow();
 
-        } catch {}
+        } catch (error) {
+
+          console.error(
+            "LIFF終了エラー",
+            error
+          );
+
+        }
 
       },
       500
@@ -1900,6 +2007,7 @@ async function completeSelection() {
   } catch (error) {
 
     console.error(
+      "選択完了エラー",
       error
     );
 
@@ -1942,15 +2050,30 @@ function escapeHTML(value) {
 
   return String(value)
 
-    .replace(/&/g,"&amp;")
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-    .replace(/</g,"&lt;")
+    .replace(
+      /</g,
+      "&lt;"
+    )
 
-    .replace(/>/g,"&gt;")
+    .replace(
+      />/g,
+      "&gt;"
+    )
 
-    .replace(/"/g,"&quot;")
+    .replace(
+      /"/g,
+      "&quot;"
+    )
 
-    .replace(/'/g,"&#039;");
+    .replace(
+      /'/g,
+      "&#039;"
+    );
 
 }
 
@@ -1972,7 +2095,9 @@ async function startPage() {
       );
 
 
-    /* カートを見る */
+    /*
+     * ?mode=cart
+     */
 
     if (
       params.get("mode") === "cart"
@@ -1985,20 +2110,18 @@ async function startPage() {
     }
 
 
-    /* メニュー指定 */
+    /*
+     * ?menu=face_all
+     *
+     * メニュー指定で開いた場合も
+     * 追加後に選択したメニュー画面を表示
+     */
 
     const menuId =
       params.get("menu");
 
 
     if (menuId) {
-
-      /*
-       * メニュー選択画面を表示したまま
-       * 指定メニューを追加
-       */
-
-      showMenuScreen();
 
       await addMenu(menuId);
 
@@ -2007,13 +2130,19 @@ async function startPage() {
     }
 
 
+    /*
+     * 通常
+     */
+
     showMenuScreen();
 
   } catch (error) {
 
     console.error(
+      "起動エラー",
       error
     );
+
 
     showError(
       "LIFFの起動に失敗しました。\n" +
