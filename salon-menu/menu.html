@@ -10,7 +10,7 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>メニュー選択</title>
+<title>選択したメニュー</title>
 
 <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
@@ -43,7 +43,8 @@ body {
   background: #fff;
   border-radius: 24px;
   padding: 28px 20px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+  box-shadow:
+    0 3px 12px rgba(0,0,0,0.06);
 }
 
 h1 {
@@ -57,29 +58,6 @@ h1 {
   color: #888;
   font-size: 15px;
   margin-bottom: 25px;
-}
-
-.menu-button {
-  width: 100%;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 12px;
-  text-align: left;
-  cursor: pointer;
-  font-size: inherit;
-}
-
-.menu-name {
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.menu-detail {
-  margin-top: 8px;
-  color: #777;
-  font-size: 15px;
 }
 
 .cart-item {
@@ -144,6 +122,7 @@ h1 {
 .add-button {
   background: #fff;
   border: 1px solid #ccc;
+  color: #333;
 }
 
 .complete-button {
@@ -170,7 +149,7 @@ h1 {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
 </style>
@@ -180,87 +159,17 @@ h1 {
 
 <body>
 
+
 <div class="container">
 
 <div class="card">
 
 
 <!-- ==================================================
-     メニュー画面
+     選択したメニュー表示
 ================================================== -->
 
-<div id="menuScreen">
-
-<h1>
-メニュー選択
-</h1>
-
-<div class="subtitle">
-ご希望のメニューをお選びください
-</div>
-
-
-<button
-  type="button"
-  class="menu-button"
-  onclick="addMenu('face_all')"
->
-
-<div class="menu-name">
-顔全体
-</div>
-
-<div class="menu-detail">
-¥5,000｜約30分
-</div>
-
-</button>
-
-
-<button
-  type="button"
-  class="menu-button"
-  onclick="addMenu('face_upper')"
->
-
-<div class="menu-name">
-上顔面
-</div>
-
-<div class="menu-detail">
-¥3,000｜約30分
-</div>
-
-</button>
-
-
-<button
-  type="button"
-  class="menu-button"
-  onclick="addMenu('face_lower')"
->
-
-<div class="menu-name">
-下顔面
-</div>
-
-<div class="menu-detail">
-¥3,000｜約30分
-</div>
-
-</button>
-
-</div>
-
-
-<!-- ==================================================
-     カート画面
-================================================== -->
-
-<div
-  id="cartScreen"
-  class="hidden"
->
+<div id="cartScreen">
 
 <h1>
 選択したメニュー
@@ -310,12 +219,11 @@ h1 {
 
 
 <!-- ==================================================
-     メニュー追加ボタン
+     メニュー追加
 ================================================== -->
 
 <button
   type="button"
-  id="addMenuButton"
   class="button add-button"
   onclick="addMoreMenu()"
 >
@@ -324,7 +232,7 @@ h1 {
 
 
 <!-- ==================================================
-     選択完了ボタン
+     選択完了
 ================================================== -->
 
 <button
@@ -337,6 +245,10 @@ h1 {
 </button>
 
 
+<!-- ==================================================
+     カートを空にする
+================================================== -->
+
 <button
   type="button"
   class="clear-button"
@@ -347,12 +259,11 @@ h1 {
 
 </div>
 
+
 </div>
 
 
 <div id="status"></div>
-
-</div>
 
 
 <script>
@@ -426,6 +337,7 @@ async function initLIFF() {
     }
 
     return;
+
   }
 
 
@@ -470,12 +382,10 @@ function getCart() {
       JSON.parse(saved);
 
 
-    if (!Array.isArray(cart)) {
-      return [];
-    }
+    return Array.isArray(cart)
+      ? cart
+      : [];
 
-
-    return cart;
 
   } catch (error) {
 
@@ -483,6 +393,7 @@ function getCart() {
       "カート読み込みエラー",
       error
     );
+
 
     return [];
 
@@ -512,7 +423,7 @@ function saveCart(cart) {
 async function addMenu(menuId) {
 
   console.log(
-    "addMenu:",
+    "メニュー追加:",
     menuId
   );
 
@@ -552,16 +463,12 @@ async function addMenu(menuId) {
   if (!alreadyAdded) {
 
     cart.push({
-
       menu: menu.menu,
-
       name: menu.name,
-
       price: menu.price,
-
       time: menu.time
-
     });
+
 
     saveCart(cart);
 
@@ -569,7 +476,7 @@ async function addMenu(menuId) {
 
 
   /* --------------------------------
-     LINE初期化
+     LINEへ送信
   -------------------------------- */
 
   try {
@@ -586,10 +493,6 @@ async function addMenu(menuId) {
     }
 
 
-    /* --------------------------------
-       カート追加メッセージ
-    -------------------------------- */
-
     await liff.sendMessages([
 
       {
@@ -600,8 +503,13 @@ async function addMenu(menuId) {
     ]);
 
 
+    console.log(
+      "カート追加メッセージ送信成功"
+    );
+
+
     /* --------------------------------
-       自動終了
+       自動で閉じる
     -------------------------------- */
 
     setTimeout(
@@ -637,101 +545,6 @@ async function addMenu(menuId) {
       "LINEへの送信に失敗しました。\n" +
       error.message
     );
-
-  }
-
-}
-
-
-/* ==================================================
-   メニュー追加ボタン
-================================================== */
-
-async function addMoreMenu() {
-
-  const button =
-    document.getElementById(
-      "addMenuButton"
-    );
-
-
-  button.disabled = true;
-
-  button.textContent =
-    "送信中…";
-
-
-  try {
-
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    /* --------------------------------
-       メニュー追加メッセージ送信
-    -------------------------------- */
-
-    await liff.sendMessages([
-
-      {
-        type: "text",
-        text: "メニュー追加"
-      }
-
-    ]);
-
-
-    /* --------------------------------
-       送信後にLIFFを閉じる
-    -------------------------------- */
-
-    setTimeout(
-      function() {
-
-        try {
-
-          liff.closeWindow();
-
-        } catch (error) {
-
-          console.error(
-            "LIFF終了エラー",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "メニュー追加エラー",
-      error
-    );
-
-
-    showError(
-      "LINEへの送信に失敗しました。\n" +
-      error.message
-    );
-
-
-    button.disabled = false;
-
-    button.textContent =
-      "メニュー追加";
 
   }
 
@@ -777,6 +590,10 @@ function renderCart() {
   }
 
 
+  /* --------------------------------
+     追加したメニューだけ表示
+  -------------------------------- */
+
   list.innerHTML =
     cart.map(
       (item, index) => `
@@ -784,14 +601,10 @@ function renderCart() {
         <div class="cart-item">
 
           <div class="item-name">
-
             ${escapeHTML(
-              item.name ||
-              "メニュー"
+              item.name || "メニュー"
             )}
-
           </div>
-
 
           <div class="item-bottom">
 
@@ -799,17 +612,13 @@ function renderCart() {
               約${Number(item.time) || 0}分
             </span>
 
-
             <span>
-
               ¥${(
                 Number(item.price) || 0
               ).toLocaleString("ja-JP")}
-
             </span>
 
           </div>
-
 
           <button
             type="button"
@@ -824,6 +633,10 @@ function renderCart() {
       `
     ).join("");
 
+
+  /* --------------------------------
+     合計
+  -------------------------------- */
 
   let totalPrice = 0;
 
@@ -860,7 +673,7 @@ function renderCart() {
 
 
 /* ==================================================
-   削除
+   カート削除
 ================================================== */
 
 function removeItem(index) {
@@ -877,6 +690,7 @@ function removeItem(index) {
 
   saveCart(cart);
 
+
   renderCart();
 
 }
@@ -888,12 +702,12 @@ function removeItem(index) {
 
 function clearCart() {
 
-  if (
-    getCart().length === 0
-  ) {
+  const cart =
+    getCart();
 
+
+  if (cart.length === 0) {
     return;
-
   }
 
 
@@ -919,48 +733,83 @@ function clearCart() {
 
 
 /* ==================================================
-   カート画面表示
+   メニュー追加ボタン
 ================================================== */
 
-function showCartScreen() {
+async function addMoreMenu() {
 
-  document.getElementById(
-    "menuScreen"
-  ).classList.add(
-    "hidden"
-  );
+  try {
+
+    await initLIFF();
 
 
-  document.getElementById(
-    "cartScreen"
-  ).classList.remove(
-    "hidden"
-  );
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
 
 
-  renderCart();
+    /* --------------------------------
+       メニュー追加メッセージ
+    -------------------------------- */
 
-}
+    await liff.sendMessages([
 
+      {
+        type: "text",
+        text: "メニュー追加"
+      }
 
-/* ==================================================
-   メニュー画面表示
-================================================== */
-
-function showMenuScreen() {
-
-  document.getElementById(
-    "cartScreen"
-  ).classList.add(
-    "hidden"
-  );
+    ]);
 
 
-  document.getElementById(
-    "menuScreen"
-  ).classList.remove(
-    "hidden"
-  );
+    console.log(
+      "メニュー追加メッセージ送信成功"
+    );
+
+
+    /* --------------------------------
+       自動終了
+    -------------------------------- */
+
+    setTimeout(
+      function() {
+
+        try {
+
+          liff.closeWindow();
+
+        } catch (error) {
+
+          console.error(
+            "LIFF終了エラー",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "メニュー追加エラー",
+      error
+    );
+
+
+    showError(
+      "LINEへの送信に失敗しました。\n" +
+      error.message
+    );
+
+  }
 
 }
 
@@ -975,9 +824,7 @@ async function completeSelection() {
     getCart();
 
 
-  if (
-    cart.length === 0
-  ) {
+  if (cart.length === 0) {
 
     alert(
       "メニューを選択してください。"
@@ -1005,9 +852,7 @@ async function completeSelection() {
     await initLIFF();
 
 
-    if (
-      !liff.isInClient()
-    ) {
+    if (!liff.isInClient()) {
 
       throw new Error(
         "LINEアプリ内で開いてください。"
@@ -1020,6 +865,10 @@ async function completeSelection() {
 
     let totalTime = 0;
 
+
+    /* --------------------------------
+       メッセージ作成
+    -------------------------------- */
 
     let message =
       "【選択したメニュー一覧】\n\n";
@@ -1039,9 +888,7 @@ async function completeSelection() {
           "✔ " +
           item.name +
           "　¥" +
-          price.toLocaleString(
-            "ja-JP"
-          ) +
+          price.toLocaleString("ja-JP") +
           "｜約" +
           time +
           "分\n";
@@ -1060,9 +907,7 @@ async function completeSelection() {
 
     message +=
       "\n■ 合計金額\n¥" +
-      totalPrice.toLocaleString(
-        "ja-JP"
-      );
+      totalPrice.toLocaleString("ja-JP");
 
 
     message +=
@@ -1076,7 +921,7 @@ async function completeSelection() {
 
 
     /* --------------------------------
-       選択一覧送信
+       LINE送信
     -------------------------------- */
 
     await liff.sendMessages([
@@ -1090,7 +935,8 @@ async function completeSelection() {
 
 
     /* --------------------------------
-       送信成功後にカート削除
+       送信成功後のみ
+       カートを空にする
     -------------------------------- */
 
     localStorage.removeItem(
@@ -1205,8 +1051,9 @@ async function startPage() {
 
   try {
 
-    await initLIFF();
-
+    /*
+     * URLを取得
+     */
 
     const params =
       new URLSearchParams(
@@ -1214,29 +1061,20 @@ async function startPage() {
       );
 
 
-    /* --------------------------------
-       カートを見る
-       ?mode=cart
-    -------------------------------- */
+    const mode =
+      params.get("mode");
 
-    if (
-      params.get("mode") === "cart"
-    ) {
-
-      showCartScreen();
-
-      return;
-
-    }
-
-
-    /* --------------------------------
-       menu=指定
-    -------------------------------- */
 
     const menuId =
       params.get("menu");
 
+
+    /* ==============================================
+       ① menu=face_all 等で開かれた場合
+       
+       メニュー選択画面は表示しない。
+       指定されたメニューだけをカートへ追加。
+    ============================================== */
 
     if (menuId) {
 
@@ -1247,11 +1085,30 @@ async function startPage() {
     }
 
 
-    /* --------------------------------
-       通常画面
-    -------------------------------- */
+    /* ==============================================
+       ② mode=cart
+       
+       カートを見る
+    ============================================== */
 
-    showMenuScreen();
+    if (mode === "cart") {
+
+      await initLIFF();
+
+      renderCart();
+
+      return;
+
+    }
+
+
+    /* ==============================================
+       ③ それ以外
+       
+       メニュー選択画面は絶対に表示しない。
+    ============================================== */
+
+    renderCart();
 
   } catch (error) {
 
@@ -1281,6 +1138,7 @@ window.addEventListener(
 );
 
 </script>
+
 
 </body>
 
