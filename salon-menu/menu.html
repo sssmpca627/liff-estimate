@@ -1254,6 +1254,10 @@ async function completeSelection() {
     let totalTime = 0;
 
 
+    /*
+     * 送信メッセージ作成
+     */
+
     let message =
       "【選択したメニュー一覧】\n\n";
 
@@ -1289,10 +1293,18 @@ async function completeSelection() {
     );
 
 
+    /*
+     * 合計金額
+     */
+
     message +=
       "\n■ 合計金額\n¥" +
       totalPrice.toLocaleString("ja-JP");
 
+
+    /*
+     * 合計施術時間
+     */
 
     message +=
       "\n\n■ 施術時間目安\n" +
@@ -1300,15 +1312,22 @@ async function completeSelection() {
       "分";
 
 
-    message +=
-      message +=
-  "\n\n━━━━━━━━━━━━" +
-  "\n【ご予約時の注意】" +
-  "\n\n【" +
-  totalTime +
-  "分】枠を選択してください" +
-  "\n━━━━━━━━━━━━";
+    /*
+     * ご予約時の注意
+     */
 
+    message +=
+      "\n\n━━━━━━━━━━━━" +
+      "\n【ご予約時の注意】" +
+      "\n\n【" +
+      totalTime +
+      "分】枠を選択してください" +
+      "\n━━━━━━━━━━━━";
+
+
+    /*
+     * LINEへ1回だけ送信
+     */
 
     await liff.sendMessages([
       {
@@ -1319,7 +1338,7 @@ async function completeSelection() {
 
 
     /*
-     * 送信成功後のみ削除
+     * 送信成功後のみカート削除
      */
 
     localStorage.removeItem(
