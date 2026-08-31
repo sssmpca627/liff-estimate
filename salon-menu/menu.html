@@ -33,10 +33,23 @@ body {
     sans-serif;
 }
 
+/* ==================================================
+   ページ表示
+================================================== */
+
 .container {
   max-width: 700px;
   margin: 0 auto;
   padding: 30px 20px 60px;
+
+  /* カート内容取得前は表示しない */
+  visibility: hidden;
+  opacity: 0;
+}
+
+.container.ready {
+  visibility: visible;
+  opacity: 1;
 }
 
 .card {
@@ -152,13 +165,6 @@ h1 {
   white-space: pre-line;
 }
 
-.loading {
-  text-align: center;
-  padding: 35px 10px;
-  color: #888;
-  font-size: 15px;
-}
-
 </style>
 
 </head>
@@ -177,13 +183,7 @@ h1 {
 追加したメニューをご確認ください
 </div>
 
-<div id="cartList">
-
-<div class="loading">
-メニューを追加しています…
-</div>
-
-</div>
+<div id="cartList"></div>
 
 <div class="total">
 
@@ -812,6 +812,8 @@ async function addMenuFromURL(menuId) {
       menuId
     );
 
+    showPage();
+
     return;
 
   }
@@ -844,10 +846,11 @@ async function addMenuFromURL(menuId) {
 
 
   /*
-   * 画面を先にカート内容へ更新
+   * カート追加後に
+   * いきなり完成画面を表示
    *
-   * 「カートは空です」を
-   * 一度も表示しない
+   * 「メニューを追加しています…」は
+   * 一切表示しない
    */
 
   renderCart();
@@ -983,6 +986,8 @@ function renderCart() {
       "0分";
 
 
+    showPage();
+
     return;
 
   }
@@ -1062,6 +1067,39 @@ function renderCart() {
     "totalTime"
   ).textContent =
     totalTime + "分";
+
+
+  /*
+   * ここで初めて画面を表示
+   *
+   * これにより
+   * 「メニューを追加しています…」
+   * の画面は表示されない
+   */
+
+  showPage();
+
+}
+
+
+/* ==================================================
+   ページ表示
+================================================== */
+
+function showPage() {
+
+  const container =
+    document.querySelector(
+      ".container"
+    );
+
+  if (container) {
+
+    container.classList.add(
+      "ready"
+    );
+
+  }
 
 }
 
@@ -1273,11 +1311,11 @@ async function completeSelection() {
 
 
         message +=
-  "✔ " +
-  item.name +
-  "　¥" +
-  price.toLocaleString("ja-JP") +
-  "\n";
+          "✔ " +
+          item.name +
+          "　¥" +
+          price.toLocaleString("ja-JP") +
+          "\n";
 
 
         totalPrice +=
@@ -1310,19 +1348,19 @@ async function completeSelection() {
       "分";
 
 
-   /* ==============================
-   ご予約時の注意
-============================== */
+    /* ==============================
+       ご予約時の注意
+    ============================== */
 
-message +=
-  "\n\n━━━━━━━━━━━━" +
-  "\n【ご予約時の注意】" +
-  "\n\n【" +
-  totalTime +
-  "分】枠を選択してください" +
-  "\n\n※まだ予約は確定していません" +
-  "\n\n【予約枠を選択する】から予約を確定してください" +
-  "\n━━━━━━━━━━━━";
+    message +=
+      "\n\n━━━━━━━━━━━━" +
+      "\n【ご予約時の注意】" +
+      "\n\n【" +
+      totalTime +
+      "分】枠を選択してください" +
+      "\n\n※まだ予約は確定していません" +
+      "\n\n【予約枠を選択する】から予約を確定してください" +
+      "\n━━━━━━━━━━━━";
 
 
     /*
@@ -1477,10 +1515,6 @@ async function startPage() {
      * menu=xxx の場合
      *
      * 最初からメニュー追加処理へ
-     *
-     * renderCart() は
-     * addMenuFromURL() の中で
-     * カート追加後に実行する
      */
 
     if (menuId) {
@@ -1495,12 +1529,11 @@ async function startPage() {
 
 
     /*
-     * menu= がない場合だけ
-     * LIFF初期化後にカート表示
+     * menu= がない場合
+     * 既存カートを表示
      */
 
     await initLIFF();
-
 
     renderCart();
 
@@ -1516,6 +1549,13 @@ async function startPage() {
       "LIFFの起動に失敗しました。\n" +
       error.message
     );
+
+
+    /*
+     * エラー時も画面を表示
+     */
+
+    showPage();
 
   }
 
