@@ -1301,7 +1301,13 @@ async function completeSelection() {
 
 
     message +=
-      "\n\nこちらの内容でよろしいですか？";
+      message +=
+  "\n\n━━━━━━━━━━━━" +
+  "\n【ご予約時の注意】" +
+  "\n\n【" +
+  totalTime +
+  "分】枠を選択してください" +
+  "\n━━━━━━━━━━━━";
 
 
     await liff.sendMessages([
