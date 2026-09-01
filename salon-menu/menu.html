@@ -269,7 +269,7 @@ const CART_KEY =
 ================================================== */
 
 const RESERVATION_BASE_URL =
-  "https://sssmpca627.github.io/liff-estimate/salon-menu/reservation.html";
+  "https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL";
 
 
 /* ==================================================
@@ -1240,9 +1240,7 @@ async function completeSelection() {
     ========================================== */
 
     const reservationURL =
-      RESERVATION_BASE_URL +
-      "?time=" +
-      encodeURIComponent(totalTime);
+      RESERVATION_BASE_URL;
 
 
     /* ==========================================
@@ -1471,7 +1469,7 @@ async function completeSelection() {
 
 
           /* ==================================
-             予約ページボタン
+             予約ボタン
           ================================== */
 
           footer: {
@@ -1495,7 +1493,7 @@ async function completeSelection() {
                   type: "uri",
 
                   label:
-                    "予約ページを開く",
+                    "予約に進む",
 
                   uri:
                     reservationURL
