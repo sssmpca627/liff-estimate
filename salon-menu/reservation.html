@@ -1,81 +1,156 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
 <title>予約ページ</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f7;
+  color: #333;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 30px 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+h1 {
+  text-align: center;
+  font-size: 26px;
+  margin: 0 0 30px;
+}
+
+.notice {
+  text-align: center;
+  padding: 25px 15px;
+}
+
+.notice-title {
+  font-size: 21px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.time {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.note {
+  font-size: 15px;
+  color: #777;
+  line-height: 1.8;
+}
+
+.error {
+  text-align: center;
+  color: #888;
+  padding: 30px 10px;
+}
+
+</style>
+
 </head>
 
 <body>
 
-<div id="app"></div>
+<div class="container">
+
+  <div class="card">
+
+    <h1>
+      ご予約について
+    </h1>
+
+    <div
+      id="content"
+      class="notice"
+    ></div>
+
+  </div>
+
+</div>
 
 <script>
 
-const CART_KEY = "salon_cart";
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
 
-function getCart() {
+const time =
+  Number(params.get("time"));
 
-  const saved = localStorage.getItem(CART_KEY);
+const content =
+  document.getElementById("content");
 
-  if (!saved) {
-    return [];
-  }
 
-  try {
-    const cart = JSON.parse(saved);
-    return Array.isArray(cart) ? cart : [];
-  } catch (e) {
-    return [];
-  }
+if (
+  Number.isFinite(time) &&
+  time > 0
+) {
 
-}
+  content.innerHTML = `
 
-const cart = getCart();
-
-let totalTime = 0;
-
-cart.forEach(item => {
-  totalTime += Number(item.time) || 0;
-});
-
-document.getElementById("app").innerHTML = `
-  <div style="
-    max-width:700px;
-    margin:0 auto;
-    padding:40px 20px;
-    font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',sans-serif;
-    text-align:center;
-  ">
-
-    <h1>ご予約について</h1>
-
-    <div style="
-      margin-top:30px;
-      padding:30px 20px;
-      background:#f7f7f7;
-      border-radius:20px;
-    ">
-
-      <h2>【ご予約時の注意】</h2>
-
-      <p style="
-        font-size:24px;
-        font-weight:bold;
-      ">
-        【${totalTime}分】枠を選択してください
-      </p>
-
-      <p>
-        ※まだ予約は確定していません
-      </p>
-
+    <div class="notice-title">
+      【ご予約時の注意】
     </div>
 
-  </div>
-`;
+    <div class="time">
+      【${time}分】枠を選択してください
+    </div>
+
+    <div class="note">
+      ※まだ予約は確定していません
+    </div>
+
+  `;
+
+} else {
+
+  content.innerHTML = `
+
+    <div class="error">
+      予約時間を取得できませんでした。
+    </div>
+
+  `;
+
+}
 
 </script>
 
 </body>
+
 </html>
