@@ -37,7 +37,6 @@ body {
   max-width: 700px;
   margin: 0 auto;
   padding: 30px 20px 60px;
-
   visibility: hidden;
   opacity: 0;
 }
@@ -273,6 +272,19 @@ const RESERVATION_BASE_URL =
 
 
 /* ==================================================
+   性別判定
+================================================== */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const IS_FEMALE =
+  params.get("gender") === "female";
+
+
+/* ==================================================
    メニュー一覧
 ================================================== */
 
@@ -284,7 +296,7 @@ const MENUS = {
     menu: "full_none",
     name: "顔・VIOなし",
     category: "全身脱毛",
-    price: 13000,
+    price: IS_FEMALE ? 10000 : 13000,
     time: 90
   },
 
@@ -292,7 +304,7 @@ const MENUS = {
     menu: "full_face_or_vio",
     name: "顔orVIO",
     category: "全身脱毛",
-    price: 14000,
+    price: IS_FEMALE ? 11000 : 14000,
     time: 100
   },
 
@@ -300,7 +312,7 @@ const MENUS = {
     menu: "full_face_vio",
     name: "顔・VIO",
     category: "全身脱毛",
-    price: 15000,
+    price: IS_FEMALE ? 12000 : 15000,
     time: 120
   },
 
@@ -512,7 +524,7 @@ const MENUS = {
     menu: "vio_all",
     name: "VIO全体",
     category: "VIO",
-    price: 5000,
+    price: IS_FEMALE ? 5000 : 7000,
     time: 40
   },
 
@@ -520,7 +532,7 @@ const MENUS = {
     menu: "v_line",
     name: "Vライン",
     category: "VIO",
-    price: 3500,
+    price: IS_FEMALE ? 3500 : 5500,
     time: 30
   },
 
@@ -528,7 +540,7 @@ const MENUS = {
     menu: "v",
     name: "V",
     category: "VIO",
-    price: 2000,
+    price: IS_FEMALE ? 2000 : 3000,
     time: 20
   },
 
@@ -536,7 +548,7 @@ const MENUS = {
     menu: "i",
     name: "I",
     category: "VIO",
-    price: 2000,
+    price: IS_FEMALE ? 2000 : 3000,
     time: 20
   },
 
