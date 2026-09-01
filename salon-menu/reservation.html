@@ -61,11 +61,36 @@ h1 {
   margin-bottom: 25px;
 }
 
-.time {
-  font-size: 25px;
-  font-weight: 700;
-  margin-bottom: 25px;
+
+/* ==================================================
+   予約時間を目立たせる
+================================================== */
+
+.time-box {
+  margin: 0 auto 28px;
+  padding: 24px 15px;
+  border: 3px solid #333;
+  border-radius: 18px;
+  background: #f5f5f5;
 }
+
+.time-label {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.time {
+  font-size: 29px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+
+/* ==================================================
+   注意書き
+================================================== */
 
 .note {
   font-size: 15px;
@@ -102,7 +127,12 @@ h1 {
 
 </div>
 
+
 <script>
+
+/* ==================================================
+   URLから予約時間を取得
+================================================== */
 
 const params =
   new URLSearchParams(
@@ -116,6 +146,10 @@ const content =
   document.getElementById("content");
 
 
+/* ==================================================
+   表示
+================================================== */
+
 if (
   Number.isFinite(time) &&
   time > 0
@@ -127,8 +161,16 @@ if (
       【ご予約時の注意】
     </div>
 
-    <div class="time">
-      【${time}分】枠を選択してください
+    <div class="time-box">
+
+      <div class="time-label">
+        ご予約時は、下記の時間枠を選択してください
+      </div>
+
+      <div class="time">
+        【${time}分】枠を選択してください
+      </div>
+
     </div>
 
     <div class="note">
