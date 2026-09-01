@@ -41,8 +41,7 @@ body {
   visibility: hidden;
   opacity: 0;
 
-  transition:
-    opacity 0.2s;
+  transition: opacity 0.2s;
 }
 
 .container.ready {
@@ -61,67 +60,50 @@ body {
 
 h1 {
   text-align: center;
-
   font-size: 27px;
-
-  margin:
-    0 0 10px;
+  margin: 0 0 10px;
 }
 
 .subtitle {
   text-align: center;
-
   color: #888;
-
   font-size: 15px;
-
   margin-bottom: 25px;
 }
 
 .cart-item {
-  border:
-    1px solid #e3e3e3;
-
+  border: 1px solid #e3e3e3;
   border-radius: 18px;
 
   padding: 17px;
-
   margin-bottom: 12px;
 }
 
 .item-name {
   font-size: 19px;
-
   font-weight: 700;
 }
 
 .item-category {
   margin-top: 5px;
-
   color: #999;
-
   font-size: 13px;
 }
 
 .item-bottom {
   display: flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    center;
+  justify-content: space-between;
 
   margin-top: 10px;
 
   color: #777;
+  font-size: 15px;
 }
 
 .delete-button {
   margin-top: 12px;
 
   border: none;
-
   background: transparent;
 
   color: #999;
@@ -134,22 +116,16 @@ h1 {
 }
 
 .total {
-  border-top:
-    1px solid #ddd;
+  border-top: 1px solid #ddd;
 
   margin-top: 22px;
-
   padding-top: 20px;
 }
 
 .total-row {
   display: flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    center;
+  justify-content: space-between;
+  align-items: center;
 
   margin-bottom: 13px;
 }
@@ -160,7 +136,6 @@ h1 {
 
 .total-value {
   font-size: 21px;
-
   font-weight: 700;
 }
 
@@ -172,7 +147,6 @@ h1 {
   padding: 16px;
 
   font-size: 17px;
-
   font-weight: 700;
 
   margin-top: 12px;
@@ -182,15 +156,13 @@ h1 {
 
 .button:disabled {
   opacity: 0.5;
-
   cursor: default;
 }
 
 .add-button {
   background: #fff;
 
-  border:
-    1px solid #ccc;
+  border: 1px solid #ccc;
 
   color: #333;
 }
@@ -198,8 +170,7 @@ h1 {
 .complete-button {
   background: #333;
 
-  border:
-    1px solid #333;
+  border: 1px solid #333;
 
   color: #fff;
 }
@@ -207,8 +178,7 @@ h1 {
 .clear-button {
   display: block;
 
-  margin:
-    20px auto 0;
+  margin: 20px auto 0;
 
   border: none;
 
@@ -240,6 +210,7 @@ h1 {
 
 <body>
 
+
 <div class="container">
 
   <div class="card">
@@ -253,6 +224,7 @@ h1 {
     </div>
 
     <div id="cartList"></div>
+
 
     <div class="total">
 
@@ -326,7 +298,9 @@ h1 {
 </div>
 
 
+
 <script>
+
 
 /* ==================================================
    設定
@@ -341,1034 +315,782 @@ const CART_KEY =
 
 /* ==================================================
    メニュー一覧
-   ※耳毛・鼻毛は登録しない
+   ※耳毛・鼻毛は入れない
 ================================================== */
 
 const MENUS = {
 
 
-  /* ==================================================
+  /* ================================================
      全身脱毛
-  ================================================== */
+  ================================================ */
 
   full_none: {
 
-    menu:
-      "full_none",
+    menu: "full_none",
 
-    name:
-      "顔・VIOなし",
+    name: "顔・VIOなし",
 
-    category:
-      "全身脱毛",
+    category: "全身脱毛",
 
-    price:
-      13000,
+    price: 13000,
 
-    time:
-      90
+    time: 90
 
   },
 
 
   full_face_or_vio: {
 
-    menu:
-      "full_face_or_vio",
+    menu: "full_face_or_vio",
 
-    name:
-      "顔orVIO",
+    name: "顔orVIO",
 
-    category:
-      "全身脱毛",
+    category: "全身脱毛",
 
-    price:
-      14000,
+    price: 14000,
 
-    time:
-      100
+    time: 100
 
   },
 
 
   full_face_vio: {
 
-    menu:
-      "full_face_vio",
+    menu: "full_face_vio",
 
-    name:
-      "顔・VIO",
+    name: "顔・VIO",
 
-    category:
-      "全身脱毛",
+    category: "全身脱毛",
 
-    price:
-      15000,
+    price: 15000,
 
-    time:
-      120
+    time: 120
 
   },
 
 
-  /* ==================================================
+  /* ================================================
      顔・首まわり
-  ================================================== */
+  ================================================ */
 
   face_all: {
 
-    menu:
-      "face_all",
+    menu: "face_all",
 
-    name:
-      "顔全体",
+    name: "顔全体",
 
-    category:
-      "顔・首まわり",
+    category: "顔・首まわり",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   face_upper: {
 
-    menu:
-      "face_upper",
+    menu: "face_upper",
 
-    name:
-      "上顔面／鼻上",
+    name: "上顔面／鼻上",
 
-    category:
-      "顔・首まわり",
+    category: "顔・首まわり",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   face_lower: {
 
-    menu:
-      "face_lower",
+    menu: "face_lower",
 
-    name:
-      "下顔面／鼻下",
+    name: "下顔面／鼻下",
 
-    category:
-      "顔・首まわり",
+    category: "顔・首まわり",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   eyebrow: {
 
-    menu:
-      "eyebrow",
+    menu: "eyebrow",
 
-    name:
-      "眉毛",
+    name: "眉毛",
 
-    category:
-      "顔・首まわり",
+    category: "顔・首まわり",
 
-    price:
-      1500,
+    price: 1500,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   mouth: {
 
-    menu:
-      "mouth",
+    menu: "mouth",
 
-    name:
-      "口周り",
+    name: "口周り",
 
-    category:
-      "顔・首まわり",
+    category: "顔・首まわり",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   neck: {
 
-    menu:
-      "neck",
+    menu: "neck",
 
-    name:
-      "うなじ",
+    name: "うなじ",
 
-    category:
-      "顔・首まわり",
+    category: "顔・首まわり",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
-  /* ==================================================
+  /* ================================================
      上半身
-  ================================================== */
+  ================================================ */
 
   arm_all: {
 
-    menu:
-      "arm_all",
+    menu: "arm_all",
 
-    name:
-      "うで全体／指込",
+    name: "うで全体／指込",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   upper_arm: {
 
-    menu:
-      "upper_arm",
+    menu: "upper_arm",
 
-    name:
-      "ひじ上",
+    name: "ひじ上",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   lower_arm: {
 
-    menu:
-      "lower_arm",
+    menu: "lower_arm",
 
-    name:
-      "ひじ下",
+    name: "ひじ下",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   hand: {
 
-    menu:
-      "hand",
+    menu: "hand",
 
-    name:
-      "手の甲・指",
+    name: "手の甲・指",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      1500,
+    price: 1500,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   armpit: {
 
-    menu:
-      "armpit",
+    menu: "armpit",
 
-    name:
-      "脇",
+    name: "脇",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   chest: {
 
-    menu:
-      "chest",
+    menu: "chest",
 
-    name:
-      "胸全体",
+    name: "胸全体",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   areola: {
 
-    menu:
-      "areola",
+    menu: "areola",
 
-    name:
-      "乳輪周り",
+    name: "乳輪周り",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   stomach: {
 
-    menu:
-      "stomach",
+    menu: "stomach",
 
-    name:
-      "お腹全体",
+    name: "お腹全体",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      4000,
+    price: 4000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   back_all: {
 
-    menu:
-      "back_all",
+    menu: "back_all",
 
-    name:
-      "背中全体",
+    name: "背中全体",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   back_upper: {
 
-    menu:
-      "back_upper",
+    menu: "back_upper",
 
-    name:
-      "背中上",
+    name: "背中上",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   waist: {
 
-    menu:
-      "waist",
+    menu: "waist",
 
-    name:
-      "腰",
+    name: "腰",
 
-    category:
-      "上半身",
+    category: "上半身",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
-  /* ==================================================
+  /* ================================================
      下半身
-  ================================================== */
+  ================================================ */
 
   leg_all: {
 
-    menu:
-      "leg_all",
+    menu: "leg_all",
 
-    name:
-      "脚全体／指込",
+    name: "脚全体／指込",
 
-    category:
-      "下半身",
+    category: "下半身",
 
-    price:
-      6000,
+    price: 6000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   thigh: {
 
-    menu:
-      "thigh",
+    menu: "thigh",
 
-    name:
-      "ひざ上",
+    name: "ひざ上",
 
-    category:
-      "下半身",
+    category: "下半身",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   lower_leg: {
 
-    menu:
-      "lower_leg",
+    menu: "lower_leg",
 
-    name:
-      "ひざ下",
+    name: "ひざ下",
 
-    category:
-      "下半身",
+    category: "下半身",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   foot: {
 
-    menu:
-      "foot",
+    menu: "foot",
 
-    name:
-      "足の甲・指",
+    name: "足の甲・指",
 
-    category:
-      "下半身",
+    category: "下半身",
 
-    price:
-      1500,
+    price: 1500,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   hip: {
 
-    menu:
-      "hip",
+    menu: "hip",
 
-    name:
-      "おしり",
+    name: "おしり",
 
-    category:
-      "下半身",
+    category: "下半身",
 
-    price:
-      3000,
+    price: 3000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
-  /* ==================================================
+  /* ================================================
      VIO
-  ================================================== */
+  ================================================ */
 
   vio_all: {
 
-    menu:
-      "vio_all",
+    menu: "vio_all",
 
-    name:
-      "VIO全体",
+    name: "VIO全体",
 
-    category:
-      "VIO",
+    category: "VIO",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   v_line: {
 
-    menu:
-      "v_line",
+    menu: "v_line",
 
-    name:
-      "Vライン",
+    name: "Vライン",
 
-    category:
-      "VIO",
+    category: "VIO",
 
-    price:
-      3500,
+    price: 3500,
 
-    time:
-      30
+    time: 30
 
   },
 
 
   v: {
 
-    menu:
-      "v",
+    menu: "v",
 
-    name:
-      "V",
+    name: "V",
 
-    category:
-      "VIO",
+    category: "VIO",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   i: {
 
-    menu:
-      "i",
+    menu: "i",
 
-    name:
-      "I",
+    name: "I",
 
-    category:
-      "VIO",
+    category: "VIO",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
   o: {
 
-    menu:
-      "o",
+    menu: "o",
 
-    name:
-      "O",
+    name: "O",
 
-    category:
-      "VIO",
+    category: "VIO",
 
-    price:
-      2000,
+    price: 2000,
 
-    time:
-      20
+    time: 20
 
   },
 
 
-  /* ==================================================
+  /* ================================================
      フェイシャル
-  ================================================== */
+  ================================================ */
 
   facial_light: {
 
-    menu:
-      "facial_light",
+    menu: "facial_light",
 
-    name:
-      "光美肌コース／ライト",
+    name: "光美肌コース／ライト",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   facial_standard: {
 
-    menu:
-      "facial_standard",
+    menu: "facial_standard",
 
-    name:
-      "光美肌コース／スタンダード",
+    name: "光美肌コース／スタンダード",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      7000,
+    price: 7000,
 
-    time:
-      60
+    time: 60
 
   },
 
 
   facial_premium: {
 
-    menu:
-      "facial_premium",
+    menu: "facial_premium",
 
-    name:
-      "光美肌コース／プレミアム",
+    name: "光美肌コース／プレミアム",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      9000,
+    price: 9000,
 
-    time:
-      90
+    time: 90
 
   },
 
 
   hydro_light: {
 
-    menu:
-      "hydro_light",
+    menu: "hydro_light",
 
-    name:
-      "水素ハイドラコース／ライト",
+    name: "水素ハイドラコース／ライト",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   hydro_standard: {
 
-    menu:
-      "hydro_standard",
+    menu: "hydro_standard",
 
-    name:
-      "水素ハイドラコース／スタンダード",
+    name: "水素ハイドラコース／スタンダード",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      7000,
+    price: 7000,
 
-    time:
-      60
+    time: 60
 
   },
 
 
   hydro_premium: {
 
-    menu:
-      "hydro_premium",
+    menu: "hydro_premium",
 
-    name:
-      "水素ハイドラコース／プレミアム",
+    name: "水素ハイドラコース／プレミアム",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      9000,
+    price: 9000,
 
-    time:
-      90
+    time: 90
 
   },
 
 
   plasma_light: {
 
-    menu:
-      "plasma_light",
+    menu: "plasma_light",
 
-    name:
-      "プラズマ肌改善コース／ライト",
+    name: "プラズマ肌改善コース／ライト",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   plasma_standard: {
 
-    menu:
-      "plasma_standard",
+    menu: "plasma_standard",
 
-    name:
-      "プラズマ肌改善コース／スタンダード",
+    name: "プラズマ肌改善コース／スタンダード",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      7000,
+    price: 7000,
 
-    time:
-      60
+    time: 60
 
   },
 
 
   plasma_premium: {
 
-    menu:
-      "plasma_premium",
+    menu: "plasma_premium",
 
-    name:
-      "プラズマ肌改善コース／プレミアム",
+    name: "プラズマ肌改善コース／プレミアム",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      9000,
+    price: 9000,
 
-    time:
-      90
+    time: 90
 
   },
 
 
   radio_ems_light: {
 
-    menu:
-      "radio_ems_light",
+    menu: "radio_ems_light",
 
-    name:
-      "ラジオ波＆EMS小顔コース／ライト",
+    name: "ラジオ波＆EMS小顔コース／ライト",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   radio_ems_standard: {
 
-    menu:
-      "radio_ems_standard",
+    menu: "radio_ems_standard",
 
-    name:
-      "ラジオ波＆EMS小顔コース／スタンダード",
+    name: "ラジオ波＆EMS小顔コース／スタンダード",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      7000,
+    price: 7000,
 
-    time:
-      60
+    time: 60
 
   },
 
 
   radio_ems_premium: {
 
-    menu:
-      "radio_ems_premium",
+    menu: "radio_ems_premium",
 
-    name:
-      "ラジオ波＆EMS小顔コース／プレミアム",
+    name: "ラジオ波＆EMS小顔コース／プレミアム",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      9000,
+    price: 9000,
 
-    time:
-      90
+    time: 90
 
   },
 
 
   pencil_light: {
 
-    menu:
-      "pencil_light",
+    menu: "pencil_light",
 
-    name:
-      "ペンシルシミケアコース／ライト",
+    name: "ペンシルシミケアコース／ライト",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   pencil_standard: {
 
-    menu:
-      "pencil_standard",
+    menu: "pencil_standard",
 
-    name:
-      "ペンシルシミケアコース／スタンダード",
+    name: "ペンシルシミケアコース／スタンダード",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      7000,
+    price: 7000,
 
-    time:
-      60
+    time: 60
 
   },
 
 
   pencil_premium: {
 
-    menu:
-      "pencil_premium",
+    menu: "pencil_premium",
 
-    name:
-      "ペンシルシミケアコース／プレミアム",
+    name: "ペンシルシミケアコース／プレミアム",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      9000,
+    price: 9000,
 
-    time:
-      90
+    time: 90
 
   },
 
 
   totte_light: {
 
-    menu:
-      "totte_light",
+    menu: "totte_light",
 
-    name:
-      "totte+コース／ライト",
+    name: "totte+コース／ライト",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      5000,
+    price: 5000,
 
-    time:
-      40
+    time: 40
 
   },
 
 
   totte_standard: {
 
-    menu:
-      "totte_standard",
+    menu: "totte_standard",
 
-    name:
-      "totte+コース／スタンダード",
+    name: "totte+コース／スタンダード",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      7000,
+    price: 7000,
 
-    time:
-      60
+    time: 60
 
   },
 
 
   totte_premium: {
 
-    menu:
-      "totte_premium",
+    menu: "totte_premium",
 
-    name:
-      "totte+コース／プレミアム",
+    name: "totte+コース／プレミアム",
 
-    category:
-      "フェイシャル",
+    category: "フェイシャル",
 
-    price:
-      9000,
+    price: 9000,
 
-    time:
-      90
+    time: 90
 
   }
 
 };
 
 
+
 /* ==================================================
    LIFF初期化
 ================================================== */
 
-let liffInitialized =
-  false;
+let liffInitialized = false;
 
-let liffInitializing =
-  false;
+let liffInitializing = false;
 
 
 async function initLIFF() {
 
-  if (
-    liffInitialized
-  ) {
-
+  if (liffInitialized) {
     return;
-
   }
 
 
-  if (
-    liffInitializing
-  ) {
+  if (liffInitializing) {
 
-    while (
-      liffInitializing
-    ) {
+    while (liffInitializing) {
 
       await new Promise(
         resolve =>
-          setTimeout(
-            resolve,
-            50
-          )
+          setTimeout(resolve, 50)
       );
 
     }
@@ -1378,28 +1100,27 @@ async function initLIFF() {
   }
 
 
-  liffInitializing =
-    true;
+  liffInitializing = true;
 
 
   try {
 
     await liff.init({
-      liffId:
-        LIFF_ID
+
+      liffId: LIFF_ID
+
     });
 
-    liffInitialized =
-      true;
+    liffInitialized = true;
 
   } finally {
 
-    liffInitializing =
-      false;
+    liffInitializing = false;
 
   }
 
 }
+
 
 
 /* ==================================================
@@ -1409,14 +1130,10 @@ async function initLIFF() {
 function getCart() {
 
   const saved =
-    localStorage.getItem(
-      CART_KEY
-    );
+    localStorage.getItem(CART_KEY);
 
 
-  if (
-    !saved
-  ) {
+  if (!saved) {
 
     return [];
 
@@ -1426,14 +1143,10 @@ function getCart() {
   try {
 
     const cart =
-      JSON.parse(
-        saved
-      );
+      JSON.parse(saved);
 
 
-    if (
-      !Array.isArray(cart)
-    ) {
+    if (!Array.isArray(cart)) {
 
       return [];
 
@@ -1442,9 +1155,7 @@ function getCart() {
 
     return cart;
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "カート読み込みエラー",
@@ -1458,22 +1169,23 @@ function getCart() {
 }
 
 
+
 /* ==================================================
    カート保存
 ================================================== */
 
-function saveCart(
-  cart
-) {
+function saveCart(cart) {
 
   localStorage.setItem(
+
     CART_KEY,
-    JSON.stringify(
-      cart
-    )
+
+    JSON.stringify(cart)
+
   );
 
 }
+
 
 
 /* ==================================================
@@ -1483,25 +1195,18 @@ function saveCart(
 function getTotalPrice() {
 
   return getCart().reduce(
-    (
-      total,
-      item
-    ) => {
 
-      return (
-        total +
-        (
-          Number(
-            item.price
-          ) || 0
-        )
-      );
+    (total, item) =>
 
-    },
+      total +
+      (Number(item.price) || 0),
+
     0
+
   );
 
 }
+
 
 
 /* ==================================================
@@ -1511,25 +1216,38 @@ function getTotalPrice() {
 function getTotalTime() {
 
   return getCart().reduce(
-    (
-      total,
-      item
-    ) => {
 
-      return (
-        total +
-        (
-          Number(
-            item.time
-          ) || 0
-        )
-      );
+    (total, item) =>
 
-    },
+      total +
+      (Number(item.time) || 0),
+
     0
+
   );
 
 }
+
+
+
+/* ==================================================
+   ページ表示
+================================================== */
+
+function showPage() {
+
+  const container =
+    document.querySelector(".container");
+
+
+  if (container) {
+
+    container.classList.add("ready");
+
+  }
+
+}
+
 
 
 /* ==================================================
@@ -1539,6 +1257,7 @@ function getTotalTime() {
 function closeLIFF() {
 
   setTimeout(
+
     () => {
 
       try {
@@ -1552,9 +1271,7 @@ function closeLIFF() {
 
         }
 
-      } catch (
-        error
-      ) {
+      } catch (error) {
 
         console.error(
           "LIFF close error",
@@ -1564,32 +1281,89 @@ function closeLIFF() {
       }
 
     },
+
     500
+
   );
 
 }
+
+
+
+/* ==================================================
+   エラー表示
+================================================== */
+
+function showError(message) {
+
+  const status =
+    document.getElementById("status");
+
+
+  if (status) {
+
+    status.textContent =
+      message;
+
+  }
+
+}
+
+
+
+/* ==================================================
+   HTMLエスケープ
+================================================== */
+
+function escapeHTML(value) {
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
 
 
 /* ==================================================
    メニュータップ
    ?menu=face_all
    ↓
-   カート追加
+   カート保存
    ↓
    「カートに追加しました」
 ================================================== */
 
-async function addMenuFromURL(
-  menuId
-) {
+async function addMenuFromURL(menuId) {
 
   const menu =
     MENUS[menuId];
 
 
-  if (
-    !menu
-  ) {
+  if (!menu) {
 
     showError(
       "メニュー情報がありません。\n" +
@@ -1609,20 +1383,18 @@ async function addMenuFromURL(
 
   const exists =
     cart.some(
+
       item =>
-        item.menu ===
-        menu.menu
+        item.menu === menu.menu
+
     );
 
 
   /*
-   * 同じメニューは
-   * 重複追加しない
+   * 同じメニューは重複追加しない
    */
 
-  if (
-    !exists
-  ) {
+  if (!exists) {
 
     cart.push({
 
@@ -1636,37 +1408,25 @@ async function addMenuFromURL(
         menu.category,
 
       price:
-        Number(
-          menu.price
-        ) || 0,
+        Number(menu.price) || 0,
 
       time:
-        Number(
-          menu.time
-        ) || 0
+        Number(menu.time) || 0
 
     });
 
 
-    saveCart(
-      cart
-    );
+    saveCart(cart);
 
   }
 
 
   /*
-   * 重要
-   *
-   * メニュータップ時は
-   *
-   * 「カートを見る」
-   *
-   * ではなく
+   * ここで送るのは必ず
    *
    * 「カートに追加しました」
    *
-   * を送信する
+   * だけ
    */
 
   try {
@@ -1674,9 +1434,7 @@ async function addMenuFromURL(
     await initLIFF();
 
 
-    if (
-      !liff.isInClient()
-    ) {
+    if (!liff.isInClient()) {
 
       throw new Error(
         "LINEアプリ内で開いてください。"
@@ -1689,8 +1447,7 @@ async function addMenuFromURL(
 
       {
 
-        type:
-          "text",
+        type: "text",
 
         text:
           "カートに追加しました"
@@ -1700,16 +1457,10 @@ async function addMenuFromURL(
     ]);
 
 
-    /*
-     * 送信後に閉じる
-     */
-
     closeLIFF();
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "メニュー追加エラー",
@@ -1718,9 +1469,11 @@ async function addMenuFromURL(
 
 
     showError(
-      "カートには追加できましたが、\n" +
+
+      "カートには追加されましたが、\n" +
       "LINEへの送信に失敗しました。\n" +
       error.message
+
     );
 
 
@@ -1731,9 +1484,10 @@ async function addMenuFromURL(
 }
 
 
+
 /* ==================================================
    カート表示
-   URLに menu がない場合だけ表示
+   URLにmenu/actionがない場合
 ================================================== */
 
 function renderCart() {
@@ -1748,18 +1502,18 @@ function renderCart() {
     );
 
 
-  if (
-    !list
-  ) {
+  if (!list) {
 
     return;
 
   }
 
 
-  if (
-    cart.length === 0
-  ) {
+  /*
+   * カートが空
+   */
+
+  if (cart.length === 0) {
 
     list.innerHTML = `
 
@@ -1795,23 +1549,21 @@ function renderCart() {
   }
 
 
+  /*
+   * メニュー一覧
+   */
+
   list.innerHTML =
+
     cart.map(
-      (
-        item,
-        index
-      ) => {
+
+      (item, index) => {
 
         const price =
-          Number(
-            item.price
-          ) || 0;
-
+          Number(item.price) || 0;
 
         const time =
-          Number(
-            item.time
-          ) || 0;
+          Number(item.time) || 0;
 
 
         return `
@@ -1821,8 +1573,7 @@ function renderCart() {
             <div class="item-name">
 
               ${escapeHTML(
-                item.name ||
-                "メニュー"
+                item.name || "メニュー"
               )}
 
             </div>
@@ -1831,8 +1582,7 @@ function renderCart() {
             <div class="item-category">
 
               ${escapeHTML(
-                item.category ||
-                ""
+                item.category || ""
               )}
 
             </div>
@@ -1844,10 +1594,9 @@ function renderCart() {
                 約${time}分
               </span>
 
+
               <span>
-                ¥${price.toLocaleString(
-                  "ja-JP"
-                )}
+                ¥${price.toLocaleString("ja-JP")}
               </span>
 
             </div>
@@ -1866,22 +1615,27 @@ function renderCart() {
         `;
 
       }
+
     ).join("");
 
+
+  /*
+   * 合計表示
+   */
 
   document.getElementById(
     "totalPrice"
   ).textContent =
+
     "¥" +
     getTotalPrice()
-      .toLocaleString(
-        "ja-JP"
-      );
+      .toLocaleString("ja-JP");
 
 
   document.getElementById(
     "totalTime"
   ).textContent =
+
     getTotalTime() +
     "分";
 
@@ -1891,38 +1645,12 @@ function renderCart() {
 }
 
 
-/* ==================================================
-   ページ表示
-================================================== */
-
-function showPage() {
-
-  const container =
-    document.querySelector(
-      ".container"
-    );
-
-
-  if (
-    container
-  ) {
-
-    container.classList.add(
-      "ready"
-    );
-
-  }
-
-}
-
 
 /* ==================================================
    カート内削除
 ================================================== */
 
-function removeItem(
-  index
-) {
+function removeItem(index) {
 
   const cart =
     getCart();
@@ -1944,14 +1672,13 @@ function removeItem(
   );
 
 
-  saveCart(
-    cart
-  );
+  saveCart(cart);
 
 
   renderCart();
 
 }
+
 
 
 /* ==================================================
@@ -1964,9 +1691,7 @@ function clearCart() {
     getCart();
 
 
-  if (
-    cart.length === 0
-  ) {
+  if (cart.length === 0) {
 
     return;
 
@@ -1994,10 +1719,12 @@ function clearCart() {
 }
 
 
+
 /* ==================================================
    メニュー追加ボタン
    ↓
-   「メニュー追加」だけ送信
+   「メニュー追加」
+   だけ送信
 ================================================== */
 
 async function addMenuMessage() {
@@ -2008,12 +1735,9 @@ async function addMenuMessage() {
     );
 
 
-  if (
-    button
-  ) {
+  if (button) {
 
-    button.disabled =
-      true;
+    button.disabled = true;
 
     button.textContent =
       "送信中…";
@@ -2026,9 +1750,7 @@ async function addMenuMessage() {
     await initLIFF();
 
 
-    if (
-      !liff.isInClient()
-    ) {
+    if (!liff.isInClient()) {
 
       throw new Error(
         "LINEアプリ内で開いてください。"
@@ -2038,7 +1760,9 @@ async function addMenuMessage() {
 
 
     /*
-     * ここでは絶対に
+     * 重要
+     *
+     * ここでは
      *
      * 「カートに追加しました」
      *
@@ -2048,15 +1772,14 @@ async function addMenuMessage() {
      *
      * 「メニュー追加」
      *
-     * のみ。
+     * のみ送信。
      */
 
     await liff.sendMessages([
 
       {
 
-        type:
-          "text",
+        type: "text",
 
         text:
           "メニュー追加"
@@ -2069,22 +1792,17 @@ async function addMenuMessage() {
     closeLIFF();
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
-      "メニュー追加送信エラー",
+      "メニュー追加エラー",
       error
     );
 
 
-    if (
-      button
-    ) {
+    if (button) {
 
-      button.disabled =
-        false;
+      button.disabled = false;
 
       button.textContent =
         "メニュー追加";
@@ -2093,8 +1811,10 @@ async function addMenuMessage() {
 
 
     showError(
+
       "メニュー追加の送信に失敗しました。\n" +
       error.message
+
     );
 
   }
@@ -2102,10 +1822,15 @@ async function addMenuMessage() {
 }
 
 
+
 /* ==================================================
    選択完了
    ↓
-   選択したメニュー一覧を送信
+   メニュー一覧
+   ↓
+   合計金額
+   ↓
+   合計時間
 ================================================== */
 
 async function completeSelection() {
@@ -2114,9 +1839,7 @@ async function completeSelection() {
     getCart();
 
 
-  if (
-    cart.length === 0
-  ) {
+  if (cart.length === 0) {
 
     alert(
       "メニューを選択してください。"
@@ -2133,12 +1856,9 @@ async function completeSelection() {
     );
 
 
-  if (
-    button
-  ) {
+  if (button) {
 
-    button.disabled =
-      true;
+    button.disabled = true;
 
     button.textContent =
       "送信中…";
@@ -2151,9 +1871,7 @@ async function completeSelection() {
     await initLIFF();
 
 
-    if (
-      !liff.isInClient()
-    ) {
+    if (!liff.isInClient()) {
 
       throw new Error(
         "LINEアプリ内で開いてください。"
@@ -2171,69 +1889,68 @@ async function completeSelection() {
 
 
     cart.forEach(
+
       item => {
 
         const price =
-          Number(
-            item.price
-          ) || 0;
+          Number(item.price) || 0;
 
 
         message +=
+
           "✔ " +
-          (
-            item.name ||
-            "メニュー"
-          ) +
+
+          (item.name || "メニュー") +
+
           "　¥" +
-          price.toLocaleString(
-            "ja-JP"
-          ) +
+
+          price.toLocaleString("ja-JP") +
+
           "\n";
 
       }
+
     );
 
 
     /*
-     * 合計金額
+     * 合計
      */
 
     const totalPrice =
       getTotalPrice();
 
 
-    /*
-     * 合計時間
-     */
-
     const totalTime =
       getTotalTime();
 
 
     message +=
+
       "\n■ 合計金額\n¥" +
-      totalPrice.toLocaleString(
-        "ja-JP"
-      );
+
+      totalPrice.toLocaleString("ja-JP");
 
 
     message +=
+
       "\n\n■ 施術時間目安\n" +
+
       totalTime +
+
       "分";
 
 
     /*
-     * 1通だけ送信
+     * 選択完了では
+     * この一覧だけ送信
      */
 
     await liff.sendMessages([
 
       {
 
-        type:
-          "text",
+        type: "text",
 
         text:
           message
@@ -2244,21 +1961,13 @@ async function completeSelection() {
 
 
     /*
-     * カートは消さない
-     *
-     * ↓
-     * その後「予約に進む」
-     * ↓
-     * 同じカートから
-     * 合計時間を取得できる
+     * カートは削除しない
      */
 
     closeLIFF();
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "選択完了エラー",
@@ -2266,12 +1975,9 @@ async function completeSelection() {
     );
 
 
-    if (
-      button
-    ) {
+    if (button) {
 
-      button.disabled =
-        false;
+      button.disabled = false;
 
       button.textContent =
         "選択完了";
@@ -2280,8 +1986,10 @@ async function completeSelection() {
 
 
     showError(
+
       "選択内容の送信に失敗しました。\n" +
       error.message
+
     );
 
   }
@@ -2289,24 +1997,25 @@ async function completeSelection() {
 }
 
 
+
 /* ==================================================
    予約に進む
    ?action=reservation
-   ↓
-   合計時間だけ送信
 ================================================== */
 
 async function reservationAction() {
 
   try {
 
+    /*
+     * カート確認
+     */
+
     const cart =
       getCart();
 
 
-    if (
-      cart.length === 0
-    ) {
+    if (cart.length === 0) {
 
       throw new Error(
         "選択されたメニューがありません。"
@@ -2315,13 +2024,15 @@ async function reservationAction() {
     }
 
 
+    /*
+     * 合計時間
+     */
+
     const totalTime =
       getTotalTime();
 
 
-    if (
-      totalTime <= 0
-    ) {
+    if (totalTime <= 0) {
 
       throw new Error(
         "施術時間を取得できませんでした。"
@@ -2333,9 +2044,7 @@ async function reservationAction() {
     await initLIFF();
 
 
-    if (
-      !liff.isInClient()
-    ) {
+    if (!liff.isInClient()) {
 
       throw new Error(
         "LINEアプリ内で開いてください。"
@@ -2345,15 +2054,24 @@ async function reservationAction() {
 
 
     /*
-     * 予約時間だけ送信
+     * ★ここが重要
      *
-     * 例：
-     * 予約時間｜120分
+     * 予約に進むときだけ
+     *
+     * 「予約時間｜○○分」
+     *
+     * を送信する。
+     *
+     * メニュー一覧は送らない。
+     * 合計金額も送らない。
      */
 
     const reservationMessage =
+
       "予約時間｜" +
+
       totalTime +
+
       "分";
 
 
@@ -2361,8 +2079,7 @@ async function reservationAction() {
 
       {
 
-        type:
-          "text",
+        type: "text",
 
         text:
           reservationMessage
@@ -2372,12 +2089,14 @@ async function reservationAction() {
     ]);
 
 
+    /*
+     * カートは削除しない
+     */
+
     closeLIFF();
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "予約時間送信エラー",
@@ -2386,8 +2105,10 @@ async function reservationAction() {
 
 
     showError(
+
       "予約時間の送信に失敗しました。\n" +
       error.message
+
     );
 
 
@@ -2397,71 +2118,6 @@ async function reservationAction() {
 
 }
 
-
-/* ==================================================
-   エラー表示
-================================================== */
-
-function showError(
-  message
-) {
-
-  const status =
-    document.getElementById(
-      "status"
-    );
-
-
-  if (
-    status
-  ) {
-
-    status.textContent =
-      message;
-
-  }
-
-}
-
-
-/* ==================================================
-   HTMLエスケープ
-================================================== */
-
-function escapeHTML(
-  value
-) {
-
-  return String(
-    value
-  )
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
 
 
 /* ==================================================
@@ -2473,34 +2129,30 @@ async function startPage() {
   try {
 
     const params =
+
       new URLSearchParams(
         window.location.search
       );
 
 
     const menuId =
-      params.get(
-        "menu"
-      );
+      params.get("menu");
 
 
     const action =
-      params.get(
-        "action"
-      );
+      params.get("action");
 
 
-    /* ==================================================
-       ① 予約に進む
-
-       ?action=reservation
-
-       ※menuより先に判定
-    ================================================== */
+    /*
+     * ==============================================
+     * ① 予約に進む
+     *
+     * ?action=reservation
+     * ==============================================
+     */
 
     if (
-      action ===
-      "reservation"
+      action === "reservation"
     ) {
 
       await reservationAction();
@@ -2510,25 +2162,15 @@ async function startPage() {
     }
 
 
-    /* ==================================================
-       ② メニュータップ
+    /*
+     * ==============================================
+     * ② メニュータップ
+     *
+     * ?menu=face_all
+     * ==============================================
+     */
 
-       ?menu=face_all
-
-       ?menu=full_none
-
-       など
-
-       ↓
-
-       カートへ追加
-       ↓
-       「カートに追加しました」
-    ================================================== */
-
-    if (
-      menuId
-    ) {
+    if (menuId) {
 
       await addMenuFromURL(
         menuId
@@ -2539,23 +2181,18 @@ async function startPage() {
     }
 
 
-    /* ==================================================
-       ③ カートを見る
-
-       URLに
-
-       ?menu=
-
-       も
-
-       ?action=
-
-       もない場合
-
-       ↓
-
-       カート画面を表示
-    ================================================== */
+    /*
+     * ==============================================
+     * ③ カートを見る
+     *
+     * URLに
+     * menu
+     * action
+     * がない場合
+     *
+     * → カート画面を表示
+     * ==============================================
+     */
 
     await initLIFF();
 
@@ -2563,9 +2200,7 @@ async function startPage() {
     renderCart();
 
 
-  } catch (
-    error
-  ) {
+  } catch (error) {
 
     console.error(
       "起動エラー",
@@ -2574,8 +2209,10 @@ async function startPage() {
 
 
     showError(
+
       "LIFFの起動に失敗しました。\n" +
       error.message
+
     );
 
 
@@ -2586,13 +2223,17 @@ async function startPage() {
 }
 
 
+
 /* ==================================================
    起動
 ================================================== */
 
 window.addEventListener(
+
   "DOMContentLoaded",
+
   startPage
+
 );
 
 </script>
