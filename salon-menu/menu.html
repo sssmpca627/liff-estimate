@@ -33,10 +33,6 @@ body {
     sans-serif;
 }
 
-/* ==================================================
-   ページ表示
-================================================== */
-
 .container {
   max-width: 700px;
   margin: 0 auto;
@@ -223,9 +219,6 @@ h1 {
 
 </div>
 
-
-<!-- メニュー追加 -->
-
 <button
   type="button"
   class="button add-button"
@@ -233,9 +226,6 @@ h1 {
 >
 メニュー追加
 </button>
-
-
-<!-- 選択完了 -->
 
 <button
   type="button"
@@ -245,7 +235,6 @@ h1 {
 >
 選択完了
 </button>
-
 
 <button
   type="button"
@@ -1227,7 +1216,7 @@ async function completeSelection() {
 
 
     /* ==========================================
-       合計金額・合計時間を計算
+       合計金額・合計時間
     ========================================== */
 
     let totalPrice = 0;
@@ -1248,8 +1237,6 @@ async function completeSelection() {
 
     /* ==========================================
        予約ページURL
-       
-       totalTimeをそのままURLへ渡す
     ========================================== */
 
     const reservationURL =
@@ -1259,62 +1246,14 @@ async function completeSelection() {
 
 
     /* ==========================================
-       LINEメッセージ本文
-    ========================================== */
-
-    let message =
-      "【選択したメニュー一覧】\n\n";
-
-    cart.forEach(
-      item => {
-
-        const price =
-          Number(item.price) || 0;
-
-        message +=
-          "✔ " +
-          item.name +
-          "　¥" +
-          price.toLocaleString("ja-JP") +
-          "\n";
-
-      }
-    );
-
-
-    message +=
-      "\n■ 合計金額\n¥" +
-      totalPrice.toLocaleString("ja-JP");
-
-
-    message +=
-      "\n\n■ 施術時間目安\n" +
-      totalTime +
-      "分";
-
-
-    message +=
-      "\n\n━━━━━━━━━━━━" +
-      "\n【ご予約時の注意】" +
-      "\n\n【" +
-      totalTime +
-      "分】枠を選択してください" +
-      "\n\n※まだ予約は確定していません" +
-      "\n━━━━━━━━━━━━";
-
-
-    /* ==========================================
-       LINEへ1通だけ送信
-       
-       本文
-       ＋
-       予約ページを開くボタン
+       LINE Flexメッセージ
     ========================================== */
 
     await liff.sendMessages([
 
       {
         type: "flex",
+
         altText:
           "選択したメニューと予約ページ",
 
@@ -1334,16 +1273,24 @@ async function completeSelection() {
 
               {
                 type: "text",
+
                 text:
                   "【選択したメニュー一覧】",
+
                 weight: "bold",
+
                 size: "lg",
+
                 wrap: true
+
               },
 
               {
                 type: "separator"
               },
+
+
+              /* ---------- メニュー一覧 ---------- */
 
               ...cart.map(
                 item => ({
@@ -1365,48 +1312,167 @@ async function completeSelection() {
                 })
               ),
 
+
               {
                 type: "separator"
               },
 
-              {
-                type: "text",
-                text:
-                  "■ 合計金額\n¥" +
-                  totalPrice.toLocaleString("ja-JP"),
-                weight: "bold",
-                wrap: true
-              },
+
+              /* ---------- 合計金額 ---------- */
 
               {
                 type: "text",
+
+                text:
+                  "■ 合計金額\n¥" +
+                  totalPrice.toLocaleString("ja-JP"),
+
+                weight: "bold",
+
+                wrap: true
+
+              },
+
+
+              /* ---------- 合計時間 ---------- */
+
+              {
+                type: "text",
+
                 text:
                   "■ 施術時間目安\n" +
                   totalTime +
                   "分",
+
                 weight: "bold",
+
                 wrap: true
+
               },
+
 
               {
                 type: "separator"
               },
 
+
+              /* ==================================
+                 予約時間を最重要表示
+              ================================== */
+
               {
+
+                type: "box",
+
+                layout: "vertical",
+
+                margin: "md",
+
+                paddingAll: "18px",
+
+                cornerRadius: "12px",
+
+                backgroundColor: "#333333",
+
+                contents: [
+
+                  {
+
+                    type: "text",
+
+                    text:
+                      "ご予約時の注意",
+
+                    color: "#FFFFFF",
+
+                    size: "sm",
+
+                    weight: "bold",
+
+                    align: "center",
+
+                    wrap: true
+
+                  },
+
+                  {
+
+                    type: "text",
+
+                    text:
+                      "【" +
+                      totalTime +
+                      "分】",
+
+                    color: "#FFFFFF",
+
+                    size: "xxl",
+
+                    weight: "bold",
+
+                    align: "center",
+
+                    margin: "md",
+
+                    wrap: true
+
+                  },
+
+                  {
+
+                    type: "text",
+
+                    text:
+                      "枠を選択してください",
+
+                    color: "#FFFFFF",
+
+                    size: "lg",
+
+                    weight: "bold",
+
+                    align: "center",
+
+                    margin: "sm",
+
+                    wrap: true
+
+                  }
+
+                ]
+
+              },
+
+
+              /* ---------- 注意 ---------- */
+
+              {
+
                 type: "text",
+
                 text:
-                  "【ご予約時の注意】\n\n" +
-                  "【" +
-                  totalTime +
-                  "分】枠を選択してください\n\n" +
                   "※まだ予約は確定していません",
+
                 size: "sm",
+
+                color: "#777777",
+
+                align: "center",
+
+                margin: "md",
+
                 wrap: true
+
               }
 
             ]
 
           },
+
+
+          /* ==================================
+             予約ページボタン
+          ================================== */
 
           footer: {
 
@@ -1450,7 +1516,7 @@ async function completeSelection() {
 
 
     /* ==========================================
-       送信成功後にカート削除
+       送信成功後カート削除
     ========================================== */
 
     localStorage.removeItem(
