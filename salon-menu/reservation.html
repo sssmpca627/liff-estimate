@@ -1,1 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
 
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<title>予約ページ</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f7f7f7;
+  color: #333;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+}
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 30px 20px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+h1 {
+  text-align: center;
+  font-size: 27px;
+  margin: 0 0 28px;
+}
+
+.notice {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 25px 5px;
+  text-align: center;
+}
+
+.notice-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.time {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.notice-text {
+  font-size: 15px;
+  line-height: 1.8;
+  color: #555;
+}
+
+.status {
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+  margin-top: 20px;
+  white-space: pre-line;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="card">
+
+    <h1>
+      ご予約について
+    </h1>
+
+    <div class="notice">
+
+      <div class="notice-title">
+        【ご予約時の注意】
+      </div>
+
+      <div
+        id="timeMessage"
+        class="time"
+      >
+        【0分】枠を選択してください
+      </div>
+
+      <div class="notice-text">
+
+        ※まだ予約は確定していません
+
+        <br>
+
+        ご希望の予約枠を選択してください
+
+      </div>
+
+    </div>
+
+    <div
+      id="status"
+      class="status"
+    ></div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+/* ==================================================
+   カートキー
+================================================== */
+
+const CART_KEY = "salon_cart";
+
+
+/* ==================================================
+   カート取得
+================================================== */
+
+function getCart() {
+
+  const saved =
+    localStorage.getItem(CART_KEY);
+
+  if (!saved) {
+    return [];
+  }
+
+  try {
+
+    const cart =
+      JSON.parse(saved);
+
+    return Array.isArray(cart)
+      ? cart
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "カート読み込みエラー",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* ==================================================
+   合計時間計算
+================================================== */
+
+function getTotalTime() {
+
+  const cart =
+    getCart();
+
+  let totalTime = 0;
+
+  cart.forEach(
+    item => {
+
+      totalTime +=
+        Number(item.time) || 0;
+
+    }
+  );
+
+  return totalTime;
+
+}
+
+
+/* ==================================================
+   ページ表示
+================================================== */
+
+function showReservationPage() {
+
+  const totalTime =
+    getTotalTime();
+
+  const timeMessage =
+    document.getElementById(
+      "timeMessage"
+    );
+
+  if (!timeMessage) {
+    return;
+  }
+
+  timeMessage.textContent =
+    "【" +
+    totalTime +
+    "分】枠を選択してください";
+
+}
+
+
+/* ==================================================
+   起動
+================================================== */
+
+window.addEventListener(
+  "DOMContentLoaded",
+  showReservationPage
+);
+
+</script>
+
+</body>
+
+</html>
