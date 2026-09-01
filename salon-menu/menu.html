@@ -156,6 +156,21 @@ h1 {
   cursor: pointer;
 }
 
+.reserve-card {
+  text-align: center;
+}
+
+.reserve-message {
+  text-align: left;
+  margin-top: 25px;
+  padding: 20px;
+  border-radius: 18px;
+  background: #fafafa;
+  white-space: pre-line;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
 #status {
   text-align: center;
   color: #888;
@@ -164,223 +179,123 @@ h1 {
   white-space: pre-line;
 }
 
-
-/* ==================================================
-   ③ 予約ページ
-================================================== */
-
-.reservation-card {
-  background: #fff;
-  border-radius: 24px;
-  padding: 30px 20px;
-  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
-}
-
-.reservation-title {
-  text-align: center;
-  font-size: 27px;
-  font-weight: 700;
-  margin: 0 0 25px;
-}
-
-.reservation-notice {
-  border: 1px solid #e3e3e3;
-  border-radius: 18px;
-  padding: 24px 18px;
-  text-align: center;
-}
-
-.notice-title {
-  font-size: 19px;
-  font-weight: 700;
-  margin-bottom: 22px;
-}
-
-.reservation-time {
-  font-size: 28px;
-  font-weight: 700;
-  margin: 0 0 24px;
-}
-
-.notice-text {
-  color: #666;
-  font-size: 15px;
-  line-height: 1.8;
-}
-
-.reservation-button {
-  display: block;
-  width: 100%;
-  margin-top: 25px;
-  padding: 16px;
-  border-radius: 16px;
-  background: #333;
-  border: 1px solid #333;
-  color: #fff;
-  font-size: 17px;
-  font-weight: 700;
-  text-align: center;
-  text-decoration: none;
-}
-
-.reservation-button.disabled {
-  background: #aaa;
-  border-color: #aaa;
-  pointer-events: none;
-}
-
 </style>
 
 </head>
 
 <body>
 
+<div class="container">
 
-<!-- ==================================================
-     通常ページ
-================================================== -->
+<div class="card" id="mainCard">
+
+<h1>
+選択したメニュー
+</h1>
+
+<div class="subtitle">
+追加したメニューをご確認ください
+</div>
+
+<div id="cartList"></div>
+
+<div class="total">
+
+<div class="total-row">
+
+<div class="total-label">
+合計金額
+</div>
 
 <div
-  id="normalPage"
-  class="container"
+  id="totalPrice"
+  class="total-value"
 >
+¥0
+</div>
 
-  <div class="card">
+</div>
 
-    <h1>
-      選択したメニュー
-    </h1>
+<div class="total-row">
 
-    <div class="subtitle">
-      追加したメニューをご確認ください
-    </div>
+<div class="total-label">
+施術時間目安
+</div>
 
-    <div id="cartList"></div>
+<div
+  id="totalTime"
+  class="total-value"
+>
+0分
+</div>
 
-    <div class="total">
-
-      <div class="total-row">
-
-        <div class="total-label">
-          合計金額
-        </div>
-
-        <div
-          id="totalPrice"
-          class="total-value"
-        >
-          ¥0
-        </div>
-
-      </div>
-
-      <div class="total-row">
-
-        <div class="total-label">
-          施術時間目安
-        </div>
-
-        <div
-          id="totalTime"
-          class="total-value"
-        >
-          0分
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- メニュー追加 -->
-
-    <button
-      type="button"
-      class="button add-button"
-      onclick="addMenuMessage()"
-    >
-      メニュー追加
-    </button>
-
-
-    <!-- 選択完了 -->
-
-    <button
-      type="button"
-      id="completeButton"
-      class="button complete-button"
-      onclick="completeSelection()"
-    >
-      選択完了
-    </button>
-
-
-    <button
-      type="button"
-      class="clear-button"
-      onclick="clearCart()"
-    >
-      カートを空にする
-    </button>
-
-  </div>
-
-  <div id="status"></div>
+</div>
 
 </div>
 
 
-<!-- ==================================================
-     ③ 予約ページ
-================================================== -->
+<!-- メニュー追加 -->
+
+<button
+  type="button"
+  class="button add-button"
+  onclick="addMenuMessage()"
+>
+メニュー追加
+</button>
+
+
+<!-- 選択完了 -->
+
+<button
+  type="button"
+  id="completeButton"
+  class="button complete-button"
+  onclick="completeSelection()"
+>
+選択完了
+</button>
+
+
+<button
+  type="button"
+  class="clear-button"
+  onclick="clearCart()"
+>
+カートを空にする
+</button>
+
+</div>
+
+
+<!-- ================================================
+     予約ページ
+     #reserve のときだけ表示
+================================================= -->
 
 <div
-  id="reservationPage"
-  class="container"
+  class="card reserve-card"
+  id="reserveCard"
+  style="display:none;"
 >
 
-  <div class="reservation-card">
+<h1>
+ご予約
+</h1>
 
-    <h1 class="reservation-title">
-      ご予約
-    </h1>
+<div class="subtitle">
+予約枠をご確認ください
+</div>
 
-    <div class="reservation-notice">
+<div
+  id="reserveMessage"
+  class="reserve-message"
+></div>
 
-      <div class="notice-title">
-        【ご予約時の注意】
-      </div>
+</div>
 
-      <div
-        id="reservationTime"
-        class="reservation-time"
-      >
-        【0分】枠を選択してください
-      </div>
 
-      <div class="notice-text">
-
-        ※まだ予約は確定していません
-
-        <br><br>
-
-        下記より予約枠を選択してください
-
-      </div>
-
-      <a
-        id="reservationButton"
-        class="reservation-button"
-        href="#"
-      >
-        予約枠を選択する
-      </a>
-
-    </div>
-
-    <div id="reservationStatus"></div>
-
-  </div>
+<div id="status"></div>
 
 </div>
 
@@ -399,20 +314,7 @@ const CART_KEY =
 
 
 /* ==================================================
-   予約フォームURL
-==================================================
-
-   ★ここだけ後で実際の予約フォームURLに変更
-
-================================================== */
-
-const RESERVATION_URL =
-  "";
-
-
-/* ==================================================
    メニュー一覧
-   現在は男性料金
 ================================================== */
 
 const MENUS = {
@@ -935,50 +837,6 @@ function saveCart(cart) {
 
 
 /* ==================================================
-   合計時間
-================================================== */
-
-function getTotalTime() {
-
-  const cart =
-    getCart();
-
-  let totalTime = 0;
-
-  cart.forEach(
-    item => {
-
-      totalTime +=
-        Number(item.time) || 0;
-
-    }
-  );
-
-  return totalTime;
-
-}
-
-
-/* ==================================================
-   ページ表示
-================================================== */
-
-function showPage(
-  pageElement
-) {
-
-  if (pageElement) {
-
-    pageElement.classList.add(
-      "ready"
-    );
-
-  }
-
-}
-
-
-/* ==================================================
    URLメニュー追加
 ================================================== */
 
@@ -995,11 +853,7 @@ async function addMenuFromURL(menuId) {
       menuId
     );
 
-    showPage(
-      document.getElementById(
-        "normalPage"
-      )
-    );
+    showPage();
 
     return;
 
@@ -1151,11 +1005,7 @@ function renderCart() {
       "0分";
 
 
-    showPage(
-      document.getElementById(
-        "normalPage"
-      )
-    );
+    showPage();
 
     return;
 
@@ -1238,11 +1088,29 @@ function renderCart() {
     totalTime + "分";
 
 
-  showPage(
-    document.getElementById(
-      "normalPage"
-    )
-  );
+  showPage();
+
+}
+
+
+/* ==================================================
+   ページ表示
+================================================== */
+
+function showPage() {
+
+  const container =
+    document.querySelector(
+      ".container"
+    );
+
+  if (container) {
+
+    container.classList.add(
+      "ready"
+    );
+
+  }
 
 }
 
@@ -1474,12 +1342,6 @@ async function completeSelection() {
       "分";
 
 
-    /*
-     * ご予約時の注意
-     *
-     * ★ここは今まで通り残す
-     */
-
     message +=
       "\n\n━━━━━━━━━━━━" +
       "\n【ご予約時の注意】" +
@@ -1556,13 +1418,51 @@ async function completeSelection() {
 
 
 /* ==================================================
-   ③ 予約ページ
+   予約ページ表示
 ================================================== */
 
-function startReservationPage() {
+function showReservePage() {
+
+  const mainCard =
+    document.getElementById(
+      "mainCard"
+    );
+
+  const reserveCard =
+    document.getElementById(
+      "reserveCard"
+    );
+
+  const reserveMessage =
+    document.getElementById(
+      "reserveMessage"
+    );
+
+
+  mainCard.style.display =
+    "none";
+
+
+  reserveCard.style.display =
+    "block";
+
 
   const cart =
     getCart();
+
+
+  if (
+    cart.length === 0
+  ) {
+
+    reserveMessage.textContent =
+      "メニューが選択されていません。";
+
+    showPage();
+
+    return;
+
+  }
 
 
   let totalTime = 0;
@@ -1578,63 +1478,132 @@ function startReservationPage() {
   );
 
 
-  /*
-   * 合計時間を表示
-   */
+  reserveMessage.textContent =
+    "━━━━━━━━━━━━" +
+    "\n【ご予約時の注意】" +
+    "\n\n【" +
+    totalTime +
+    "分】枠を選択してください" +
+    "\n\n※まだ予約は確定していません" +
+    "\n\n【予約枠を選択する】をタップしてください" +
+    "\n━━━━━━━━━━━━";
 
-  document.getElementById(
-    "reservationTime"
-  ).textContent =
-    `【${totalTime}分】枠を選択してください`;
+
+  showPage();
+
+}
 
 
-  /*
-   * 予約フォームURL
-   */
+/* ==================================================
+   予約用メッセージ送信
+================================================== */
 
-  const button =
-    document.getElementById(
-      "reservationButton"
-    );
+async function sendReservationNotice() {
+
+  const cart =
+    getCart();
 
 
   if (
-    RESERVATION_URL
+    cart.length === 0
   ) {
 
-    button.href =
-      RESERVATION_URL;
-
-  } else {
-
-    button.classList.add(
-      "disabled"
+    showError(
+      "メニューが選択されていません。"
     );
+
+    return;
 
   }
 
 
-  /*
-   * カートが空の場合
-   */
-
-  if (
-    totalTime === 0
-  ) {
-
-    document.getElementById(
-      "reservationStatus"
-    ).textContent =
-      "選択したメニューがありません。";
-
-  }
+  let totalTime = 0;
 
 
-  showPage(
-    document.getElementById(
-      "reservationPage"
-    )
+  cart.forEach(
+    item => {
+
+      totalTime +=
+        Number(item.time) || 0;
+
+    }
   );
+
+
+  const message =
+    "━━━━━━━━━━━━" +
+    "\n【ご予約時の注意】" +
+    "\n\n【" +
+    totalTime +
+    "分】枠を選択してください" +
+    "\n\n※まだ予約は確定していません" +
+    "\n\n【予約枠を選択する】をタップしてください" +
+    "\n━━━━━━━━━━━━";
+
+
+  try {
+
+    await initLIFF();
+
+
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+
+    await liff.sendMessages([
+      {
+        type: "text",
+        text: message
+      }
+    ]);
+
+
+    setTimeout(
+      () => {
+
+        try {
+
+          if (
+            liff.isInClient()
+          ) {
+
+            liff.closeWindow();
+
+          }
+
+        } catch (error) {
+
+          console.error(
+            "closeWindow error",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+
+  } catch (error) {
+
+    console.error(
+      "予約メッセージ送信エラー",
+      error
+    );
+
+
+    showError(
+      "予約案内の送信に失敗しました。\n" +
+      error.message
+    );
+
+  }
 
 }
 
@@ -1690,10 +1659,10 @@ function escapeHTML(value) {
 
 
 /* ==================================================
-   起動
+   通常ページ起動
 ================================================== */
 
-async function startPage() {
+async function startNormalPage() {
 
   try {
 
@@ -1703,54 +1672,9 @@ async function startPage() {
       );
 
 
-    /*
-     * ================================================
-     * ③ 予約ページ
-     *
-     * ?reservation=1
-     * ================================================
-     */
-
-    const reservation =
-      params.get(
-        "reservation"
-      );
-
-
-    if (
-      reservation === "1"
-    ) {
-
-      /*
-       * 予約ページだけ表示
-       *
-       * LIFF初期化は不要
-       */
-
-      startReservationPage();
-
-      return;
-
-    }
-
-
-    /*
-     * ================================================
-     * 通常ページ
-     * ================================================
-     */
-
     const menuId =
-      params.get(
-        "menu"
-      );
+      params.get("menu");
 
-
-    /*
-     * menu=xxx の場合
-     *
-     * 今まで通りメニュー追加
-     */
 
     if (menuId) {
 
@@ -1762,12 +1686,6 @@ async function startPage() {
 
     }
 
-
-    /*
-     * menu= がない場合
-     *
-     * 既存カートを表示
-     */
 
     await initLIFF();
 
@@ -1787,11 +1705,7 @@ async function startPage() {
     );
 
 
-    showPage(
-      document.getElementById(
-        "normalPage"
-      )
-    );
+    showPage();
 
   }
 
@@ -1799,128 +1713,61 @@ async function startPage() {
 
 
 /* ==================================================
-   メニューURL追加処理
+   起動
 ================================================== */
 
-async function addMenuFromURL(menuId) {
+async function startPage() {
 
-  const menu =
-    MENUS[menuId];
+  /*
+   * #reserve が付いている場合
+   * 予約ページとして起動
+   */
+
+  if (
+    window.location.hash === "#reserve"
+  ) {
+
+    try {
+
+      await initLIFF();
+
+      showReservePage();
+
+      /*
+       * 予約ページを開いたら
+       * 注意メッセージだけLINEへ送信
+       */
+
+      await sendReservationNotice();
+
+    } catch (error) {
+
+      console.error(
+        "予約ページ起動エラー",
+        error
+      );
 
 
-  if (!menu) {
+      showError(
+        "予約ページの起動に失敗しました。\n" +
+        error.message
+      );
 
-    showError(
-      "メニュー情報がありません。\n" +
-      menuId
-    );
 
-    showPage(
-      document.getElementById(
-        "normalPage"
-      )
-    );
+      showPage();
+
+    }
 
     return;
 
   }
 
 
-  const cart =
-    getCart();
+  /*
+   * 通常のmenu.html
+   */
 
-
-  const exists =
-    cart.some(
-      item =>
-        item.menu === menuId
-    );
-
-
-  if (!exists) {
-
-    cart.push({
-      menu: menu.menu,
-      name: menu.name,
-      category: menu.category,
-      price: menu.price,
-      time: menu.time
-    });
-
-    saveCart(cart);
-
-  }
-
-
-  renderCart();
-
-
-  try {
-
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: "カートに追加しました"
-      }
-    ]);
-
-
-    setTimeout(
-      () => {
-
-        try {
-
-          if (
-            liff.isInClient()
-          ) {
-
-            liff.closeWindow();
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "closeWindow error",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "カート追加エラー",
-      error
-    );
-
-
-    renderCart();
-
-
-    showError(
-      "LINEへの送信に失敗しました。\n" +
-      error.message
-    );
-
-  }
+  await startNormalPage();
 
 }
 
