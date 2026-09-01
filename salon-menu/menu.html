@@ -33,16 +33,11 @@ body {
     sans-serif;
 }
 
-/* ==================================================
-   ページ表示
-================================================== */
-
 .container {
   max-width: 700px;
   margin: 0 auto;
   padding: 30px 20px 60px;
 
-  /* カート内容取得前は表示しない */
   visibility: hidden;
   opacity: 0;
 }
@@ -219,9 +214,6 @@ h1 {
 
 </div>
 
-
-<!-- メニュー追加 -->
-
 <button
   type="button"
   class="button add-button"
@@ -229,9 +221,6 @@ h1 {
 >
 メニュー追加
 </button>
-
-
-<!-- 選択完了 -->
 
 <button
   type="button"
@@ -241,7 +230,6 @@ h1 {
 >
 選択完了
 </button>
-
 
 <button
   type="button"
@@ -273,7 +261,6 @@ const CART_KEY =
 
 /* ==================================================
    メニュー一覧
-   現在は男性料金
 ================================================== */
 
 const MENUS = {
@@ -804,7 +791,6 @@ async function addMenuFromURL(menuId) {
   const menu =
     MENUS[menuId];
 
-
   if (!menu) {
 
     showError(
@@ -818,17 +804,14 @@ async function addMenuFromURL(menuId) {
 
   }
 
-
   const cart =
     getCart();
-
 
   const exists =
     cart.some(
       item =>
         item.menu === menuId
     );
-
 
   if (!exists) {
 
@@ -844,22 +827,11 @@ async function addMenuFromURL(menuId) {
 
   }
 
-
-  /*
-   * カート追加後に
-   * いきなり完成画面を表示
-   *
-   * 「メニューを追加しています…」は
-   * 一切表示しない
-   */
-
   renderCart();
-
 
   try {
 
     await initLIFF();
-
 
     if (!liff.isInClient()) {
 
@@ -869,23 +841,12 @@ async function addMenuFromURL(menuId) {
 
     }
 
-
-    /*
-     * 送信内容はこれだけ
-     */
-
     await liff.sendMessages([
       {
         type: "text",
         text: "カートに追加しました"
       }
     ]);
-
-
-    /*
-     * LINE送信成功後
-     * 自動で閉じる
-     */
 
     setTimeout(
       () => {
@@ -913,7 +874,6 @@ async function addMenuFromURL(menuId) {
       500
     );
 
-
   } catch (error) {
 
     console.error(
@@ -921,14 +881,7 @@ async function addMenuFromURL(menuId) {
       error
     );
 
-
-    /*
-     * 送信に失敗しても
-     * 追加されたメニューは表示
-     */
-
     renderCart();
-
 
     showError(
       "LINEへの送信に失敗しました。\n" +
@@ -949,12 +902,10 @@ function renderCart() {
   const cart =
     getCart();
 
-
   const list =
     document.getElementById(
       "cartList"
     );
-
 
   if (
     cart.length === 0
@@ -973,25 +924,21 @@ function renderCart() {
       </div>
       `;
 
-
     document.getElementById(
       "totalPrice"
     ).textContent =
       "¥0";
-
 
     document.getElementById(
       "totalTime"
     ).textContent =
       "0分";
 
-
     showPage();
 
     return;
 
   }
-
 
   list.innerHTML =
     cart.map(
@@ -1038,10 +985,8 @@ function renderCart() {
       `
     ).join("");
 
-
   let totalPrice = 0;
   let totalTime = 0;
-
 
   cart.forEach(
     item => {
@@ -1055,27 +1000,16 @@ function renderCart() {
     }
   );
 
-
   document.getElementById(
     "totalPrice"
   ).textContent =
     "¥" +
     totalPrice.toLocaleString("ja-JP");
 
-
   document.getElementById(
     "totalTime"
   ).textContent =
     totalTime + "分";
-
-
-  /*
-   * ここで初めて画面を表示
-   *
-   * これにより
-   * 「メニューを追加しています…」
-   * の画面は表示されない
-   */
 
   showPage();
 
@@ -1113,12 +1047,10 @@ function removeItem(index) {
   const cart =
     getCart();
 
-
   cart.splice(
     index,
     1
   );
-
 
   saveCart(cart);
 
@@ -1139,7 +1071,6 @@ function clearCart() {
     return;
   }
 
-
   if (
     !confirm(
       "カートを空にしますか？"
@@ -1150,11 +1081,9 @@ function clearCart() {
 
   }
 
-
   localStorage.removeItem(
     CART_KEY
   );
-
 
   renderCart();
 
@@ -1171,7 +1100,6 @@ async function addMenuMessage() {
 
     await initLIFF();
 
-
     if (!liff.isInClient()) {
 
       throw new Error(
@@ -1180,19 +1108,12 @@ async function addMenuMessage() {
 
     }
 
-
     await liff.sendMessages([
       {
         type: "text",
         text: "メニュー追加"
       }
     ]);
-
-
-    /*
-     * メニュー追加送信後
-     * 自動で閉じる
-     */
 
     setTimeout(
       () => {
@@ -1220,14 +1141,12 @@ async function addMenuMessage() {
       500
     );
 
-
   } catch (error) {
 
     console.error(
       "メニュー追加エラー",
       error
     );
-
 
     showError(
       "メニュー追加の送信に失敗しました。\n" +
@@ -1241,13 +1160,13 @@ async function addMenuMessage() {
 
 /* ==================================================
    選択完了
+   ※ここを今回変更
 ================================================== */
 
 async function completeSelection() {
 
   const cart =
     getCart();
-
 
   if (
     cart.length === 0
@@ -1261,23 +1180,19 @@ async function completeSelection() {
 
   }
 
-
   const button =
     document.getElementById(
       "completeButton"
     );
-
 
   button.disabled = true;
 
   button.textContent =
     "送信中…";
 
-
   try {
 
     await initLIFF();
-
 
     if (!liff.isInClient()) {
 
@@ -1287,18 +1202,18 @@ async function completeSelection() {
 
     }
 
-
     let totalPrice = 0;
     let totalTime = 0;
 
-
     /*
-     * 送信メッセージ作成
+     * 一覧メッセージ
+     *
+     * 今回はここまで。
+     * 予約時の注意文は入れない。
      */
 
     let message =
       "【選択したメニュー一覧】\n\n";
-
 
     cart.forEach(
       item => {
@@ -1309,7 +1224,6 @@ async function completeSelection() {
         const time =
           Number(item.time) || 0;
 
-
         message +=
           "✔ " +
           item.name +
@@ -1317,17 +1231,14 @@ async function completeSelection() {
           price.toLocaleString("ja-JP") +
           "\n";
 
-
         totalPrice +=
           price;
-
 
         totalTime +=
           time;
 
       }
     );
-
 
     /*
      * 合計金額
@@ -1336,7 +1247,6 @@ async function completeSelection() {
     message +=
       "\n■ 合計金額\n¥" +
       totalPrice.toLocaleString("ja-JP");
-
 
     /*
      * 合計施術時間
@@ -1348,23 +1258,16 @@ async function completeSelection() {
       "分";
 
 
-    /* ==============================
-       ご予約時の注意
-    ============================== */
-
-    message +=
-      "\n\n━━━━━━━━━━━━" +
-      "\n【ご予約時の注意】" +
-      "\n\n【" +
-      totalTime +
-      "分】枠を選択してください" +
-      "\n\n※まだ予約は確定していません" +
-      "\n\n【予約枠を選択する】をタップしてください" +
-      "\n━━━━━━━━━━━━";
-
-
     /*
-     * LINEへ1回だけ送信
+     * ★重要
+     *
+     * ここでは
+     *
+     * 【ご予約時の注意】
+     *
+     * を送信しない。
+     *
+     * 一覧メッセージだけ送信。
      */
 
     await liff.sendMessages([
@@ -1376,7 +1279,7 @@ async function completeSelection() {
 
 
     /*
-     * 送信成功後のみカート削除
+     * 送信成功後にカート削除
      */
 
     localStorage.removeItem(
@@ -1385,7 +1288,10 @@ async function completeSelection() {
 
 
     /*
-     * 自動終了
+     * LINE画面を閉じる
+     *
+     * Lステップ側で
+     * カルーセルを続けて表示
      */
 
     setTimeout(
@@ -1422,12 +1328,10 @@ async function completeSelection() {
       error
     );
 
-
     showError(
       "LINEへの送信に失敗しました。\n" +
       error.message
     );
-
 
     button.disabled = false;
 
@@ -1497,25 +1401,13 @@ async function startPage() {
 
   try {
 
-    /*
-     * URLを最初に確認
-     */
-
     const params =
       new URLSearchParams(
         window.location.search
       );
 
-
     const menuId =
       params.get("menu");
-
-
-    /*
-     * menu=xxx の場合
-     *
-     * 最初からメニュー追加処理へ
-     */
 
     if (menuId) {
 
@@ -1526,12 +1418,6 @@ async function startPage() {
       return;
 
     }
-
-
-    /*
-     * menu= がない場合
-     * 既存カートを表示
-     */
 
     await initLIFF();
 
@@ -1544,16 +1430,10 @@ async function startPage() {
       error
     );
 
-
     showError(
       "LIFFの起動に失敗しました。\n" +
       error.message
     );
-
-
-    /*
-     * エラー時も画面を表示
-     */
 
     showPage();
 
