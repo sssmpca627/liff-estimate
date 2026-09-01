@@ -264,6 +264,21 @@ const CART_KEY =
 
 
 /* ==================================================
+   性別設定
+   ※自動判定はしない
+   ※Lステップから gender=female が付いた場合のみ女性料金
+================================================== */
+
+const params =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const IS_FEMALE =
+  params.get("gender") === "female";
+
+
+/* ==================================================
    予約ページURL
 ================================================== */
 
@@ -283,7 +298,7 @@ const MENUS = {
     menu: "full_none",
     name: "顔・VIOなし",
     category: "全身脱毛",
-    price: 13000,
+    price: IS_FEMALE ? 10000 : 13000,
     time: 90
   },
 
@@ -291,7 +306,7 @@ const MENUS = {
     menu: "full_face_or_vio",
     name: "顔orVIO",
     category: "全身脱毛",
-    price: 14000,
+    price: IS_FEMALE ? 11000 : 14000,
     time: 100
   },
 
@@ -299,7 +314,7 @@ const MENUS = {
     menu: "full_face_vio",
     name: "顔・VIO",
     category: "全身脱毛",
-    price: 15000,
+    price: IS_FEMALE ? 12000 : 15000,
     time: 120
   },
 
@@ -511,7 +526,7 @@ const MENUS = {
     menu: "vio_all",
     name: "VIO全体",
     category: "VIO",
-    price: 7000,
+    price: IS_FEMALE ? 5000 : 7000,
     time: 40
   },
 
@@ -519,7 +534,7 @@ const MENUS = {
     menu: "v_line",
     name: "Vライン",
     category: "VIO",
-    price: 5500,
+    price: IS_FEMALE ? 3500 : 5500,
     time: 30
   },
 
@@ -527,7 +542,7 @@ const MENUS = {
     menu: "v",
     name: "V",
     category: "VIO",
-    price: 3000,
+    price: IS_FEMALE ? 2000 : 3000,
     time: 20
   },
 
@@ -535,7 +550,7 @@ const MENUS = {
     menu: "i",
     name: "I",
     category: "VIO",
-    price: 3000,
+    price: IS_FEMALE ? 2000 : 3000,
     time: 20
   },
 
@@ -1631,11 +1646,6 @@ function escapeHTML(value) {
 async function startPage() {
 
   try {
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
 
     const menuId =
       params.get("menu");
