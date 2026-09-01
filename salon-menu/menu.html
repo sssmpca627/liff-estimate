@@ -33,8 +33,9 @@ body {
     sans-serif;
 }
 
+
 /* ==================================================
-   ページ表示
+   共通ページ
 ================================================== */
 
 .container {
@@ -44,12 +45,19 @@ body {
 
   visibility: hidden;
   opacity: 0;
+
+  transition: opacity 0.15s ease;
 }
 
 .container.ready {
   visibility: visible;
   opacity: 1;
 }
+
+
+/* ==================================================
+   カード
+================================================== */
 
 .card {
   background: #fff;
@@ -70,6 +78,11 @@ h1 {
   font-size: 15px;
   margin-bottom: 25px;
 }
+
+
+/* ==================================================
+   カート
+================================================== */
 
 .cart-item {
   border: 1px solid #e3e3e3;
@@ -105,6 +118,11 @@ h1 {
   cursor: pointer;
 }
 
+
+/* ==================================================
+   合計
+================================================== */
+
 .total {
   border-top: 1px solid #ddd;
   margin-top: 22px;
@@ -125,6 +143,11 @@ h1 {
   font-size: 21px;
   font-weight: 700;
 }
+
+
+/* ==================================================
+   ボタン
+================================================== */
 
 .button {
   width: 100%;
@@ -156,20 +179,56 @@ h1 {
   cursor: pointer;
 }
 
+
+/* ==================================================
+   予約ページ
+================================================== */
+
 .reserve-card {
-  text-align: center;
+  background: #fff;
+  border-radius: 24px;
+  padding: 30px 22px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.06);
 }
 
-.reserve-message {
-  text-align: left;
-  margin-top: 25px;
-  padding: 20px;
+.reserve-title {
+  text-align: center;
+  font-size: 27px;
+  font-weight: 700;
+  margin: 0 0 25px;
+}
+
+.reserve-notice {
+  border: 1px solid #e3e3e3;
   border-radius: 18px;
-  background: #fafafa;
-  white-space: pre-line;
+  padding: 22px 18px;
   line-height: 1.8;
   font-size: 16px;
 }
+
+.reserve-notice-title {
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.reserve-important {
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  margin: 15px 0;
+}
+
+.reserve-note {
+  text-align: center;
+  color: #666;
+  margin-top: 15px;
+}
+
+
+/* ==================================================
+   エラー
+================================================== */
 
 #status {
   text-align: center;
@@ -183,121 +242,157 @@ h1 {
 
 </head>
 
+
 <body>
 
-<div class="container">
 
-<div class="card" id="mainCard">
-
-<h1>
-選択したメニュー
-</h1>
-
-<div class="subtitle">
-追加したメニューをご確認ください
-</div>
-
-<div id="cartList"></div>
-
-<div class="total">
-
-<div class="total-row">
-
-<div class="total-label">
-合計金額
-</div>
+<!-- ==================================================
+     通常ページ
+================================================== -->
 
 <div
-  id="totalPrice"
-  class="total-value"
+  id="normalPage"
+  class="container"
 >
-¥0
-</div>
+
+  <div class="card">
+
+    <h1>
+      選択したメニュー
+    </h1>
+
+    <div class="subtitle">
+      追加したメニューをご確認ください
+    </div>
+
+
+    <div id="cartList"></div>
+
+
+    <div class="total">
+
+      <div class="total-row">
+
+        <div class="total-label">
+          合計金額
+        </div>
+
+        <div
+          id="totalPrice"
+          class="total-value"
+        >
+          ¥0
+        </div>
+
+      </div>
+
+
+      <div class="total-row">
+
+        <div class="total-label">
+          施術時間目安
+        </div>
+
+        <div
+          id="totalTime"
+          class="total-value"
+        >
+          0分
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- メニュー追加 -->
+
+    <button
+      type="button"
+      class="button add-button"
+      onclick="addMenuMessage()"
+    >
+      メニュー追加
+    </button>
+
+
+    <!-- 選択完了 -->
+
+    <button
+      type="button"
+      id="completeButton"
+      class="button complete-button"
+      onclick="completeSelection()"
+    >
+      選択完了
+    </button>
+
+
+    <button
+      type="button"
+      class="clear-button"
+      onclick="clearCart()"
+    >
+      カートを空にする
+    </button>
+
+  </div>
+
+
+  <div id="status"></div>
 
 </div>
 
-<div class="total-row">
-
-<div class="total-label">
-施術時間目安
-</div>
-
-<div
-  id="totalTime"
-  class="total-value"
->
-0分
-</div>
-
-</div>
-
-</div>
 
 
-<!-- メニュー追加 -->
-
-<button
-  type="button"
-  class="button add-button"
-  onclick="addMenuMessage()"
->
-メニュー追加
-</button>
-
-
-<!-- 選択完了 -->
-
-<button
-  type="button"
-  id="completeButton"
-  class="button complete-button"
-  onclick="completeSelection()"
->
-選択完了
-</button>
-
-
-<button
-  type="button"
-  class="clear-button"
-  onclick="clearCart()"
->
-カートを空にする
-</button>
-
-</div>
-
-
-<!-- ================================================
+<!-- ==================================================
      予約ページ
+     
      #reserve のときだけ表示
-================================================= -->
+================================================== -->
 
 <div
-  class="card reserve-card"
-  id="reserveCard"
-  style="display:none;"
+  id="reservePage"
+  class="container"
 >
 
-<h1>
-ご予約
-</h1>
+  <div class="reserve-card">
 
-<div class="subtitle">
-予約枠をご確認ください
+    <div class="reserve-title">
+      ご予約について
+    </div>
+
+
+    <div class="reserve-notice">
+
+      <div class="reserve-notice-title">
+        【ご予約時の注意】
+      </div>
+
+
+      <div
+        id="reserveTime"
+        class="reserve-important"
+      >
+        【施術時間】枠を選択してください
+      </div>
+
+
+      <div class="reserve-note">
+        ※まだ予約は確定していません
+      </div>
+
+
+      <div class="reserve-note">
+        ご希望の予約枠を選択してください
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
 
-<div
-  id="reserveMessage"
-  class="reserve-message"
-></div>
-
-</div>
-
-
-<div id="status"></div>
-
-</div>
 
 
 <script>
@@ -311,6 +406,14 @@ const LIFF_ID =
 
 const CART_KEY =
   "salon_cart";
+
+
+/* ==================================================
+   ページモード
+================================================== */
+
+const isReservePage =
+  window.location.hash === "#reserve";
 
 
 /* ==================================================
@@ -1094,14 +1197,14 @@ function renderCart() {
 
 
 /* ==================================================
-   ページ表示
+   通常ページ表示
 ================================================== */
 
 function showPage() {
 
   const container =
-    document.querySelector(
-      ".container"
+    document.getElementById(
+      "normalPage"
     );
 
   if (container) {
@@ -1111,6 +1214,68 @@ function showPage() {
     );
 
   }
+
+}
+
+
+/* ==================================================
+   予約ページ表示
+================================================== */
+
+function showReservePage() {
+
+  const page =
+    document.getElementById(
+      "reservePage"
+    );
+
+
+  if (!page) {
+    return;
+  }
+
+
+  const cart =
+    getCart();
+
+
+  let totalTime = 0;
+
+
+  cart.forEach(
+    item => {
+
+      totalTime +=
+        Number(item.time) || 0;
+
+    }
+  );
+
+
+  const reserveTime =
+    document.getElementById(
+      "reserveTime"
+    );
+
+
+  if (totalTime > 0) {
+
+    reserveTime.textContent =
+      "【" +
+      totalTime +
+      "分】枠を選択してください";
+
+  } else {
+
+    reserveTime.textContent =
+      "【施術時間】枠を選択してください";
+
+  }
+
+
+  page.classList.add(
+    "ready"
+  );
 
 }
 
@@ -1418,197 +1583,6 @@ async function completeSelection() {
 
 
 /* ==================================================
-   予約ページ表示
-================================================== */
-
-function showReservePage() {
-
-  const mainCard =
-    document.getElementById(
-      "mainCard"
-    );
-
-  const reserveCard =
-    document.getElementById(
-      "reserveCard"
-    );
-
-  const reserveMessage =
-    document.getElementById(
-      "reserveMessage"
-    );
-
-
-  mainCard.style.display =
-    "none";
-
-
-  reserveCard.style.display =
-    "block";
-
-
-  const cart =
-    getCart();
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    reserveMessage.textContent =
-      "メニューが選択されていません。";
-
-    showPage();
-
-    return;
-
-  }
-
-
-  let totalTime = 0;
-
-
-  cart.forEach(
-    item => {
-
-      totalTime +=
-        Number(item.time) || 0;
-
-    }
-  );
-
-
-  reserveMessage.textContent =
-    "━━━━━━━━━━━━" +
-    "\n【ご予約時の注意】" +
-    "\n\n【" +
-    totalTime +
-    "分】枠を選択してください" +
-    "\n\n※まだ予約は確定していません" +
-    "\n\n【予約枠を選択する】をタップしてください" +
-    "\n━━━━━━━━━━━━";
-
-
-  showPage();
-
-}
-
-
-/* ==================================================
-   予約用メッセージ送信
-================================================== */
-
-async function sendReservationNotice() {
-
-  const cart =
-    getCart();
-
-
-  if (
-    cart.length === 0
-  ) {
-
-    showError(
-      "メニューが選択されていません。"
-    );
-
-    return;
-
-  }
-
-
-  let totalTime = 0;
-
-
-  cart.forEach(
-    item => {
-
-      totalTime +=
-        Number(item.time) || 0;
-
-    }
-  );
-
-
-  const message =
-    "━━━━━━━━━━━━" +
-    "\n【ご予約時の注意】" +
-    "\n\n【" +
-    totalTime +
-    "分】枠を選択してください" +
-    "\n\n※まだ予約は確定していません" +
-    "\n\n【予約枠を選択する】をタップしてください" +
-    "\n━━━━━━━━━━━━";
-
-
-  try {
-
-    await initLIFF();
-
-
-    if (!liff.isInClient()) {
-
-      throw new Error(
-        "LINEアプリ内で開いてください。"
-      );
-
-    }
-
-
-    await liff.sendMessages([
-      {
-        type: "text",
-        text: message
-      }
-    ]);
-
-
-    setTimeout(
-      () => {
-
-        try {
-
-          if (
-            liff.isInClient()
-          ) {
-
-            liff.closeWindow();
-
-          }
-
-        } catch (error) {
-
-          console.error(
-            "closeWindow error",
-            error
-          );
-
-        }
-
-      },
-      500
-    );
-
-
-  } catch (error) {
-
-    console.error(
-      "予約メッセージ送信エラー",
-      error
-    );
-
-
-    showError(
-      "予約案内の送信に失敗しました。\n" +
-      error.message
-    );
-
-  }
-
-}
-
-
-/* ==================================================
    エラー
 ================================================== */
 
@@ -1659,10 +1633,35 @@ function escapeHTML(value) {
 
 
 /* ==================================================
-   通常ページ起動
+   起動
 ================================================== */
 
-async function startNormalPage() {
+async function startPage() {
+
+  /*
+   * ================================================
+   * #reserve の場合
+   *
+   * LIFF初期化をしない
+   *
+   * これが今回の重要ポイント
+   * ================================================
+   */
+
+  if (isReservePage) {
+
+    showReservePage();
+
+    return;
+
+  }
+
+
+  /*
+   * ================================================
+   * 通常ページ
+   * ================================================
+   */
 
   try {
 
@@ -1676,6 +1675,10 @@ async function startNormalPage() {
       params.get("menu");
 
 
+    /*
+     * menu=xxx
+     */
+
     if (menuId) {
 
       await addMenuFromURL(
@@ -1686,6 +1689,10 @@ async function startNormalPage() {
 
     }
 
+
+    /*
+     * 通常のカート表示
+     */
 
     await initLIFF();
 
@@ -1708,66 +1715,6 @@ async function startNormalPage() {
     showPage();
 
   }
-
-}
-
-
-/* ==================================================
-   起動
-================================================== */
-
-async function startPage() {
-
-  /*
-   * #reserve が付いている場合
-   * 予約ページとして起動
-   */
-
-  if (
-    window.location.hash === "#reserve"
-  ) {
-
-    try {
-
-      await initLIFF();
-
-      showReservePage();
-
-      /*
-       * 予約ページを開いたら
-       * 注意メッセージだけLINEへ送信
-       */
-
-      await sendReservationNotice();
-
-    } catch (error) {
-
-      console.error(
-        "予約ページ起動エラー",
-        error
-      );
-
-
-      showError(
-        "予約ページの起動に失敗しました。\n" +
-        error.message
-      );
-
-
-      showPage();
-
-    }
-
-    return;
-
-  }
-
-
-  /*
-   * 通常のmenu.html
-   */
-
-  await startNormalPage();
 
 }
 
