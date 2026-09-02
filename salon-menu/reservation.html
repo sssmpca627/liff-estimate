@@ -10,7 +10,9 @@
   content="width=device-width, initial-scale=1.0"
 >
 
-<title>予約ページ</title>
+<title>選択したメニュー</title>
+
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
 
 <style>
 
@@ -34,74 +36,132 @@ body {
 .container {
   max-width: 700px;
   margin: 0 auto;
-  padding: 40px 20px 60px;
+  padding: 30px 20px 60px;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.container.ready {
+  visibility: visible;
+  opacity: 1;
 }
 
 .card {
   background: #fff;
   border-radius: 24px;
-  padding: 30px 20px;
+  padding: 28px 20px;
   box-shadow: 0 3px 12px rgba(0,0,0,0.06);
 }
 
 h1 {
   text-align: center;
-  font-size: 26px;
-  margin: 0 0 30px;
+  font-size: 27px;
+  margin: 0 0 10px;
 }
 
-.notice {
+.subtitle {
   text-align: center;
-  padding: 25px 15px;
-}
-
-.notice-title {
-  font-size: 21px;
-  font-weight: 700;
+  color: #888;
+  font-size: 15px;
   margin-bottom: 25px;
 }
 
-
-/* ==================================================
-   予約時間を目立たせる
-================================================== */
-
-.time-box {
-  margin: 0 auto 28px;
-  padding: 24px 15px;
-  border: 3px solid #333;
+.cart-item {
+  border: 1px solid #e3e3e3;
   border-radius: 18px;
-  background: #f5f5f5;
+  padding: 17px;
+  margin-bottom: 12px;
 }
 
-.time-label {
-  font-size: 15px;
+.item-name {
+  font-size: 19px;
   font-weight: 700;
-  margin-bottom: 10px;
 }
 
-.time {
-  font-size: 29px;
-  font-weight: 800;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
+.item-category {
+  margin-top: 5px;
+  color: #999;
+  font-size: 13px;
 }
 
-
-/* ==================================================
-   注意書き
-================================================== */
-
-.note {
-  font-size: 15px;
+.item-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
   color: #777;
-  line-height: 1.8;
 }
 
-.error {
+.delete-button {
+  margin-top: 12px;
+  border: none;
+  background: transparent;
+  color: #999;
+  padding: 0;
+  cursor: pointer;
+}
+
+.total {
+  border-top: 1px solid #ddd;
+  margin-top: 22px;
+  padding-top: 20px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 13px;
+}
+
+.total-label {
+  color: #666;
+}
+
+.total-value {
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.button {
+  width: 100%;
+  border-radius: 16px;
+  padding: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.add-button {
+  background: #fff;
+  border: 1px solid #ccc;
+}
+
+.complete-button {
+  background: #333;
+  border: 1px solid #333;
+  color: #fff;
+}
+
+.complete-button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.clear-button {
+  display: block;
+  margin: 20px auto 0;
+  border: none;
+  background: transparent;
+  color: #aaa;
+  cursor: pointer;
+}
+
+#status {
   text-align: center;
   color: #888;
-  padding: 30px 10px;
+  font-size: 14px;
+  margin-top: 18px;
+  white-space: pre-line;
 }
 
 </style>
@@ -112,18 +172,87 @@ h1 {
 
 <div class="container">
 
-  <div class="card">
+<div class="card">
 
-    <h1>
-      ご予約について
-    </h1>
+<h1>
+選択したメニュー
+</h1>
 
-    <div
-      id="content"
-      class="notice"
-    ></div>
+<div class="subtitle">
+追加したメニューをご確認ください
+</div>
 
-  </div>
+<div id="cartList"></div>
+
+<div class="total">
+
+<div class="total-row">
+
+<div class="total-label">
+合計金額
+</div>
+
+<div
+  id="totalPrice"
+  class="total-value"
+>
+¥0
+</div>
+
+</div>
+
+<div class="total-row">
+
+<div class="total-label">
+施術時間目安
+</div>
+
+<div
+  id="totalTime"
+  class="total-value"
+>
+0分
+</div>
+
+</div>
+
+</div>
+
+<!--
+  ボタンは
+  「メニュー追加」
+  「選択完了」
+  の2つのみ
+-->
+
+<button
+  type="button"
+  class="button add-button"
+  onclick="addMenuMessage()"
+>
+メニュー追加
+</button>
+
+<button
+  type="button"
+  id="completeButton"
+  class="button complete-button"
+  onclick="completeSelection()"
+>
+選択完了
+</button>
+
+<button
+  type="button"
+  class="clear-button"
+  onclick="clearCart()"
+>
+カートを空にする
+</button>
+
+</div>
+
+<div id="status"></div>
 
 </div>
 
@@ -131,7 +260,18 @@ h1 {
 <script>
 
 /* ==================================================
-   URLから予約時間を取得
+   設定
+================================================== */
+
+const LIFF_ID =
+  "2011037691-j7UfaGxQ";
+
+const CART_KEY =
+  "salon_cart";
+
+
+/* ==================================================
+   性別・料金区分設定
 ================================================== */
 
 const params =
@@ -139,57 +279,1310 @@ const params =
     window.location.search
   );
 
-const time =
-  Number(params.get("time"));
+const IS_FEMALE =
+  params.get("gender") === "female";
 
-const content =
-  document.getElementById("content");
+const IS_STUDENT =
+  params.get("gender") === "student";
 
 
 /* ==================================================
-   表示
+   予約ページURL
 ================================================== */
 
-if (
-  Number.isFinite(time) &&
-  time > 0
-) {
+const RESERVATION_BASE_URL =
+  "https://liff.line.me/2011037691-bVtPC8Uc?liff_id=2011037691-bVtPC8Uc&is=zH9OY9ZgDL";
 
-  content.innerHTML = `
 
-    <div class="notice-title">
-      【ご予約時の注意】
-    </div>
+/* ==================================================
+   メニュー一覧
+================================================== */
 
-    <div class="time-box">
+const MENUS = {
 
-      <div class="time-label">
-        ご予約時は、下記の時間枠を選択してください
-      </div>
+  /* ---------- 全身脱毛 ---------- */
 
-      <div class="time">
-        【${time}分】枠を選択してください
-      </div>
+  full_none: {
+    menu: "full_none",
+    name: "顔・VIOなし",
+    category: "全身脱毛",
+    price: IS_STUDENT
+      ? 10000
+      : IS_FEMALE
+        ? 10000
+        : 13000,
+    time: 90
+  },
 
-    </div>
+  full_face_or_vio: {
+    menu: "full_face_or_vio",
+    name: "顔orVIO",
+    category: "全身脱毛",
+    price: IS_STUDENT
+      ? 11000
+      : IS_FEMALE
+        ? 11000
+        : 14000,
+    time: 100
+  },
 
-    <div class="note">
-      ※まだ予約は確定していません
-    </div>
+  full_face_vio: {
+    menu: "full_face_vio",
+    name: "顔・VIO",
+    category: "全身脱毛",
+    price: IS_STUDENT
+      ? 12000
+      : IS_FEMALE
+        ? 12000
+        : 15000,
+    time: 120
+  },
 
-  `;
 
-} else {
+  /* ---------- 顔・首まわり ---------- */
 
-  content.innerHTML = `
+  face_all: {
+    menu: "face_all",
+    name: "顔全体",
+    category: "顔・首まわり",
+    price: IS_STUDENT ? 2500 : 5000,
+    time: 30
+  },
 
-    <div class="error">
-      予約時間を取得できませんでした。
-    </div>
+  face_upper: {
+    menu: "face_upper",
+    name: "上顔面／鼻上",
+    category: "顔・首まわり",
+    price: IS_STUDENT ? 1500 : 3000,
+    time: 30
+  },
 
-  `;
+  face_lower: {
+    menu: "face_lower",
+    name: "下顔面／鼻下",
+    category: "顔・首まわり",
+    price: IS_STUDENT ? 1500 : 3000,
+    time: 30
+  },
+
+  eyebrow: {
+    menu: "eyebrow",
+    name: "眉毛",
+    category: "顔・首まわり",
+    price: IS_STUDENT ? 1000 : 1500,
+    time: 20
+  },
+
+  mouth: {
+    menu: "mouth",
+    name: "口周り",
+    category: "顔・首まわり",
+    price: IS_STUDENT ? 1000 : 2000,
+    time: 20
+  },
+
+  nose_hair: {
+    menu: "nose_hair",
+    name: "鼻毛",
+    category: "顔・首まわり",
+    price: 1000,
+    time: 20
+  },
+
+  ear_hair: {
+    menu: "ear_hair",
+    name: "耳毛",
+    category: "顔・首まわり",
+    price: 1000,
+    time: 20
+  },
+
+  neck: {
+    menu: "neck",
+    name: "うなじ",
+    category: "顔・首まわり",
+    price: IS_STUDENT ? 1500 : 3000,
+    time: 20
+  },
+
+
+  /* ---------- 上半身 ---------- */
+
+  arm_all: {
+    menu: "arm_all",
+    name: "うで全体／指込",
+    category: "上半身",
+    price: IS_STUDENT ? 3000 : 5000,
+    time: 30
+  },
+
+  upper_arm: {
+    menu: "upper_arm",
+    name: "ひじ上",
+    category: "上半身",
+    price: IS_STUDENT ? 1500 : 2000,
+    time: 30
+  },
+
+  lower_arm: {
+    menu: "lower_arm",
+    name: "ひじ下",
+    category: "上半身",
+    price: IS_STUDENT ? 1500 : 2000,
+    time: 30
+  },
+
+  hand: {
+    menu: "hand",
+    name: "手の甲・指",
+    category: "上半身",
+    price: IS_STUDENT ? 500 : 1500,
+    time: 20
+  },
+
+  armpit: {
+    menu: "armpit",
+    name: "脇",
+    category: "上半身",
+    price: IS_STUDENT ? 1000 : 2000,
+    time: 20
+  },
+
+  chest: {
+    menu: "chest",
+    name: "胸全体",
+    category: "上半身",
+    price: IS_STUDENT ? 1500 : 3000,
+    time: 20
+  },
+
+  areola: {
+    menu: "areola",
+    name: "乳輪周り",
+    category: "上半身",
+    price: IS_STUDENT ? 1000 : 2000,
+    time: 20
+  },
+
+  stomach: {
+    menu: "stomach",
+    name: "お腹全体",
+    category: "上半身",
+    price: IS_STUDENT ? 2000 : 4000,
+    time: 20
+  },
+
+  back_all: {
+    menu: "back_all",
+    name: "背中全体",
+    category: "上半身",
+    price: IS_STUDENT ? 2000 : 5000,
+    time: 20
+  },
+
+  back_upper: {
+    menu: "back_upper",
+    name: "背中上",
+    category: "上半身",
+    price: IS_STUDENT ? 2000 : 3000,
+    time: 20
+  },
+
+  waist: {
+    menu: "waist",
+    name: "腰",
+    category: "上半身",
+    price: IS_STUDENT ? 2000 : 3000,
+    time: 20
+  },
+
+
+  /* ---------- 下半身 ---------- */
+
+  leg_all: {
+    menu: "leg_all",
+    name: "脚全体／指込",
+    category: "下半身",
+    price: IS_STUDENT ? 3500 : 6000,
+    time: 30
+  },
+
+  thigh: {
+    menu: "thigh",
+    name: "ひざ上",
+    category: "下半身",
+    price: IS_STUDENT ? 2000 : 3000,
+    time: 30
+  },
+
+  lower_leg: {
+    menu: "lower_leg",
+    name: "ひざ下",
+    category: "下半身",
+    price: IS_STUDENT ? 2500 : 2000,
+    time: 30
+  },
+
+  foot: {
+    menu: "foot",
+    name: "足の甲・指",
+    category: "下半身",
+    price: IS_STUDENT ? 500 : 1500,
+    time: 20
+  },
+
+  hip: {
+    menu: "hip",
+    name: "おしり",
+    category: "下半身",
+    price: IS_STUDENT ? 2000 : 3000,
+    time: 20
+  },
+
+
+  /* ---------- VIO ---------- */
+
+  vio_all: {
+    menu: "vio_all",
+    name: "VIO全体",
+    category: "VIO",
+    price: IS_STUDENT
+      ? 3500
+      : IS_FEMALE
+        ? 5000
+        : 7000,
+    time: 40
+  },
+
+  v_line: {
+    menu: "v_line",
+    name: "Vライン",
+    category: "VIO",
+    price: IS_STUDENT
+      ? 2500
+      : IS_FEMALE
+        ? 3500
+        : 5500,
+    time: 30
+  },
+
+  v: {
+    menu: "v",
+    name: "V",
+    category: "VIO",
+    price: IS_STUDENT
+      ? 1500
+      : IS_FEMALE
+        ? 2000
+        : 3000,
+    time: 20
+  },
+
+  i: {
+    menu: "i",
+    name: "I",
+    category: "VIO",
+    price: IS_STUDENT
+      ? 1500
+      : IS_FEMALE
+        ? 2000
+        : 3000,
+    time: 20
+  },
+
+  o: {
+    menu: "o",
+    name: "O",
+    category: "VIO",
+    price: IS_STUDENT ? 1500 : 2000,
+    time: 20
+  },
+
+
+  /* ---------- フェイシャル ---------- */
+
+  facial_light: {
+    menu: "facial_light",
+    name: "光美肌コース／ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  facial_standard: {
+    menu: "facial_standard",
+    name: "光美肌コース／スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  facial_premium: {
+    menu: "facial_premium",
+    name: "光美肌コース／プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+  hydro_light: {
+    menu: "hydro_light",
+    name: "水素ハイドラコース／ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  hydro_standard: {
+    menu: "hydro_standard",
+    name: "水素ハイドラコース／スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  hydro_premium: {
+    menu: "hydro_premium",
+    name: "水素ハイドラコース／プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+  plasma_light: {
+    menu: "plasma_light",
+    name: "プラズマ肌改善コース／ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  plasma_standard: {
+    menu: "plasma_standard",
+    name: "プラズマ肌改善コース／スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  plasma_premium: {
+    menu: "plasma_premium",
+    name: "プラズマ肌改善コース／プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+  radio_ems_light: {
+    menu: "radio_ems_light",
+    name: "ラジオ波＆EMS小顔コース／ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  radio_ems_standard: {
+    menu: "radio_ems_standard",
+    name: "ラジオ波＆EMS小顔コース／スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  radio_ems_premium: {
+    menu: "radio_ems_premium",
+    name: "ラジオ波＆EMS小顔コース／プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+  pencil_light: {
+    menu: "pencil_light",
+    name: "ペンシルシミケアコース／ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  pencil_standard: {
+    menu: "pencil_standard",
+    name: "ペンシルシミケアコース／スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  pencil_premium: {
+    menu: "pencil_premium",
+    name: "ペンシルシミケアコース／プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  },
+
+  totte_light: {
+    menu: "totte_light",
+    name: "totte+コース／ライト",
+    category: "フェイシャル",
+    price: 5000,
+    time: 40
+  },
+
+  totte_standard: {
+    menu: "totte_standard",
+    name: "totte+コース／スタンダード",
+    category: "フェイシャル",
+    price: 7000,
+    time: 60
+  },
+
+  totte_premium: {
+    menu: "totte_premium",
+    name: "totte+コース／プレミアム",
+    category: "フェイシャル",
+    price: 9000,
+    time: 90
+  }
+
+};
+
+
+/* ==================================================
+   LIFF
+================================================== */
+
+let liffInitialized = false;
+let liffInitializing = false;
+
+async function initLIFF() {
+
+  if (liffInitialized) return;
+
+  if (liffInitializing) {
+
+    while (liffInitializing) {
+
+      await new Promise(
+        resolve => setTimeout(resolve, 50)
+      );
+
+    }
+
+    return;
+
+  }
+
+  liffInitializing = true;
+
+  try {
+
+    await liff.init({
+      liffId: LIFF_ID
+    });
+
+    liffInitialized = true;
+
+  } finally {
+
+    liffInitializing = false;
+
+  }
 
 }
+
+
+function getCart() {
+
+  const saved =
+    localStorage.getItem(CART_KEY);
+
+  if (!saved) return [];
+
+  try {
+
+    const cart = JSON.parse(saved);
+
+    return Array.isArray(cart)
+      ? cart
+      : [];
+
+  } catch (error) {
+
+    console.error(
+      "カート読み込みエラー",
+      error
+    );
+
+    return [];
+
+  }
+
+}
+
+
+function saveCart(cart) {
+
+  localStorage.setItem(
+    CART_KEY,
+    JSON.stringify(cart)
+  );
+
+}
+
+
+async function addMenuFromURL(menuId) {
+
+  const menu = MENUS[menuId];
+
+  if (!menu) {
+
+    showError(
+      "メニュー情報がありません。\n" +
+      menuId
+    );
+
+    showPage();
+
+    return;
+
+  }
+
+  const cart = getCart();
+
+  const exists =
+    cart.some(
+      item => item.menu === menuId
+    );
+
+  if (!exists) {
+
+    cart.push({
+      menu: menu.menu,
+      name: menu.name,
+      category: menu.category,
+      price: menu.price,
+      time: menu.time
+    });
+
+    saveCart(cart);
+
+  }
+
+  renderCart();
+
+  try {
+
+    await initLIFF();
+
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+    await liff.sendMessages([
+      {
+        type: "text",
+        text: "カートに追加しました"
+      }
+    ]);
+
+    setTimeout(
+      () => {
+
+        try {
+
+          if (liff.isInClient()) {
+            liff.closeWindow();
+          }
+
+        } catch (error) {
+
+          console.error(
+            "closeWindow error",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+  } catch (error) {
+
+    console.error(
+      "カート追加エラー",
+      error
+    );
+
+    renderCart();
+
+    showError(
+      "LINEへの送信に失敗しました。\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+function renderCart() {
+
+  const cart = getCart();
+
+  const list =
+    document.getElementById(
+      "cartList"
+    );
+
+  if (cart.length === 0) {
+
+    list.innerHTML =
+      `
+      <div
+        style="
+          text-align:center;
+          padding:30px;
+          color:#888;
+        "
+      >
+        カートは空です
+      </div>
+      `;
+
+    document.getElementById(
+      "totalPrice"
+    ).textContent = "¥0";
+
+    document.getElementById(
+      "totalTime"
+    ).textContent = "0分";
+
+    showPage();
+
+    return;
+
+  }
+
+  list.innerHTML =
+    cart.map(
+      (item, index) => `
+
+        <div class="cart-item">
+
+          <div class="item-name">
+            ${escapeHTML(
+              item.name || "メニュー"
+            )}
+          </div>
+
+          <div class="item-category">
+            ${escapeHTML(
+              item.category || ""
+            )}
+          </div>
+
+          <div class="item-bottom">
+
+            <span>
+              約${Number(item.time) || 0}分
+            </span>
+
+            <span>
+              ¥${(
+                Number(item.price) || 0
+              ).toLocaleString("ja-JP")}
+            </span>
+
+          </div>
+
+          <button
+            type="button"
+            class="delete-button"
+            onclick="removeItem(${index})"
+          >
+            削除
+          </button>
+
+        </div>
+
+      `
+    ).join("");
+
+  let totalPrice = 0;
+  let totalTime = 0;
+
+  cart.forEach(
+    item => {
+
+      totalPrice +=
+        Number(item.price) || 0;
+
+      totalTime +=
+        Number(item.time) || 0;
+
+    }
+  );
+
+  document.getElementById(
+    "totalPrice"
+  ).textContent =
+    "¥" +
+    totalPrice.toLocaleString("ja-JP");
+
+  document.getElementById(
+    "totalTime"
+  ).textContent =
+    totalTime + "分";
+
+  showPage();
+
+}
+
+
+function showPage() {
+
+  const container =
+    document.querySelector(
+      ".container"
+    );
+
+  if (container) {
+
+    container.classList.add(
+      "ready"
+    );
+
+  }
+
+}
+
+
+function removeItem(index) {
+
+  const cart = getCart();
+
+  cart.splice(index, 1);
+
+  saveCart(cart);
+
+  renderCart();
+
+}
+
+
+function clearCart() {
+
+  if (getCart().length === 0) return;
+
+  if (
+    !confirm(
+      "カートを空にしますか？"
+    )
+  ) return;
+
+  localStorage.removeItem(
+    CART_KEY
+  );
+
+  renderCart();
+
+}
+
+
+/* ==================================================
+   メニュー追加
+   「メニュー追加」のみ送信
+   「フェイシャル追加」は存在しない
+================================================== */
+
+async function addMenuMessage() {
+
+  try {
+
+    await initLIFF();
+
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+    await liff.sendMessages([
+      {
+        type: "text",
+        text: "メニュー追加"
+      }
+    ]);
+
+    setTimeout(
+      () => {
+
+        try {
+
+          if (liff.isInClient()) {
+            liff.closeWindow();
+          }
+
+        } catch (error) {
+
+          console.error(
+            "closeWindow error",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+  } catch (error) {
+
+    console.error(
+      "メニュー追加エラー",
+      error
+    );
+
+    showError(
+      "メニュー追加の送信に失敗しました。\n" +
+      error.message
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   選択完了
+================================================== */
+
+async function completeSelection() {
+
+  const cart = getCart();
+
+  if (cart.length === 0) {
+
+    alert(
+      "メニューを選択してください。"
+    );
+
+    return;
+
+  }
+
+  const button =
+    document.getElementById(
+      "completeButton"
+    );
+
+  button.disabled = true;
+
+  button.textContent =
+    "送信中…";
+
+  try {
+
+    await initLIFF();
+
+    if (!liff.isInClient()) {
+
+      throw new Error(
+        "LINEアプリ内で開いてください。"
+      );
+
+    }
+
+    let totalPrice = 0;
+    let totalTime = 0;
+
+    cart.forEach(
+      item => {
+
+        totalPrice +=
+          Number(item.price) || 0;
+
+        totalTime +=
+          Number(item.time) || 0;
+
+      }
+    );
+
+    const reservationURL =
+      RESERVATION_BASE_URL;
+
+    await liff.sendMessages([
+
+      {
+
+        type: "flex",
+
+        altText:
+          "選択したメニューと予約ページ",
+
+        contents: {
+
+          type: "bubble",
+
+          body: {
+
+            type: "box",
+
+            layout: "vertical",
+
+            spacing: "md",
+
+            contents: [
+
+              {
+
+                type: "text",
+
+                text:
+                  "【選択したメニュー一覧】",
+
+                weight: "bold",
+
+                size: "lg",
+
+                wrap: true
+
+              },
+
+              {
+                type: "separator"
+              },
+
+              ...cart.map(
+                item => ({
+
+                  type: "text",
+
+                  text:
+                    "✔ " +
+                    item.name +
+                    "　¥" +
+                    (
+                      Number(item.price) || 0
+                    ).toLocaleString("ja-JP"),
+
+                  size: "sm",
+
+                  wrap: true
+
+                })
+              ),
+
+              {
+                type: "separator"
+              },
+
+              {
+
+                type: "text",
+
+                text:
+                  "■ 合計金額\n¥" +
+                  totalPrice.toLocaleString("ja-JP"),
+
+                weight: "bold",
+
+                wrap: true
+
+              },
+
+              {
+
+                type: "text",
+
+                text:
+                  "■ 施術時間目安\n" +
+                  totalTime +
+                  "分",
+
+                weight: "bold",
+
+                wrap: true
+
+              },
+
+              {
+                type: "separator"
+              },
+
+              {
+
+                type: "box",
+
+                layout: "vertical",
+
+                margin: "md",
+
+                paddingAll: "18px",
+
+                cornerRadius: "12px",
+
+                backgroundColor: "#333333",
+
+                contents: [
+
+                  {
+
+                    type: "text",
+
+                    text:
+                      "ご予約時の注意",
+
+                    color: "#FFFFFF",
+
+                    size: "sm",
+
+                    weight: "bold",
+
+                    align: "center",
+
+                    wrap: true
+
+                  },
+
+                  {
+
+                    type: "text",
+
+                    text:
+                      "【" +
+                      totalTime +
+                      "分】",
+
+                    color: "#FFFFFF",
+
+                    size: "xxl",
+
+                    weight: "bold",
+
+                    align: "center",
+
+                    margin: "md",
+
+                    wrap: true
+
+                  },
+
+                  {
+
+                    type: "text",
+
+                    text:
+                      "枠を選択してください",
+
+                    color: "#FFFFFF",
+
+                    size: "lg",
+
+                    weight: "bold",
+
+                    align: "center",
+
+                    margin: "sm",
+
+                    wrap: true
+
+                  }
+
+                ]
+
+              },
+
+              {
+
+                type: "text",
+
+                text:
+                  "※まだ予約は確定していません",
+
+                size: "sm",
+
+                color: "#777777",
+
+                align: "center",
+
+                margin: "md",
+
+                wrap: true
+
+              }
+
+            ]
+
+          },
+
+          footer: {
+
+            type: "box",
+
+            layout: "vertical",
+
+            spacing: "sm",
+
+            contents: [
+
+              {
+
+                type: "button",
+
+                style: "primary",
+
+                action: {
+
+                  type: "uri",
+
+                  label:
+                    "予約に進む",
+
+                  uri:
+                    reservationURL
+
+                }
+
+              }
+
+            ]
+
+          }
+
+        }
+
+      }
+
+    ]);
+
+    localStorage.removeItem(
+      CART_KEY
+    );
+
+    setTimeout(
+      () => {
+
+        try {
+
+          if (liff.isInClient()) {
+            liff.closeWindow();
+          }
+
+        } catch (error) {
+
+          console.error(
+            "closeWindow error",
+            error
+          );
+
+        }
+
+      },
+      500
+    );
+
+  } catch (error) {
+
+    console.error(
+      "選択完了エラー",
+      error
+    );
+
+    showError(
+      "LINEへの送信に失敗しました。\n" +
+      error.message
+    );
+
+    button.disabled = false;
+
+    button.textContent =
+      "選択完了";
+
+  }
+
+}
+
+
+function showError(message) {
+
+  document.getElementById(
+    "status"
+  ).textContent =
+    message;
+
+}
+
+
+function escapeHTML(value) {
+
+  return String(value)
+
+    .replace(/&/g, "&amp;")
+
+    .replace(/</g, "&lt;")
+
+    .replace(/>/g, "&gt;")
+
+    .replace(/"/g, "&quot;")
+
+    .replace(/'/g, "&#039;");
+
+}
+
+
+async function startPage() {
+
+  try {
+
+    const menuId =
+      params.get("menu");
+
+    if (menuId) {
+
+      await addMenuFromURL(
+        menuId
+      );
+
+      return;
+
+    }
+
+    await initLIFF();
+
+    renderCart();
+
+  } catch (error) {
+
+    console.error(
+      "起動エラー",
+      error
+    );
+
+    showError(
+      "LIFFの起動に失敗しました。\n" +
+      error.message
+    );
+
+    showPage();
+
+  }
+
+}
+
+
+window.addEventListener(
+  "DOMContentLoaded",
+  startPage
+);
 
 </script>
 
