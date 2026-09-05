@@ -211,6 +211,13 @@ main {
   border-radius: 15px;
 }
 
+.route-title {
+  font-size: 22px;
+  font-weight: bold;
+  margin: 20px 0 12px;
+  color: #333;
+}
+
 /* ===========================
    駐車場
 =========================== */
