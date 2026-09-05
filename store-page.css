@@ -1,0 +1,293 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f8fc;
+  color: #333;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    sans-serif;
+  line-height: 1.7;
+}
+
+/* ===========================
+   ヘッダー
+=========================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* ===========================
+   全体
+=========================== */
+
+main {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px 16px 50px;
+}
+
+/* ===========================
+   ページタイトル
+=========================== */
+
+.page-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0 28px;
+}
+
+.page-title span {
+  font-size: 30px;
+}
+
+.page-title h1 {
+  margin: 0;
+  color: #1976d2;
+  font-size: 34px;
+  font-weight: 800;
+}
+
+/* ===========================
+   カード
+=========================== */
+
+.card {
+  background: #fff;
+  margin-bottom: 22px;
+  padding: 28px 30px;
+  border-radius: 26px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+}
+
+.card h2 {
+  margin: 0 0 28px;
+  color: #1976d2;
+  font-size: 28px;
+  font-weight: 800;
+}
+
+/* ===========================
+   基本情報
+=========================== */
+
+.info {
+  margin-bottom: 22px;
+}
+
+.info:last-child {
+  margin-bottom: 0;
+}
+
+.info p {
+  margin: 0 0 2px;
+  font-size: 18px;
+  color: #555;
+}
+
+.info strong {
+  display: block;
+  font-size: 23px;
+  font-weight: 500;
+}
+
+/* ===========================
+   アクセス
+=========================== */
+
+.access-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  margin-bottom: 22px;
+}
+
+.access-item > span {
+  font-size: 27px;
+  line-height: 1.4;
+}
+
+.access-item strong {
+  font-size: 20px;
+}
+
+.access-item p {
+  margin: 2px 0 0;
+  font-size: 18px;
+}
+
+/* ===========================
+   Googleマップボタン
+=========================== */
+
+.map-button {
+  display: block;
+  width: 100%;
+  margin-top: 26px;
+  padding: 15px;
+  border-radius: 12px;
+  background: #1976d2;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.map-button:active {
+  transform: scale(0.98);
+}
+
+/* ===========================
+   経路
+=========================== */
+
+.route-description {
+  margin: -12px 0 25px;
+  font-size: 17px;
+  color: #555;
+}
+
+.route-step {
+  margin-bottom: 32px;
+}
+
+.route-step:last-child {
+  margin-bottom: 0;
+}
+
+.step-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 38px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  background: #1976d2;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.route-step p {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.route-step img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+}
+
+/* ===========================
+   駐車場
+=========================== */
+
+.large-text {
+  margin: 0;
+  font-size: 24px;
+}
+
+/* ===========================
+   サービス内容
+=========================== */
+
+.card ul {
+  margin: 0;
+  padding-left: 28px;
+}
+
+.card li {
+  font-size: 21px;
+  margin-bottom: 5px;
+}
+
+/* ===========================
+   お問い合わせ
+=========================== */
+
+.contact {
+  margin: 0;
+  font-size: 21px;
+}
+
+/* ===========================
+   フッター
+=========================== */
+
+footer {
+  padding: 25px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+/* ===========================
+   スマホ
+=========================== */
+
+@media (max-width: 480px) {
+
+  main {
+    padding: 20px 14px 40px;
+  }
+
+  .page-title {
+    margin-bottom: 24px;
+  }
+
+  .page-title h1 {
+    font-size: 32px;
+  }
+
+  .card {
+    padding: 25px 24px;
+    border-radius: 24px;
+    margin-bottom: 20px;
+  }
+
+  .card h2 {
+    font-size: 27px;
+    margin-bottom: 24px;
+  }
+
+  .info strong {
+    font-size: 22px;
+  }
+
+  .info p {
+    font-size: 18px;
+  }
+
+  .route-step p {
+    font-size: 17px;
+  }
+
+  .contact {
+    font-size: 20px;
+  }
+}
