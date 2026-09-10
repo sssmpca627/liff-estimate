@@ -1,1 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lステップ構築講座</title>
+  <link rel="stylesheet" href="lp.css">
+</head>
+<body>
+
+  <main class="lp">
+
+    <!-- LP画像 -->
+    <img src="images/lp-01.jpg" alt="" class="lp-image">
+    <img src="images/lp-02.jpg" alt="" class="lp-image">
+    <img src="images/lp-03.jpg" alt="" class="lp-image">
+    <img src="images/lp-04.jpg" alt="" class="lp-image">
+    <img src="images/lp-05.jpg" alt="" class="lp-image">
+    <img src="images/lp-06.jpg" alt="" class="lp-image">
+    <img src="images/lp-07.jpg" alt="" class="lp-image">
+    <img src="images/lp-08.jpg" alt="" class="lp-image">
+
+    <!-- CTA -->
+    <section class="cta">
+      <p class="cta-lead">まずは無料でご相談ください</p>
+      <a href="#" class="cta-button">無料相談・説明会に申し込む</a>
+    </section>
+
+  </main>
+
+</body>
+</html>
 
