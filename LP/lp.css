@@ -2,50 +2,79 @@
   box-sizing: border-box;
 }
 
-html,
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-body {
-  background: #fff;
+  background: #f5f5f5;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+               "Hiragino Kaku Gothic ProN", "Yu Gothic", YuGothic,
+               Meiryo, sans-serif;
+  color: #222;
 }
 
 .lp {
-  display: block;
   width: 100%;
   max-width: 750px;
   margin: 0 auto;
-  padding: 0;
+  background: #fff;
+  overflow: hidden;
 }
 
 .lp-image {
   display: block;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
+  width: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
   border: 0;
 }
 
-.lp a {
+.cta {
+  padding: 36px 20px 45px;
+  text-align: center;
+  background: #fff;
+}
+
+.cta-lead {
+  margin: 0 0 18px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cta-button {
   display: block;
   width: 100%;
-  margin: 0;
-  padding: 0;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 17px 20px;
+  border-radius: 999px;
+  background: #06c755;
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
 }
 
-.lp a .lp-image {
-  display: block;
-  width: 100% !important;
+.cta-button:active {
+  transform: translateY(1px);
 }
 
+@media (min-width: 751px) {
+  body {
+    padding: 20px 0;
+  }
+
+  .lp {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
+  }
+  
+/* フッター */
 .footer {
-  width: 100%;
   background: #f5f5f5;
   padding: 30px 20px;
   text-align: center;
@@ -66,8 +95,75 @@ body {
   text-decoration: none;
 }
 
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
 .copyright {
   margin: 0;
   font-size: 12px;
   color: #999;
+}
+
+  .lp {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.lp-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* スマホ・PC共通 */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.lp {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.lp-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.footer {
+  width: 100%;
+}
+
+/* スマホ */
+@media screen and (max-width: 768px) {
+  .lp {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .lp-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .footer {
+    padding: 25px 15px;
+  }
+
+  .footer-links {
+    gap: 10px;
+  }
 }
