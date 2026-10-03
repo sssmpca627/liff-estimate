@@ -64,6 +64,8 @@ body {
   transform: translateY(1px);
 }
 
+
+/* PC */
 @media (min-width: 751px) {
   body {
     padding: 20px 0;
@@ -72,7 +74,9 @@ body {
   .lp {
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.08);
   }
-  
+}
+
+
 /* フッター */
 .footer {
   width: 100%;
@@ -106,7 +110,8 @@ body {
   color: #999;
 }
 
-/* スマホのフッター */
+
+/* スマホのフッターだけ調整 */
 @media (max-width: 750px) {
   .footer {
     padding: 25px 15px;
