@@ -120,4 +120,9 @@ body {
   color: #06c755;
   border: 3px solid #06c755;
 }
+  .purchase-button {
+  background: #fff !important;
+  color: #06c755 !important;
+  border: 3px solid #06c755 !important;
+}
 }
