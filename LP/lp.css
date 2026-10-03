@@ -33,9 +33,9 @@ body {
   border: 0;
 }
 
-/* 今すぐ受講するボタン */
+/* CTAボタン */
 .cta {
-  padding: 30px 20px;
+  padding: 8px 20px;
   text-align: center;
   background: #fff;
 }
