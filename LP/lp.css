@@ -116,3 +116,54 @@ body {
   height: auto;
   display: block;
 }
+
+/* スマホ・PC共通 */
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.lp {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.lp-image {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.footer {
+  width: 100%;
+}
+
+/* スマホ */
+@media screen and (max-width: 768px) {
+  .lp {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .lp-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .footer {
+    padding: 25px 15px;
+  }
+
+  .footer-links {
+    gap: 10px;
+  }
+}
