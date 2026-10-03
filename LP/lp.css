@@ -33,6 +33,7 @@ body {
   border: 0;
 }
 
+
 /* CTAボタン */
 .cta {
   padding: 8px 20px;
@@ -57,6 +58,14 @@ body {
 
 .cta-button:active {
   transform: translateY(1px);
+}
+
+
+/* 今すぐ受講するボタン */
+.purchase-button {
+  background: #fff !important;
+  color: #06c755 !important;
+  border: 3px solid #06c755 !important;
 }
 
 
@@ -115,14 +124,4 @@ body {
   .footer-links {
     gap: 10px;
   }
-  .purchase-button {
-  background: #fff;
-  color: #06c755;
-  border: 3px solid #06c755;
-}
-  .purchase-button {
-  background: #fff !important;
-  color: #06c755 !important;
-  border: 3px solid #06c755 !important;
-}
 }
