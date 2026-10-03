@@ -33,29 +33,24 @@ body {
   border: 0;
 }
 
+/* 今すぐ受講するボタン */
 .cta {
-  padding: 36px 20px 45px;
+  padding: 30px 20px;
   text-align: center;
   background: #fff;
-}
-
-.cta-lead {
-  margin: 0 0 18px;
-  font-size: 16px;
-  font-weight: 600;
 }
 
 .cta-button {
   display: block;
   width: 100%;
-  max-width: 520px;
+  max-width: 600px;
   margin: 0 auto;
-  padding: 17px 20px;
+  padding: 22px 20px;
   border-radius: 999px;
   background: #06c755;
   color: #fff;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
 }
@@ -111,7 +106,7 @@ body {
 }
 
 
-/* スマホのフッターだけ調整 */
+/* スマホのフッター */
 @media (max-width: 750px) {
   .footer {
     padding: 25px 15px;
@@ -120,24 +115,4 @@ body {
   .footer-links {
     gap: 10px;
   }
-}
-.cta {
-  padding: 30px 20px;
-  text-align: center;
-  background: #fff;
-}
-
-.cta-button {
-  display: block;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 22px 20px;
-  border-radius: 999px;
-  background: #06c755;
-  color: #fff;
-  text-decoration: none;
-  font-size: 20px;
-  font-weight: 700;
-  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.12);
 }
