@@ -115,4 +115,9 @@ body {
   .footer-links {
     gap: 10px;
   }
+  .purchase-button {
+  background: #fff;
+  color: #06c755;
+  border: 3px solid #06c755;
+}
 }
