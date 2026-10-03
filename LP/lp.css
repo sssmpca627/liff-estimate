@@ -104,3 +104,15 @@ body {
   font-size: 12px;
   color: #999;
 }
+
+  .lp {
+  width: 100%;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.lp-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
