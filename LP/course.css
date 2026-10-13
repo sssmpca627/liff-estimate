@@ -214,4 +214,47 @@ body {
     font-size: 18px;
     padding: 18px;
   }
+
+  ```css
+/* 銀行振込案内 */
+.bank-transfer {
+  max-width: 600px;
+  margin: 35px auto;
+  padding: 25px 20px;
+  background: #f7f9f8;
+  border: 1px solid #dce5df;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.bank-transfer h2 {
+  margin: 0 0 15px;
+  font-size: 21px;
+  text-align: center;
+}
+
+.bank-transfer > p {
+  line-height: 1.8;
+  font-size: 14px;
+}
+
+.bank-details {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.bank-details p {
+  margin: 10px 0;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+}
+
+.bank-note {
+  margin-bottom: 0;
+  color: #666;
+  font-size: 12px !important;
+  line-height: 1.8;
+}
 }
