@@ -170,7 +170,6 @@ body {
   color: #999;
 }
 
-
 /* PC */
 @media (min-width: 751px) {
   body {
@@ -182,10 +181,8 @@ body {
   }
 }
 
-
 /* スマホ */
 @media (max-width: 750px) {
-
   .course-page {
     padding: 40px 15px 50px;
   }
@@ -214,47 +211,33 @@ body {
     font-size: 18px;
     padding: 18px;
   }
-
-  ```css
-/* 銀行振込案内 */
-.bank-transfer {
-  max-width: 600px;
-  margin: 35px auto;
-  padding: 25px 20px;
-  background: #f7f9f8;
-  border: 1px solid #dce5df;
-  border-radius: 12px;
-  box-sizing: border-box;
 }
 
-.bank-transfer h2 {
-  margin: 0 0 15px;
-  font-size: 21px;
-  text-align: center;
-}
-
-.bank-transfer > p {
-  line-height: 1.8;
-  font-size: 14px;
+/* 銀行振込カード */
+.bank-card {
+  margin-top: 30px;
 }
 
 .bank-details {
-  margin-top: 20px;
-  padding: 15px;
-  background: #fff;
+  max-width: 560px;
+  margin: 20px auto 0;
+  padding: 18px;
+  background: #f7f9f8;
+  border: 1px solid #dce5df;
   border-radius: 8px;
+  text-align: left;
 }
 
 .bank-details p {
   margin: 10px 0;
   font-size: 14px;
+  line-height: 1.7;
   overflow-wrap: anywhere;
 }
 
 .bank-note {
-  margin-bottom: 0;
+  margin: 15px 0 0;
+  font-size: 12px;
   color: #666;
-  font-size: 12px !important;
-  line-height: 1.8;
-}
+  line-height: 1.7;
 }
