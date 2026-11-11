@@ -1478,13 +1478,18 @@ async function addMenuFromURL(menuId) {
     }
 
     await liff.sendMessages([
-
-      {
-        type: "text",
-        text: "カートに追加しました"
-      }
-
-    ]);
+  {
+    type: "text",
+    text: menuSummary
+  },
+  {
+    type: "flex",
+    altText: "選択したメニューと予約ページ",
+    contents: {
+      // ここは今までのカードの内容をそのまま残す
+    }
+  }
+]);
 
     setTimeout(
       () => {
