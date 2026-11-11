@@ -1840,12 +1840,29 @@ async function completeSelection() {
     const reservationURL =
       RESERVATION_BASE_URL;
 
+    const menuSummary =
+  "【選択メニュー一覧】\n\n" +
+  cart.map(item =>
+    "・" + item.name +
+    "　¥" +
+    Number(item.price).toLocaleString("ja-JP")
+  ).join("\n") +
+  "\n\n【合計金額】¥" +
+  totalPrice.toLocaleString("ja-JP") +
+  "\n【施術時間目安】" +
+  totalTime + "分";
+
 
     await liff.sendMessages([
 
-      {
+  {
+    type: "text",
+    text: menuSummary
+  },
 
-        type: "flex",
+  {
+
+    type: "flex",
 
         altText:
           "選択したメニューと予約ページ",
