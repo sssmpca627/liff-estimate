@@ -1082,12 +1082,16 @@ const MENUS = {
   },
 
   o: {
-    menu: "o",
-    name: "O",
-    category: "VIO",
-    price: IS_STUDENT ? 1500 : 3000,
-    time: 20
-  },
+  menu: "o",
+  name: "O",
+  category: "VIO",
+  price: IS_STUDENT
+    ? 1500
+    : IS_FEMALE
+      ? 2000
+      : 3000,
+  time: 20
+},
 
 
   /* ==================================================
