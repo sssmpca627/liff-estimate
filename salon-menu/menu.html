@@ -1839,7 +1839,16 @@ async function completeSelection() {
 
     const reservationURL =
       RESERVATION_BASE_URL;
-
+    
+const menuSummary =
+  "【選択メニュー】\n\n" +
+  cart.map(item =>
+    "・" + item.name +
+    "　¥" + Number(item.price).toLocaleString("ja-JP")
+  ).join("\n") +
+  "\n\n【合計金額】¥" +
+  totalPrice.toLocaleString("ja-JP") +
+  "\n【施術時間】" + totalTime + "分";
 
     await liff.sendMessages([
 
