@@ -1477,19 +1477,14 @@ async function addMenuFromURL(menuId) {
 
     }
 
-   await liff.sendMessages([
-  {
-    type: "text",
-    text: menuSummary
-  },
-  {
-    type: "flex",
-    altText: "選択したメニューと予約ページ",
-    contents: {
-      // ここは今までのカードの内容をそのまま残す
-    }
-  }
-]);
+    await liff.sendMessages([
+
+      {
+        type: "text",
+        text: "カートに追加しました"
+      }
+
+    ]);
 
     setTimeout(
       () => {
@@ -1844,16 +1839,7 @@ async function completeSelection() {
 
     const reservationURL =
       RESERVATION_BASE_URL;
-    
-const menuSummary =
-  "【選択メニュー】\n\n" +
-  cart.map(item =>
-    "・" + item.name +
-    "　¥" + Number(item.price).toLocaleString("ja-JP")
-  ).join("\n") +
-  "\n\n【合計金額】¥" +
-  totalPrice.toLocaleString("ja-JP") +
-  "\n【施術時間】" + totalTime + "分";
+
 
     await liff.sendMessages([
 
